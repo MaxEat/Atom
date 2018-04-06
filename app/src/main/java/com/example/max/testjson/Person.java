@@ -12,12 +12,11 @@ public class Person {
     private String userName;
     private static BackgroundTask backgroundTask = new BackgroundTask();
 
-    Person(String cardID) {
-
-
-
+    Person(String aCardID) {
+        cardID = aCardID;
 
     }
+
     Person(String aUserName, String aKuleuvenID, String Email ) {
         kuleuvenID = aKuleuvenID;
         userName = aUserName;
@@ -25,13 +24,6 @@ public class Person {
         userType = 2;
     }
 
-
-        Person2(String aUserName, String aKuleuvenID, String Email ) {
-        kuleuvenID = aKuleuvenID;
-        userName = aUserName;
-        email = Email;
-        userType = 2;
-    }
 
 
     public void setCardID(String CardID) {

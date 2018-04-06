@@ -31,10 +31,11 @@ public class BackgroundTask {
     String returnItemURL = "https://labtools.groept.be/inventory/sql/php_selectItemByUser.php";
 
 
+
     private void formCreateRequest(JSONObject postdata, final String Tag, String url){
+
         RequestBody body = RequestBody.create(MEDIA_TYPE,
                 postdata.toString());
-
         final Request request = new Request.Builder()
                 .url(url)
                 .post(body)
@@ -42,8 +43,6 @@ public class BackgroundTask {
                 .addHeader("Authorization", "Your Token")
                 .addHeader("cache-control", "no-cache")
                 .build();
-
-        //     asynchronous call
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -59,12 +58,12 @@ public class BackgroundTask {
                 Log.i(Tag, response.toString());
             }
         });
-    }
 
-    private void formQueryRequest(JSONObject postdata, final String Tag, String url) {
+    }
+    private Request formQueryRequest(JSONObject postdata, String url) {
+
         RequestBody body = RequestBody.create(MEDIA_TYPE,
                 postdata.toString());
-
         final Request request = new Request.Builder()
                 .url(url)
                 .post(body)
@@ -72,6 +71,55 @@ public class BackgroundTask {
                 .addHeader("Authorization", "Your Token")
                 .addHeader("cache-control", "no-cache")
                 .build();
+        return request;
+
+    }
+
+    public void addPerson(Person person) {
+
+        JSONObject postdata = new JSONObject();
+        try {
+            postdata.put("kuleuvenID", person.getKuleuvenID());
+            postdata.put("cardID", person.getCardID());
+            postdata.put("email", person.getEmail());
+            postdata.put("userType", person.getUserType());
+        } catch(JSONException e){
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        formCreateRequest(postdata, "Add Person", registerPersonURL);
+
+
+    }
+
+    public void addItem(Item item) {
+        JSONObject postdata = new JSONObject();
+        try {
+            postdata.put("itemTag", item.getItemTag());
+            postdata.put("itemLocation", item.getItemLocation());
+            postdata.put("boughtTime", item.getBoughtTime());
+            postdata.put("itemPermission", item.getItemPermission());
+        } catch(JSONException e){
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        formCreateRequest(postdata, "Add Item", registerItemURL);
+
+    }
+
+    public void receiveItems(Person person) {
+        JSONObject postdata = new JSONObject();
+        try {
+            postdata.put("kuleuvenID", person.getKuleuvenID());
+
+        } catch(JSONException e){
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        Request request = formQueryRequest(postdata, getAllItemsURL); // change latter
 
         // asynchronous call
         client.newCall(request).enqueue(new Callback() {
@@ -87,7 +135,7 @@ public class BackgroundTask {
                     throws IOException {
 
                 String mMessage = response.body().string();
-                Log.i(Tag,mMessage);
+                Log.i("Items", mMessage);
 //                if (response.isSuccessful()){
 //                    try {
 //                        JSONObject json = new JSONObject(mMessage);
@@ -101,70 +149,25 @@ public class BackgroundTask {
             }
         });
     }
-    public void addPerson(Person person) {
-
-        JSONObject postdata = new JSONObject();
-        try {
-            postdata.put("kuleuvenID", person.getKuleuvenID());
-            postdata.put("cardID", person.getCardID());
-            postdata.put("email", person.getEmail());
-            postdata.put("userType", person.getUserType());
-        } catch(JSONException e){
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        formCreateRequest(postdata, "AddPerson", registerPersonURL);
-    }
-
-    public void addItem(Item item) {
-        JSONObject postdata = new JSONObject();
-        try {
-            postdata.put("itemTag", item.getItemTag());
-            postdata.put("itemLocation", item.getItemLocation());
-            postdata.put("boughtTime", item.getBoughtTime());
-            postdata.put("itemPermission", item.getItemPermission());
-        } catch(JSONException e){
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        formCreateRequest(postdata, "AddItem", registerItemURL);
-    }
-
-    public void receiveItems(Person person) {
-        JSONObject postdata = new JSONObject();
-        try {
-            postdata.put("kuleuvenID", person.getKuleuvenID());
-
-        } catch(JSONException e){
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        formQueryRequest(postdata, "Items for " + person.getKuleuvenID(), getAllItemsURL); // change latter
-
-    }
 
     public void statusChangeItem(Person person, Item item, int status) {
         JSONObject postdata = new JSONObject();
 
         try {
-            postdata.put("cardID", person.getCardID());
-            postdata.put("itemTag", item.getItemTag());
-            postdata.put("borrowTimeStamp", "2000-02-22 00:00:00.000000");
-            postdata.put("borrowState", status);
-            postdata.put("borrowLocation", item.getItemLocation());
-            // change latter
+            postdata.put("cardID", "aaa");
+            postdata.put("itemTag", "itemTag1");
+            postdata.put("borrowLocation", "groept");
+
         } catch(JSONException e){
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
         if(status == 1)
-            formCreateRequest(postdata, "Borrow Item", borrowItemURL); // change latter
+            formCreateRequest(postdata, "Borrow item", borrowItemURL);
         if(status == 2)
-            formCreateRequest(postdata, "Return Item", returnItemURL); // change latter
+            formCreateRequest(postdata, "Return item", returnItemURL);
+
     }
 
 }

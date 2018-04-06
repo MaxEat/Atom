@@ -82,14 +82,14 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //
 //        });
-     //   user = new Person("Wang Siyuan","r0609260","r0609653@kuleuven.be");
+      //  user = new Person("Wang Siyuan","r0609653","r0609653@kuleuven.be");
 
-      //  user.register();
-      //  user.getItem();
+    //    user.register();
+       // user.getItem();
 
-
-        Item item = new Item("itemTag1");
-        user.borrowItem(item);
+       user = new Person("aaa");
+       Item item = new Item("itemTag1");
+       user.borrowItem(item);
     }
 
 
