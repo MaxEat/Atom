@@ -1,6 +1,8 @@
 package com.example.max.testjson;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,18 +23,22 @@ import okhttp3.Response;
 
 public class BackgroundTask {
 
-    final OkHttpClient client = new OkHttpClient();
+    static final OkHttpClient client = new OkHttpClient();
     static final MediaType MEDIA_TYPE = MediaType.parse("application/json");
+    static private Context context;
 
-    String registerPersonURL = "https://labtools.groept.be/inventory/sql/php_addPerson.php";
-    String registerItemURL = "https://labtools.groept.be/inventory/sql/php_addPerson.php";
-    String getAllItemsURL = "https://labtools.groept.be/inventory/sql/php_selectItemByUser.php";
-    String borrowItemURL = "https://labtools.groept.be/inventory/sql/php_borrowItem.php";
-    String returnItemURL = "https://labtools.groept.be/inventory/sql/php_returnItem.php";
+    static String registerPersonURL = "https://labtools.groept.be/inventory/sql/php_addPerson.php";
+    static String registerItemURL = "https://labtools.groept.be/inventory/sql/php_addItem.php";
+    static String getAllItemsURL = "https://labtools.groept.be/inventory/sql/php_selectItemByUser.php";
+    static String borrowItemURL = "https://labtools.groept.be/inventory/sql/php_borrowItem.php";
+    static String returnItemURL = "https://labtools.groept.be/inventory/sql/php_returnItem.php";
 
+    BackgroundTask(Context context){
+        this.context=context;
+    }
 
+    private static void formCreateRequest(JSONObject postdata, final String Tag, String url){
 
-    private void formCreateRequest(JSONObject postdata, final String Tag, String url){
 
         RequestBody body = RequestBody.create(MEDIA_TYPE,
                 postdata.toString());
@@ -43,6 +49,7 @@ public class BackgroundTask {
                 .addHeader("Authorization", "Your Token")
                 .addHeader("cache-control", "no-cache")
                 .build();
+
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -55,12 +62,32 @@ public class BackgroundTask {
             public void onResponse(Call call, Response response)
                     throws IOException {
                 String mMessage = response.body().string();
+                // if return error message = 1, the borrowed item already returned
+                // if return error message = 2, the item already exist
+                // if return error message = 3, the person already exist
                 Log.i(Tag, response.toString());
+                if (response.isSuccessful()){
+                    try {
+                        Log.i(Tag, mMessage);
+                        JSONObject json = new JSONObject(mMessage);
+                        int error = json.getInt("error_message");
+                        Log.i("error", Integer.toString(error));
+                        if(error == 1)
+                            Toast.makeText(context, "This item is already returned", Toast.LENGTH_SHORT).show();
+                        if(error == 2)
+                            Toast.makeText(context, "This item is already exist", Toast.LENGTH_SHORT).show();
+                        if(error == 3)
+                            Toast.makeText(context, "This person is already exist", Toast.LENGTH_SHORT).show();
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
             }
         });
 
     }
-    private Request formQueryRequest(JSONObject postdata, String url) {
+
+    private static void formQueryRequest(JSONObject postdata, final String Tag,  String url) {
 
         RequestBody body = RequestBody.create(MEDIA_TYPE,
                 postdata.toString());
@@ -71,11 +98,39 @@ public class BackgroundTask {
                 .addHeader("Authorization", "Your Token")
                 .addHeader("cache-control", "no-cache")
                 .build();
-        return request;
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                String mMessage = e.getMessage().toString();
+                Log.w("failure Response", mMessage);
+                //call.cancel();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response)
+                    throws IOException {
+
+                String mMessage = response.body().string();
+
+                if (response.isSuccessful()){
+                    try {
+                        Log.i(Tag, mMessage);
+                        JSONObject json = new JSONObject(mMessage);
+                        String error = json.getString("error_message");
+
+                        Log.i("error", error);
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        });
 
     }
 
-    public void addPerson(Person person) {
+    public static void addPerson(Person person) {
 
         JSONObject postdata = new JSONObject();
         try {
@@ -93,7 +148,7 @@ public class BackgroundTask {
 
     }
 
-    public void addItem(Item item) {
+    public static void addItem(Item item) {
         JSONObject postdata = new JSONObject();
         try {
             postdata.put("itemTag", item.getItemTag());
@@ -109,7 +164,7 @@ public class BackgroundTask {
 
     }
 
-    public void receiveItems(Person person) {
+    public static void receiveItems(Person person) {
         JSONObject postdata = new JSONObject();
         try {
             postdata.put("kuleuvenID", person.getKuleuvenID());
@@ -119,46 +174,17 @@ public class BackgroundTask {
             e.printStackTrace();
         }
 
-        Request request = formQueryRequest(postdata, getAllItemsURL); // change latter
+       formQueryRequest(postdata, "All items", getAllItemsURL); // change latter
 
-        // asynchronous call
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                String mMessage = e.getMessage().toString();
-                Log.w("failure Response", mMessage);
-                //call.cancel();
-            }
 
-            @Override
-            public void onResponse(Call call, Response response)
-                    throws IOException {
-
-                String mMessage = response.body().string();
-
-                if (response.isSuccessful()){
-                    try {
-                        Log.i("Items", mMessage);
-                        JSONObject json = new JSONObject(mMessage);
-                        final String serverResponse = json.getString("Your Index");
-                        Log.i("Get item response", serverResponse);
-                    } catch (Exception e){
-                        e.printStackTrace();
-                    }
-                }
-
-            }
-        });
     }
 
-    public void borrowItem(Person person, Item item) {
+    public static void borrowItem(Person person, Item item) {
         JSONObject postdata = new JSONObject();
         try {
-            postdata.put("borrowLocation", "groept");
             postdata.put("cardID", "aaa");
             postdata.put("itemTag", "itemTag1");
-
-
+            postdata.put("borrowLocation", "groept");
         } catch(JSONException e){
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -168,13 +194,12 @@ public class BackgroundTask {
 
     }
 
-    public void returnItem(Person person, Item item) {
+    public static void returnItem(Person person, Item item) {
         JSONObject postdata = new JSONObject();
         try {
             postdata.put("cardID", "aaa");
             postdata.put("itemTag", "itemTag1");
             postdata.put("returnLocation", "groept");
-
         } catch(JSONException e){
             // TODO Auto-generated catch block
             e.printStackTrace();

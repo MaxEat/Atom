@@ -10,7 +10,6 @@ public class Person {
     private String email;
     private int userType;
     private String userName;
-    private static BackgroundTask backgroundTask = new BackgroundTask();
 
     Person(String aCardID) {
         cardID = aCardID;
@@ -51,19 +50,19 @@ public class Person {
     }
 
     public void register() {
-        backgroundTask.addPerson(this);
+        BackgroundTask.addPerson(this);
     }
 
     public void getItem() {
-        backgroundTask.receiveItems(this);
+        BackgroundTask.receiveItems(this);
     }
 
     public void borrowItem(Item item) {
-        backgroundTask.borrowItem(this, item);
+        BackgroundTask.borrowItem(this, item);
     }
 
     public void returnItem(Item item) {
-        backgroundTask.returnItem(this, item);
+        BackgroundTask.returnItem(this, item);
     }
 
 }

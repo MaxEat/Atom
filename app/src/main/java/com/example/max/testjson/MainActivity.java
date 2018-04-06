@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static Connection connection = null;
     private static Session session = null;
-
+    private static BackgroundTask backgroundTask;
     private Person user;
 
     @SuppressLint("JavascriptInterface")
@@ -48,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        backgroundTask = new BackgroundTask(getApplicationContext());
+
 //        requestWindowFeature(Window.FEATURE_NO_TITLE);
 //
 //        wv  = (WebView) findViewById(R.id.webview1);
@@ -82,25 +84,24 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //
 //        });
-      //  user = new Person("Wang Siyuan","r0609653","r0609653@kuleuven.be");
+        //  user = new Person("Wang Siyuan","r0609653","r0609653@kuleuven.be");
+        //    user.register();
+        // user.getItem();
 
-    //    user.register();
-       // user.getItem();
+        user = new Person("aaa");
 
-       user = new Person("aaa");
-
-       Item item = new Item("itemTag1");
-       item.register();
-       user.returnItem(item);
+        Item item = new Item("itemTag3","2017-04-06 00:00:00.000000", "groepT");
+        item.register();
+        Item item2 = new Item("itemTag3","2017-04-06 00:00:00.000000", "groepT");
+        item2.register();
+        //user.returnItem(item);
     }
 
 
     private void showStudentNumber() {
         if (!user.getUserName().equals("None"))
         {
-
             Toast.makeText(getApplicationContext(), "Welcome! " + user.getUserName(), Toast.LENGTH_LONG).show();
-
         }
     }
 

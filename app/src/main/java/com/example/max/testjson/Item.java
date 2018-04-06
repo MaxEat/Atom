@@ -10,8 +10,16 @@ public class Item {
     private String boughtTime;
     private int itemPermission;
 
+    Item( String ItemTag) {
+        itemTag = ItemTag;
+    }
 
-    private static BackgroundTask backgroundTask = new BackgroundTask();
+    Item(String aitemTag, String aboughtTime, String aitemLocation) {
+            itemTag = aitemTag;
+            boughtTime = aboughtTime;
+            itemLocation = aitemLocation;
+            itemPermission = 1;
+    }
 
     public String getItemTag() {
         return itemTag;
@@ -30,12 +38,10 @@ public class Item {
     }
 
 
-    Item( String ItemTag) {
-        itemTag = ItemTag;
-    }
+
 
     public void register() {
-        backgroundTask.addItem(this);
+        BackgroundTask.addItem(this);
 
     }
 
