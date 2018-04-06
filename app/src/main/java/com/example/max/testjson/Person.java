@@ -15,7 +15,7 @@ public class Person {
     Person(String cardID) {
 
 
-        
+
 
     }
     Person(String aUserName, String aKuleuvenID, String Email ) {
@@ -56,10 +56,6 @@ public class Person {
     public void getItem() {
         backgroundTask.receiveItems(this);
     }
-
-//    public static Person getPersonByCardID(String cardID) {
-//
-//    }
 
     public void borrowItem(Item item) {
         backgroundTask.statusChangeItem(this, item, 1);
