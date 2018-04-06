@@ -15,6 +15,8 @@ public class Person {
     Person(String cardID) {
 
 
+        
+
     }
     Person(String aUserName, String aKuleuvenID, String Email ) {
         kuleuvenID = aKuleuvenID;
