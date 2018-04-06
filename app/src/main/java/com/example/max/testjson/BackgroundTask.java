@@ -28,7 +28,7 @@ public class BackgroundTask {
     String registerItemURL = "https://labtools.groept.be/inventory/sql/php_addPerson.php";
     String getAllItemsURL = "https://labtools.groept.be/inventory/sql/php_selectItemByUser.php";
     String borrowItemURL = "https://labtools.groept.be/inventory/sql/php_borrowItem.php";
-    String returnItemURL = "https://labtools.groept.be/inventory/sql/php_selectItemByUser.php";
+    String returnItemURL = "https://labtools.groept.be/inventory/sql/php_returnItem.php";
 
 
 
@@ -135,38 +135,51 @@ public class BackgroundTask {
                     throws IOException {
 
                 String mMessage = response.body().string();
-                Log.i("Items", mMessage);
-//                if (response.isSuccessful()){
-//                    try {
-//                        JSONObject json = new JSONObject(mMessage);
-//                        final String serverResponse = json.getString("Your Index");
-//                        Log.i("Get item response", serverResponse);
-//                    } catch (Exception e){
-//                        e.printStackTrace();
-//                    }
-//                }
+
+                if (response.isSuccessful()){
+                    try {
+                        Log.i("Items", mMessage);
+                        JSONObject json = new JSONObject(mMessage);
+                        final String serverResponse = json.getString("Your Index");
+                        Log.i("Get item response", serverResponse);
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
 
             }
         });
     }
 
-    public void statusChangeItem(Person person, Item item, int status) {
+    public void borrowItem(Person person, Item item) {
         JSONObject postdata = new JSONObject();
-
         try {
+            postdata.put("borrowLocation", "groept");
             postdata.put("cardID", "aaa");
             postdata.put("itemTag", "itemTag1");
-            postdata.put("borrowLocation", "groept");
+
 
         } catch(JSONException e){
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        if(status == 1)
-            formCreateRequest(postdata, "Borrow item", borrowItemURL);
-        if(status == 2)
-            formCreateRequest(postdata, "Return item", returnItemURL);
+        formCreateRequest(postdata, "Borrow item", borrowItemURL);
+
+    }
+
+    public void returnItem(Person person, Item item) {
+        JSONObject postdata = new JSONObject();
+        try {
+            postdata.put("cardID", "aaa");
+            postdata.put("itemTag", "itemTag1");
+            postdata.put("returnLocation", "groept");
+
+        } catch(JSONException e){
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        formCreateRequest(postdata, "Return item", returnItemURL);
 
     }
 

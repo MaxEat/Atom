@@ -59,11 +59,11 @@ public class Person {
     }
 
     public void borrowItem(Item item) {
-        backgroundTask.statusChangeItem(this, item, 1);
+        backgroundTask.borrowItem(this, item);
     }
 
     public void returnItem(Item item) {
-        backgroundTask.statusChangeItem(this, item, 2);
+        backgroundTask.returnItem(this, item);
     }
 
 }

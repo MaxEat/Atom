@@ -34,7 +34,7 @@ public class Item {
         itemTag = ItemTag;
     }
 
-    public void registerItem() {
+    public void register() {
         backgroundTask.addItem(this);
 
     }

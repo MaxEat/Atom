@@ -88,8 +88,10 @@ public class MainActivity extends AppCompatActivity {
        // user.getItem();
 
        user = new Person("aaa");
+
        Item item = new Item("itemTag1");
-       user.borrowItem(item);
+       item.register();
+       user.returnItem(item);
     }
 
 
