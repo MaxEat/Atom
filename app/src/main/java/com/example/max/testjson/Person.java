@@ -20,8 +20,17 @@ public class Person {
         kuleuvenID = aKuleuvenID;
         userName = aUserName;
         email = Email;
-        userType = 1;
+        userType = 2;
     }
+
+
+        Person2(String aUserName, String aKuleuvenID, String Email ) {
+        kuleuvenID = aKuleuvenID;
+        userName = aUserName;
+        email = Email;
+        userType = 2;
+    }
+
 
     public void setCardID(String CardID) {
         cardID = CardID;
