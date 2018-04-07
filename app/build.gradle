@@ -17,6 +17,18 @@ android {
         }
     }
 }
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+    maven {
+        credentials {
+            username "sdkuser"
+            password "taplinx"
+        }
+        url "http://maven.taplinx.nxp.com/nexus/content/repositories/taplinx/"
+    }
+}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -29,5 +41,13 @@ dependencies {
     compile group: 'com.jcraft', name: 'jsch', version: '0.1.54'
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
 
+    compile files('libs/core-1.54.0.0.jar')
+    compile files('libs/prov-1.54.0.0.jar')
+    compile files('libs/pkix-1.54.0.0.jar')
+    compile('taplinx-android:nxpnfcandroidlib:1.0@aar') {
+        transitive = true
+    }
+    compile 'com.google.zxing:core:3.2.1'
+    compile 'com.journeyapps:zxing-android-embedded:3.2.0@aar'
 
 }
