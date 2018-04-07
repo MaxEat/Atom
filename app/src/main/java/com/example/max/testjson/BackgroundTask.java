@@ -32,6 +32,8 @@ public class BackgroundTask {
     static String getAllItemsURL = "https://labtools.groept.be/inventory/sql/php_selectItemByUser.php";
     static String borrowItemURL = "https://labtools.groept.be/inventory/sql/php_borrowItem.php";
     static String returnItemURL = "https://labtools.groept.be/inventory/sql/php_returnItem.php";
+    static String duplicatePersonURL = "https://labtools.groept.be/inventory/sql/php_duplicatePerson.php";
+
 
     BackgroundTask(Context context){
         this.context=context;
@@ -174,7 +176,7 @@ public class BackgroundTask {
             e.printStackTrace();
         }
 
-       formQueryRequest(postdata, "All items", getAllItemsURL); // change latter
+        formQueryRequest(postdata, "All items", getAllItemsURL); // change latter
 
 
     }
@@ -205,6 +207,17 @@ public class BackgroundTask {
             e.printStackTrace();
         }
         formCreateRequest(postdata, "Return item", returnItemURL);
+
+    }
+
+    public static void duplicatePerson(String cardID){
+        JSONObject postdata = new JSONObject();
+        try{
+            postdata.put("cardID", cardID);
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+        formCreateRequest(postdata, "Decide person duplicate", duplicatePersonURL);
 
     }
 

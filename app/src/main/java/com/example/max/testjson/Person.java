@@ -65,4 +65,8 @@ public class Person {
         BackgroundTask.returnItem(this, item);
     }
 
+    public void duplicatePerson(){
+        BackgroundTask.duplicatePerson(cardID);
+    }
+
 }

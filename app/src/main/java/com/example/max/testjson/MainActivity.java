@@ -6,11 +6,13 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.jcraft.jsch.Session;
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     TextView txtJson;
     ProgressDialog pd;
     WebView wv;
+    Button nfcBtn;
 
     private static Connection connection = null;
     private static Session session = null;
@@ -49,6 +52,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         backgroundTask = new BackgroundTask(getApplicationContext());
+
+        nfcBtn = (Button)findViewById(R.id.nfcButton);
+        nfcBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                user = new Person("1234567890");
+                user.duplicatePerson();
+            }
+        });
+
+
 
 //        requestWindowFeature(Window.FEATURE_NO_TITLE);
 //
@@ -88,12 +102,12 @@ public class MainActivity extends AppCompatActivity {
         //    user.register();
         // user.getItem();
 
-        user = new Person("aaa");
-
-        Item item = new Item("itemTag3","2017-04-06 00:00:00.000000", "groepT");
-        item.register();
-        Item item2 = new Item("itemTag3","2017-04-06 00:00:00.000000", "groepT");
-        item2.register();
+//        user = new Person("aaa");
+//
+//        Item item = new Item("itemTag3","2017-04-06 00:00:00.000000", "groepT");
+//        item.register();
+//        Item item2 = new Item("itemTag3","2017-04-06 00:00:00.000000", "groepT");
+//        item2.register();
         //user.returnItem(item);
     }
 
