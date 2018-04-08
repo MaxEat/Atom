@@ -1,11 +1,8 @@
 package com.example.max.testjson;
 
 import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import android.os.Handler;
+import android.os.Looper;
 
 import java.io.IOException;
 
@@ -23,8 +20,8 @@ import okhttp3.Response;
 
 public class BackgroundTask {
 
-    static final OkHttpClient client = new OkHttpClient();
-    static final MediaType MEDIA_TYPE = MediaType.parse("application/json");
+    static final MediaType MEDIA_TYPE = MediaType.parse("application/json; charset=utf-8");
+    //代表的就是请求包体内容的类型。
     static private Context context;
 
     static String registerPersonURL = "https://labtools.groept.be/inventory/sql/php_addPerson.php";
@@ -33,192 +30,65 @@ public class BackgroundTask {
     static String borrowItemURL = "https://labtools.groept.be/inventory/sql/php_borrowItem.php";
     static String returnItemURL = "https://labtools.groept.be/inventory/sql/php_returnItem.php";
     static String duplicatePersonURL = "https://labtools.groept.be/inventory/sql/php_duplicatePerson.php";
+    static String getInfoByCardURL = "https://labtools.groept.be/inventory/sql/php_getUserInfoByCard.php";
 
+    private Handler okHttpHandler;
+    private OkHttpClient mOkHttpClient;
 
-    BackgroundTask(Context context){
-        this.context=context;
+    private BackgroundTask() {
+        this.mOkHttpClient = MyApp.getInstance().getOkHttpClient();
+        this.okHttpHandler = new Handler(Looper.getMainLooper());
     }
 
-    private static void formCreateRequest(JSONObject postdata, final String Tag, String url){
 
-
-        RequestBody body = RequestBody.create(MEDIA_TYPE,
-                postdata.toString());
-        final Request request = new Request.Builder()
-                .url(url)
-                .post(body)
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Authorization", "Your Token")
-                .addHeader("cache-control", "no-cache")
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                String mMessage = e.getMessage().toString();
-                Log.w("failure Response", mMessage);
-                //call.cancel();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response)
-                    throws IOException {
-                String mMessage = response.body().string();
-                // if return error message = 1, the borrowed item already returned
-                // if return error message = 2, the item already exist
-                // if return error message = 3, the person already exist
-                Log.i(Tag, response.toString());
-                if (response.isSuccessful()){
-                    try {
-                        Log.i(Tag, mMessage);
-                        JSONObject json = new JSONObject(mMessage);
-                        int error = json.getInt("error_message");
-                        Log.i("error", Integer.toString(error));
-                        if(error == 1)
-                            Toast.makeText(context, "This item is already returned", Toast.LENGTH_SHORT).show();
-                        if(error == 2)
-                            Toast.makeText(context, "This item is already exist", Toast.LENGTH_SHORT).show();
-                        if(error == 3)
-                            Toast.makeText(context, "This person is already exist", Toast.LENGTH_SHORT).show();
-                    } catch (Exception e){
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-
+    public static final BackgroundTask getInstance(){
+        return SingleFactory.manger;
+    }
+    private static final class SingleFactory{
+        private static final  BackgroundTask manger = new BackgroundTask();
     }
 
-    private static void formQueryRequest(JSONObject postdata, final String Tag,  String url) {
+    interface MyCallback{
+        void onSuccess(String result);
+        void onFailture();
+    }
 
-        RequestBody body = RequestBody.create(MEDIA_TYPE,
-                postdata.toString());
-        final Request request = new Request.Builder()
-                .url(url)
-                .post(body)
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Authorization", "Your Token")
-                .addHeader("cache-control", "no-cache")
-                .build();
+    public void postAsyncJsonn(String url, String json, MyCallback mCallback) throws IOException {
+        final RequestBody requestBody = RequestBody.create(MEDIA_TYPE, json);
+        final Request request = new Request.Builder().url(url).post(requestBody).build();
+        deliveryResult(mOkHttpClient.newCall(request),mCallback);
+    }
 
-        client.newCall(request).enqueue(new Callback() {
+    private void deliveryResult(final Call call, final  MyCallback mCallback) {
+        call.enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {
-                String mMessage = e.getMessage().toString();
-                Log.w("failure Response", mMessage);
-                //call.cancel();
+            public void onFailure(final Call call, final IOException e) {
+                okHttpHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mCallback != null) {
+                            mCallback.onFailture();
+                        }
+                    }
+                });
+
             }
 
             @Override
-            public void onResponse(Call call, Response response)
-                    throws IOException {
+            public void onResponse(Call call, final Response response) throws IOException {
+                final String responseStr = response.body().string();
 
-                String mMessage = response.body().string();
-
-                if (response.isSuccessful()){
-                    try {
-                        Log.i(Tag, mMessage);
-                        JSONObject json = new JSONObject(mMessage);
-                        String error = json.getString("error_message");
-
-                        Log.i("error", error);
-                    } catch (Exception e){
-                        e.printStackTrace();
+                okHttpHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mCallback != null) {
+                            mCallback.onSuccess(responseStr);
+                        }
                     }
-                }
+                });
 
             }
         });
-
-    }
-
-    public static void addPerson(Person person) {
-
-        JSONObject postdata = new JSONObject();
-        try {
-            postdata.put("kuleuvenID", person.getKuleuvenID());
-            postdata.put("cardID", person.getCardID());
-            postdata.put("email", person.getEmail());
-            postdata.put("userType", person.getUserType());
-        } catch(JSONException e){
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        formCreateRequest(postdata, "Add Person", registerPersonURL);
-
-
-    }
-
-    public static void addItem(Item item) {
-        JSONObject postdata = new JSONObject();
-        try {
-            postdata.put("itemTag", item.getItemTag());
-            postdata.put("itemLocation", item.getItemLocation());
-            postdata.put("boughtTime", item.getBoughtTime());
-            postdata.put("itemPermission", item.getItemPermission());
-        } catch(JSONException e){
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        formCreateRequest(postdata, "Add Item", registerItemURL);
-
-    }
-
-    public static void receiveItems(Person person) {
-        JSONObject postdata = new JSONObject();
-        try {
-            postdata.put("kuleuvenID", person.getKuleuvenID());
-
-        } catch(JSONException e){
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        formQueryRequest(postdata, "All items", getAllItemsURL); // change latter
-
-
-    }
-
-    public static void borrowItem(Person person, Item item) {
-        JSONObject postdata = new JSONObject();
-        try {
-            postdata.put("cardID", "aaa");
-            postdata.put("itemTag", "itemTag1");
-            postdata.put("borrowLocation", "groept");
-        } catch(JSONException e){
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        formCreateRequest(postdata, "Borrow item", borrowItemURL);
-
-    }
-
-    public static void returnItem(Person person, Item item) {
-        JSONObject postdata = new JSONObject();
-        try {
-            postdata.put("cardID", "aaa");
-            postdata.put("itemTag", "itemTag1");
-            postdata.put("returnLocation", "groept");
-        } catch(JSONException e){
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        formCreateRequest(postdata, "Return item", returnItemURL);
-
-    }
-
-    public static void duplicatePerson(String cardID){
-        JSONObject postdata = new JSONObject();
-        try{
-            postdata.put("cardID", cardID);
-        } catch (JSONException e){
-            e.printStackTrace();
-        }
-        formCreateRequest(postdata, "Decide person duplicate", duplicatePersonURL);
-
     }
 
 }

@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
 
     private static Connection connection = null;
     private static Session session = null;
-    private static BackgroundTask backgroundTask;
     private Person user;
 
 
@@ -73,20 +72,71 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        backgroundTask = new BackgroundTask(getApplicationContext());
 
-        nfcBtn = (Button)findViewById(R.id.nfcButton);
-        nfcBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                user = new Person("1234567890");
-                user.duplicatePerson();
-            }
-        });
 
-        getPermission();
-        initializeLibrary();
+//        nfcBtn = (Button)findViewById(R.id.nfcButton);
+//        nfcBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                user = new Person("1234567890");
+//                user.duplicatePerson();
+//            }
+//        });
 
+        Log.i("start","aa");
+      //  getPermission();
+      //  initializeLibrary();
+
+
+        //Test: register person
+        //check
+//        user = new Person("1234567890", "123232","23434");
+//        int error = user.register();
+//        if(error == 3)
+//            Toast.makeText(getApplicationContext(), "This person is already exist", Toast.LENGTH_SHORT).show();
+//        else
+//            Toast.makeText(getApplicationContext(), "Person registered successfully", Toast.LENGTH_SHORT).show();
+
+        //Test: get all item of certain person
+       // user.getAllItem();
+
+
+        //Test: register item
+        Item item = new Item("test1", "Agora");
+//        error = item.register();
+//        if(error == 2)
+//            Toast.makeText(getApplicationContext(), "This item already registered", Toast.LENGTH_SHORT).show();
+//        else
+//            Toast.makeText(getApplicationContext(), "Item registered successfully", Toast.LENGTH_SHORT).show();
+//
+//
+//        //Test: user borrow item
+//        error = user.borrowItem(item);
+//        if(error == 4)
+//            Toast.makeText(getApplicationContext(), "This person does not exist", Toast.LENGTH_SHORT).show();
+//        else
+//            Toast.makeText(getApplicationContext(), "Found Person", Toast.LENGTH_SHORT).show();
+//
+//
+
+        //Test: get person info by card id
+        //check
+        Person current = new Person();
+        int error = current.getPersonByCardID("1234");
+        if(error == 4)
+            Toast.makeText(getApplicationContext(), "This person does not exist", Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(getApplicationContext(), "Found Person", Toast.LENGTH_SHORT).show();
+
+//        //Test: user return item
+        error = current.returnItem(item);
+        if(error == 1)
+            Toast.makeText(getApplicationContext(), "This item already returned", Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(getApplicationContext(), "Successfully returned", Toast.LENGTH_SHORT).show();
+
+
+        //Test: duplicate person
 //        requestWindowFeature(Window.FEATURE_NO_TITLE);
 //
 //        wv  = (WebView) findViewById(R.id.webview1);
@@ -157,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onNewIntent(final Intent intent) {
-        cardLogic(intent);
+      //  cardLogic(intent);
         super.onNewIntent(intent);
     }
 
@@ -195,6 +245,8 @@ public class MainActivity extends AppCompatActivity {
         try {
             plusSL3.getReader().connect();
             IPlus.CardDetails details = plusSL3.getCardDetails();
+            MyApp.setUserCardID(bytesToHex(details.uid));
+            Log.i("Card ID", MyApp.getUserCardID());
             Toast.makeText(getApplicationContext(),bytesToHex(details.uid),Toast.LENGTH_SHORT).show();
 
         } catch (Throwable t) {
@@ -225,14 +277,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        libInstance.stopForeGroundDispatch();
+     //   libInstance.stopForeGroundDispatch();
     }
 
 
     @Override
     protected void onResume() {
         super.onResume();
-        libInstance.startForeGroundDispatch();
+      //  libInstance.startForeGroundDispatch();
     }
 
 
