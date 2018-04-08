@@ -21,7 +21,6 @@ public class Person {
     private ArrayList<Item> items;
     int error;
 
-    static boolean exist;
     Person() {}
 
     Person(String aUserName, String aKuleuvenID, String Email ) {
@@ -75,7 +74,7 @@ public class Person {
         return userName;
     }
 
-    
+
 
     public int register() {
         JSONObject postdata = new JSONObject();
@@ -83,6 +82,7 @@ public class Person {
             postdata.put("kuleuvenID", kuleuvenID);
             postdata.put("cardID", cardID );
             postdata.put("email", email);
+            postdata.put("userName", userName);
             postdata.put("userType", userType);
         } catch(JSONException e){
             // TODO Auto-generated catch block
