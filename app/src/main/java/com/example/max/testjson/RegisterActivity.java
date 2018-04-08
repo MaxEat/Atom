@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Window;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -51,12 +50,10 @@ public class RegisterActivity extends AppCompatActivity {
             public void onPageFinished(WebView view, String url) {
                 if(url.contains("secure")) {
                     view.loadUrl("javascript:window.local_obj.getHtmlSource(document.body.innerHTML)");
-
                 }
-
             }
-
         });
+
     }
 
     private void showStudentNumber() {
@@ -72,8 +69,8 @@ public class RegisterActivity extends AppCompatActivity {
             }
             else
                 Toast.makeText(getApplicationContext(), "The user already registered! " + user.getUserName(), Toast.LENGTH_LONG).show();
-
         }
+
     }
 
     public final class InJavaScriptLocalObj {
@@ -101,19 +98,10 @@ public class RegisterActivity extends AppCompatActivity {
                 Log.e("My info", "Could not parse malformed JSON: \"" + htmlSource + "\"");
             }
         }
-
     }
+
 }
 
-
-//Test: register person
-//check
-//        user = new Person("1234567890", "123232","23434");
-//        int error = user.register();
-//        if(error == 3)
-//            Toast.makeText(getApplicationContext(), "This person is already exist", Toast.LENGTH_SHORT).show();
-//        else
-//            Toast.makeText(getApplicationContext(), "Person registered successfully", Toast.LENGTH_SHORT).show();
 
 //Test: get all item of certain person
 // user.getAllItem();
@@ -136,17 +124,6 @@ public class RegisterActivity extends AppCompatActivity {
 //            Toast.makeText(getApplicationContext(), "Found Person", Toast.LENGTH_SHORT).show();
 //
 //
-
-//Test: get person info by card id
-//check
-
-
-//        //Test: user return item
-//        error = current.returnItem(item);
-//        if(error == 1)
-//            Toast.makeText(getApplicationContext(), "This item already returned", Toast.LENGTH_SHORT).show();
-//        else
-//            Toast.makeText(getApplicationContext(), "Successfully returned", Toast.LENGTH_SHORT).show();
 
 
 //Test: duplicate person

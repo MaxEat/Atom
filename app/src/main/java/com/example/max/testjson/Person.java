@@ -53,6 +53,8 @@ public class Person {
         cardID = CardID;
     }
 
+
+
     public String getKuleuvenID() {
         return kuleuvenID;
     }
@@ -72,6 +74,8 @@ public class Person {
     public String getUserName() {
         return userName;
     }
+
+    
 
     public int register() {
         JSONObject postdata = new JSONObject();
