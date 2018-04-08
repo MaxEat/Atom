@@ -1,19 +1,15 @@
 package com.example.max.testjson;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
-import com.jcraft.jsch.Session;
 import com.nxp.nfclib.CardType;
 import com.nxp.nfclib.NxpNfcLib;
 import com.nxp.nfclib.exceptions.NxpNfcLibException;
@@ -28,23 +24,24 @@ import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
-    private NxpNfcLib libInstance = null;
-    static String packageKey = "27a687a3baf16019e54c1f622d814a06";
-    private IPlusSL3 plusSL3 = null;
-    private static final int STORAGE_PERMISSION_WRITE = 113;
-
-    private CardType mCardType = CardType.UnknownCard;
     private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
+    private static final int STORAGE_PERMISSION_WRITE = 113;
+    private static String packageKey = "27a687a3baf16019e54c1f622d814a06";
+
+    private IPlusSL3 plusSL3 = null;
+    private NxpNfcLib libInstance = null;
+    private CardType mCardType = CardType.UnknownCard;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         getPermission();
         initializeLibrary();
     }
+
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -59,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (NxpNfcLibException ex) {
             Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
+
     }
 
 
@@ -66,9 +64,11 @@ public class MainActivity extends AppCompatActivity {
     public void onNewIntent(final Intent intent) {
         cardLogic(intent);
         super.onNewIntent(intent);
+
     }
 
-    public void getPermission(){
+
+    public void getPermission() {
         boolean readPermission = (ContextCompat.checkSelfPermission(MainActivity.this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
 
@@ -81,9 +81,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void checkId(final String id) {
-
-        Log.i("checking", "now");
-
         JSONObject postdata = new JSONObject();
         try {
             postdata.put("cardID", id);
@@ -105,6 +102,14 @@ public class MainActivity extends AppCompatActivity {
                             startActivity(registerIntent);
                         } else {
                             Toast.makeText(getApplicationContext(), "Found Person", Toast.LENGTH_SHORT).show();
+
+                            String studentNumber = json.getString("email");
+                            String userName = json.getString("userName");
+                            String email = json.getString("email");
+                            Person user = new Person(userName,studentNumber,email);
+                            user.setCardID(id);
+                            TestJson.setUser(user);
+
                             Intent personalIntent = new Intent(MainActivity.this, PersonalActivity.class);
                             startActivity(personalIntent);
                         }
@@ -132,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
             hexChars[j * 2 + 1] = hexArray[v & 0x0F];
         }
         return new String(hexChars);
+
     }
 
     private void cardLogic(final Intent intent) {
@@ -149,12 +155,10 @@ public class MainActivity extends AppCompatActivity {
             IPlus.CardDetails details = plusSL3.getCardDetails();
             String id = bytesToHex(details.uid);
             checkId(id);
-
-
-
         } catch (Throwable t) {
             t.printStackTrace();
         }
+
     }
 
     @Override
@@ -195,13 +199,3 @@ public class MainActivity extends AppCompatActivity {
 
 
 }
-
- //  Button nfcBtn;
-//        nfcBtn = (Button)findViewById(R.id.nfcButton);
-//        nfcBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                user = new Person("1234567890");
-//                user.duplicatePerson();
-//            }
-//        });

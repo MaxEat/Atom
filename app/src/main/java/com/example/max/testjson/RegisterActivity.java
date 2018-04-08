@@ -1,6 +1,7 @@
 package com.example.max.testjson;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,18 +11,12 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
-
-import com.jcraft.jsch.Session;
-
 import org.json.JSONObject;
-
-import java.sql.Connection;
 
 public class RegisterActivity extends AppCompatActivity {
 
-//    private static Connection connection = null;
-//    private static Session session = null;
     private Person user;
+    private String cardID;
     WebView wv;
 
     @SuppressLint("JavascriptInterface")
@@ -29,8 +24,8 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
-       // requestWindowFeature(Window.FEATURE_NO_TITLE);
+        Intent intent = getIntent();
+        cardID = intent.getStringExtra("cardID");
 
         wv  = (WebView) findViewById(R.id.webview);
         wv.getSettings().setJavaScriptEnabled(true);
@@ -68,6 +63,16 @@ public class RegisterActivity extends AppCompatActivity {
         if (!user.getUserName().equals("None"))
         {
             Toast.makeText(getApplicationContext(), "Welcome! " + user.getUserName(), Toast.LENGTH_LONG).show();
+            int error = user.register();
+            if(error!=3)
+            {
+                TestJson.setUser(user);
+                Intent personalIntent = new Intent(RegisterActivity.this, PersonalActivity.class);
+                startActivity(personalIntent);
+            }
+            else
+                Toast.makeText(getApplicationContext(), "The user already registered! " + user.getUserName(), Toast.LENGTH_LONG).show();
+
         }
     }
 
@@ -88,6 +93,8 @@ public class RegisterActivity extends AppCompatActivity {
                 email = obj.getString("email");
 
                 user = new Person(userName,studentNumber,email);
+                user.setCardID(cardID);
+
                 showStudentNumber();
 
             } catch (Throwable t) {

@@ -6,13 +6,4 @@
     android:layout_height="match_parent"
     tools:context="com.example.max.testjson.MainActivity">
 
-
-
-    <Button
-        android:id="@+id/nfcButton"
-        android:layout_width="88dp"
-        android:layout_height="115dp"
-        android:visibility="visible"
-        tools:layout_editor_absoluteX="124dp"
-        tools:layout_editor_absoluteY="126dp" />
 </android.support.constraint.ConstraintLayout>

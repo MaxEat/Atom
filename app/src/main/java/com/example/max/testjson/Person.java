@@ -110,47 +110,6 @@ public class Person {
         return error;
     }
 
-    public static boolean checkPersonByCardID(String cardID) {
-
-        return exist;
-    }
-
-    public int getPersonByCardID(String cardID) {
-
-        JSONObject postdata = new JSONObject();
-        try {
-            postdata.put("cardID", cardID);
-        } catch(JSONException e){
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        try {
-            BackgroundTask.getInstance().postAsyncJsonn(BackgroundTask.getInfoByCardURL, postdata.toString(),new BackgroundTask.MyCallback() {
-                @Override
-                public void onSuccess(String result) {
-                    Log.i("Success","result----"+result);
-                    try {
-                        JSONObject json = new JSONObject(result);
-                        error = json.getInt("error_message");
-                        kuleuvenID = json.getString("kuleuvenID");
-                        email = json.getString("email");
-                        userType = json.getInt("userType");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-                @Override
-                public void onFailture() {
-
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return error;
-    }
-
     public void getAllItem() {
         JSONObject postdata = new JSONObject();
         try {

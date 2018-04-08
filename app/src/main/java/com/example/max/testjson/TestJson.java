@@ -19,7 +19,7 @@ import okhttp3.OkHttpClient;
 public class TestJson extends Application {
 
     private static TestJson instance;
-    private static String userCardID;
+    private static Person user;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -30,12 +30,12 @@ public class TestJson extends Application {
         return instance;
     }
 
-    public static String getUserCardID() {
-        return userCardID;
+    public static Person getUser() {
+        return user;
     }
 
-    public static void setUserCardID(String ID) {
-        userCardID = ID;
+    public static void setUser(Person User) {
+        user = User;
     }
 
     public static OkHttpClient getOkHttpClient() {
