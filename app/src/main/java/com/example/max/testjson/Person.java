@@ -21,6 +21,7 @@ public class Person {
     private ArrayList<Item> items;
     int error;
 
+    static boolean exist;
     Person() {}
 
     Person(String aUserName, String aKuleuvenID, String Email ) {
@@ -107,6 +108,41 @@ public class Person {
             e.printStackTrace();
         }
         return error;
+    }
+
+    public static boolean checkPersonByCardID(String cardID) {
+        JSONObject postdata = new JSONObject();
+        try {
+            postdata.put("cardID", cardID);
+        } catch(JSONException e){
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        try {
+            BackgroundTask.getInstance().postAsyncJsonn(BackgroundTask.getInfoByCardURL, postdata.toString(),new BackgroundTask.MyCallback() {
+                @Override
+                public void onSuccess(String result) {
+                    Log.i("Success","result----"+result);
+                    try {
+                        JSONObject json = new JSONObject(result);
+                        if(json.getInt("error_message") == 4)
+                            exist = false;
+                        else
+                            exist = true;
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+                @Override
+                public void onFailture() {
+
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return exist;
     }
 
     public int getPersonByCardID(String cardID) {
