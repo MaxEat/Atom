@@ -12,14 +12,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.view.Window;
-import android.webkit.JavascriptInterface;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 import com.jcraft.jsch.Session;
 import com.nxp.nfclib.CardType;
@@ -33,51 +25,22 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.FormBody;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button nfcBtn;
-
-    // for nfc
     private NxpNfcLib libInstance = null;
-    static String packageKey = "8f2a9ad0ff7cc797a1145e5f707c0a47";
+    static String packageKey = "27a687a3baf16019e54c1f622d814a06";
     private IPlusSL3 plusSL3 = null;
     private static final int STORAGE_PERMISSION_WRITE = 113;
 
     private CardType mCardType = CardType.UnknownCard;
     private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
 
-
-    private Person user;
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-//        nfcBtn = (Button)findViewById(R.id.nfcButton);
-//        nfcBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                user = new Person("1234567890");
-//                user.duplicatePerson();
-//            }
-//        });
 
         getPermission();
         initializeLibrary();
@@ -92,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         libInstance = NxpNfcLib.getInstance();
         try {
             libInstance.registerActivity(this, packageKey);
+
         } catch (NxpNfcLibException ex) {
             Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -112,6 +76,51 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(MainActivity.this,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_WRITE
             );
+        }
+
+    }
+
+    public void checkId(final String id) {
+
+        Log.i("checking", "now");
+
+        JSONObject postdata = new JSONObject();
+        try {
+            postdata.put("cardID", id);
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        try {
+            BackgroundTask.getInstance().postAsyncJsonn(BackgroundTask.getInfoByCardURL, postdata.toString(), new BackgroundTask.MyCallback() {
+                @Override
+                public void onSuccess(String result) {
+                    Log.i("Success", "result----" + result);
+                    try {
+                        JSONObject json = new JSONObject(result);
+                        if (json.getInt("error_message") == 4) {
+                            Toast.makeText(getApplicationContext(), "This person does not exist", Toast.LENGTH_SHORT).show();
+                            Intent registerIntent = new Intent(MainActivity.this, RegisterActivity.class);
+                            registerIntent.putExtra("cardID", id);
+                            startActivity(registerIntent);
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Found Person", Toast.LENGTH_SHORT).show();
+                            Intent personalIntent = new Intent(MainActivity.this, PersonalActivity.class);
+                            startActivity(personalIntent);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+                @Override
+                public void onFailture() {
+
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
     }
@@ -139,21 +148,9 @@ public class MainActivity extends AppCompatActivity {
             plusSL3.getReader().connect();
             IPlus.CardDetails details = plusSL3.getCardDetails();
             String id = bytesToHex(details.uid);
-            MyApp.setUserCardID(id);
-            Log.i("Card ID", MyApp.getUserCardID());
-            Toast.makeText(getApplicationContext(),id,Toast.LENGTH_SHORT).show();
-            Boolean exist = Person.checkPersonByCardID(MyApp.getUserCardID());
-            if(exist) {
-                Toast.makeText(getApplicationContext(), "This person does not exist", Toast.LENGTH_SHORT).show();
-                Intent registerIntent = new Intent(MainActivity.this, RegisterActivity.class);
-                registerIntent.putExtra("cardID", details.uid);
-                startActivity(registerIntent);
-            }
-            else {
-                Toast.makeText(getApplicationContext(), "Found Person", Toast.LENGTH_SHORT).show();
-                Intent personalIntent = new Intent(MainActivity.this, PersonalActivity.class);
-                startActivity(personalIntent);
-            }
+            checkId(id);
+
+
 
         } catch (Throwable t) {
             t.printStackTrace();
@@ -190,7 +187,21 @@ public class MainActivity extends AppCompatActivity {
         libInstance.startForeGroundDispatch();
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        libInstance.stopForeGroundDispatch();
+    }
 
 
 }
+
+ //  Button nfcBtn;
+//        nfcBtn = (Button)findViewById(R.id.nfcButton);
+//        nfcBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                user = new Person("1234567890");
+//                user.duplicatePerson();
+//            }
+//        });

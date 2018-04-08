@@ -36,7 +36,7 @@ public class BackgroundTask {
     private OkHttpClient mOkHttpClient;
 
     private BackgroundTask() {
-        this.mOkHttpClient = MyApp.getInstance().getOkHttpClient();
+        this.mOkHttpClient = TestJson.getInstance().getOkHttpClient();
         this.okHttpHandler = new Handler(Looper.getMainLooper());
     }
 

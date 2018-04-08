@@ -30,9 +30,9 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+       // requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        wv  = (WebView) findViewById(R.id.webview1);
+        wv  = (WebView) findViewById(R.id.webview);
         wv.getSettings().setJavaScriptEnabled(true);
         wv.addJavascriptInterface(new InJavaScriptLocalObj(), "local_obj");
         wv.getSettings().setDomStorageEnabled(true);
