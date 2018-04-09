@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                             registerIntent.putExtra("cardID", id);
                             startActivity(registerIntent);
                         } else {
-                            Toast.makeText(getApplicationContext(), "Found Person", Toast.LENGTH_SHORT).show();
+
 
                             String studentNumber = json.getString("email");
                             String userName = json.getString("userName");
@@ -111,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
                             TestJson.setUser(user);
 
                             Intent personalIntent = new Intent(MainActivity.this, PersonalActivity.class);
+                            Toast.makeText(getApplicationContext(), "Found Person", Toast.LENGTH_SHORT).show();
                             startActivity(personalIntent);
                         }
                     } catch (JSONException e) {
