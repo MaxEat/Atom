@@ -16,11 +16,7 @@ public class PersonalActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal);
-
-        Toast.makeText(getApplicationContext(),"aaaaaaaaaa",Toast.LENGTH_LONG).show();
-
         mFragments = DataGenerator.getFragments("BottomNavigationView Tab");
-
         initView();
     }
 
@@ -31,12 +27,12 @@ public class PersonalActivity extends AppCompatActivity {
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                onTabItemSelected(item.getItemId());
+                //onTabItemSelected(item.getItemId());
                 return true;
             }
         });
         // 由于第一次进来没有回调onNavigationItemSelected，因此需要手动调用一下切换状态的方法
-        onTabItemSelected(R.id.tab_menu_home);
+       //onTabItemSelected(R.id.tab_menu_home);
 
     }
 
