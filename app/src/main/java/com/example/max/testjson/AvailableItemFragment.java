@@ -2,7 +2,7 @@ package com.example.max.testjson;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,17 +10,34 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class BorrowedFragment extends Fragment {
+import com.example.max.testjson.dummy.DummyContent;
+import com.example.max.testjson.dummy.DummyContent.DummyItem;
 
+/**
+ * A fragment representing a list of Items.
+ * <p/>
+ * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
+ * interface.
+ */
+public class AvailableItemFragment extends Fragment {
 
+    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
+    // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
-    public BorrowedFragment() { }
+    /**
+     * Mandatory empty constructor for the fragment manager to instantiate the
+     * fragment (e.g. upon screen orientation changes).
+     */
+    public AvailableItemFragment() {
+    }
 
-    public static BorrowedFragment newInstance(int columnCount) {
-        BorrowedFragment fragment = new BorrowedFragment();
+    // TODO: Customize parameter initialization
+    @SuppressWarnings("unused")
+    public static AvailableItemFragment newInstance(int columnCount) {
+        AvailableItemFragment fragment = new AvailableItemFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -36,12 +53,12 @@ public class BorrowedFragment extends Fragment {
         }
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_item_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_availableitem_list, container, false);
 
+        // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
@@ -50,10 +67,7 @@ public class BorrowedFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-
-            recyclerView.setAdapter(new BorrowedItemRecyclerViewAdapter(TestJson.getUser().getBorrowedItems(), mListener));
-
-
+            recyclerView.setAdapter(new AvailableItemRecyclerViewAdapter(DummyContent.ITEMS, mListener));
         }
         return view;
     }
@@ -77,12 +91,17 @@ public class BorrowedFragment extends Fragment {
     }
 
     /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(Item item);
+        void onListFragmentInteraction(DummyItem item);
     }
 }
