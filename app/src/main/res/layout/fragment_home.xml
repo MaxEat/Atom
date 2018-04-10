@@ -24,5 +24,11 @@
         android:textSize="20sp"
         android:layout_centerInParent="true"
         />
+    <ListView
+        android:id="@+id/list_view_home"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </ListView>
+
 
 </FrameLayout>

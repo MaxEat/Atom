@@ -108,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
                             user.setCardID(id);
                             user.getAllItem();
                             TestJson.setUser(user);
+                            AvailableItem.getAllAvailableItems();
 
                             Intent personalIntent = new Intent(MainActivity.this, PersonalActivity.class);
                             Toast.makeText(getApplicationContext(), "Found Person", Toast.LENGTH_SHORT).show();

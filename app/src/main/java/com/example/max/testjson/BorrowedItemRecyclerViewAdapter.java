@@ -4,6 +4,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.max.testjson.BorrowedFragment.OnListFragmentInteractionListener;
@@ -31,9 +33,9 @@ public class BorrowedItemRecyclerViewAdapter extends RecyclerView.Adapter<Borrow
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).getItemTag());
-        holder.mLocationView.setText("Location: "+mValues.get(position).getBorrwedLocation());
-        holder.mTimestampView.setText("Borrowed Time: "+mValues.get(position).getBorrowedTimeStamp().substring(0,10));
+      //  holder.mIdView.setText(mValues.get(position).getItemTag());
+        holder.mLocationView.setText("At "+mValues.get(position).getBorrwedLocation());
+        holder.mTimestampView.setText(mValues.get(position).getBorrowedTimeStamp().substring(0,10));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,7 +56,7 @@ public class BorrowedItemRecyclerViewAdapter extends RecyclerView.Adapter<Borrow
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
+        public final ImageView mImage;
         public final TextView mLocationView;
         public final TextView mTimestampView;
 
@@ -63,7 +65,7 @@ public class BorrowedItemRecyclerViewAdapter extends RecyclerView.Adapter<Borrow
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView)view.findViewById(R.id.id);
+            mImage = (ImageView)view.findViewById(R.id.imageView);
             mLocationView = (TextView) view.findViewById(R.id.location);
             mTimestampView = (TextView) view.findViewById(R.id.timestamp);
         }

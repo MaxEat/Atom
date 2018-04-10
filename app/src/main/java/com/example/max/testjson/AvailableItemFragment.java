@@ -2,23 +2,19 @@ package com.example.max.testjson;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.max.testjson.dummy.DummyContent;
 import com.example.max.testjson.dummy.DummyContent.DummyItem;
 
-/**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
- */
+
 public class AvailableItemFragment extends Fragment {
 
     // TODO: Customize parameter argument names
@@ -27,15 +23,11 @@ public class AvailableItemFragment extends Fragment {
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
+
     public AvailableItemFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
+
     public static AvailableItemFragment newInstance(int columnCount) {
         AvailableItemFragment fragment = new AvailableItemFragment();
         Bundle args = new Bundle();
@@ -67,7 +59,8 @@ public class AvailableItemFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new AvailableItemRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+//            Toast.makeText(getContext(),AvailableItem.availableItems.size(),Toast.LENGTH_SHORT).show();
+            recyclerView.setAdapter(new AvailableItemRecyclerViewAdapter(AvailableItem.availableItems, mListener));
         }
         return view;
     }
@@ -102,6 +95,6 @@ public class AvailableItemFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(AvailableItem item);
     }
 }
