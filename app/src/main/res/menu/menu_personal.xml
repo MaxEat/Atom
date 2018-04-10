@@ -5,16 +5,25 @@
     android:icon="@drawable/ic_dashboard_black_24dp"
     android:title="HOME"
     />
+
+<item
+    android:id="@+id/tab_menu_new"
+    android:icon="@drawable/ic_new_black_24dp"
+    android:title="NEW"
+    />
+
 <item
     android:id="@+id/tab_menu_discovery"
-    android:icon="@drawable/ic_borrowed_black_24dp"
+    android:icon="@drawable/ic_star_black_24dp"
     android:title="BORROWED"
     />
+
 <item
-    android:id="@+id/tab_menu_attention"
+    android:id="@+id/tab_menu_available"
     android:icon="@drawable/ic_available_black_24dp"
     android:title="AVAILABLE"
     />
+
 <item
     android:id="@+id/tab_menu_profile"
     android:icon="@drawable/ic_settings_black_24dp"
