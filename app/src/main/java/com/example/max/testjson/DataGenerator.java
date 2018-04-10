@@ -19,7 +19,7 @@ public class DataGenerator {
     public static Fragment[] getFragments(String from){
         Fragment fragments[] = new Fragment[4];
         fragments[0] = HomeFragment.newInstance(from);
-        fragments[1] = BorrowedFragment.newInstance(3);
+        fragments[1] = BorrowedFragment.newInstance(1);
         fragments[2] = HomeFragment.newInstance(from);
         fragments[3] = HomeFragment.newInstance(from);
         return fragments;

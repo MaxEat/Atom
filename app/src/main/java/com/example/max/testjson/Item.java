@@ -2,10 +2,13 @@ package com.example.max.testjson;
 
 import android.util.Log;
 
+import com.example.max.testjson.dummy.DummyContent;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,29 +18,15 @@ import java.util.Map;
  */
 
 public class Item {
+
     private String itemTag;
     private String itemLocation;
     private String boughtTime;
     private int itemPermission;
-    public static List<Item> sample;
-
-    public static final Map<String, Item> sample_MAP = new HashMap<String, Item>();
-    private static Item createItem(int position) {
-        return new Item("123",Integer.toString(position));
-    }
-
-    private static void addItem(Item item) {
-        sample.add(item);
-        sample_MAP.put(item.itemTag, item);
-    }
-    static {
-        // Add some sample items.
-        for (int i = 1; i <= 4; i++) {
-            Item.addItem(Item.createItem(i));
-        }
-    }
 
     int error;
+
+    Item() { }
 
     Item( String ItemTag) {
         itemTag = ItemTag;
@@ -48,6 +37,8 @@ public class Item {
             itemLocation = aitemLocation;
             itemPermission = 1;
     }
+
+
 
     public String getItemTag() {
         return itemTag;
@@ -64,8 +55,6 @@ public class Item {
     public int getItemPermission() {
         return itemPermission;
     }
-
-
 
 
     public int register() {

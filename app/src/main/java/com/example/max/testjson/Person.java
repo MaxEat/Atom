@@ -2,11 +2,14 @@ package com.example.max.testjson;
 
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by max on 2018/4/5.
@@ -18,7 +21,14 @@ public class Person {
     private String email;
     private int userType;
     private String userName;
-    private ArrayList<Item> items;
+    private ArrayList<BorrowedItem> borrowedItems;
+    private Map<String, BorrowedItem> borrowedItemMAP = new HashMap<String, BorrowedItem>();
+
+    public ArrayList<BorrowedItem> getBorrowedItems() {
+        return borrowedItems;
+    }
+
+
     int error;
 
     Person() {}
@@ -28,7 +38,7 @@ public class Person {
         userName = aUserName;
         email = Email;
         userType = 2;
-        items = new ArrayList<Item>();
+        borrowedItems = new ArrayList<BorrowedItem>();
     }
 
 
@@ -117,10 +127,9 @@ public class Person {
     public void getAllItem() {
         JSONObject postdata = new JSONObject();
         try {
-            postdata.put("kuleuvenID", "r0609260");
+            postdata.put("kuleuvenID",  getKuleuvenID());
 
         } catch(JSONException e){
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -130,7 +139,17 @@ public class Person {
                 public void onSuccess(String result) {
                     Log.i("Success","result----"+result);
                     try {
-                        JSONObject json = new JSONObject(result);
+
+                        JSONObject jsonObject = new JSONObject(result);
+                        JSONArray jsonArray = jsonObject.getJSONArray("list");
+                        for(int i=0; i<jsonArray.length(); i++){
+                            JSONObject json= jsonArray.getJSONObject(i);
+                            BorrowedItem item = new BorrowedItem();
+                            item.setBorrowedTimeStamp(json.getString("borrowTimestamp"));
+                            item.setBorrwedLocation(json.getString("borrowLocation"));
+                            borrowedItems.add(item);
+                            borrowedItemMAP.put(Integer.toString(item.getId()), item);
+                        }
 
                     } catch (JSONException e) {
                         e.printStackTrace();

@@ -9,10 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-/**
- * Created by zhouwei on 17/4/23.
- */
-
 public class HomeFragment extends Fragment {
     private String mFrom;
 
@@ -35,7 +31,7 @@ public class HomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_personal,null);
+        View view = inflater.inflate(R.layout.fragment_home,null);
         TextView textView = (TextView) view.findViewById(R.id.title_from);
         TextView content = (TextView) view.findViewById(R.id.fragment_content);
 //        textView.setText(mFrom);

@@ -7,17 +7,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.max.testjson.BorrowedFragment.OnListFragmentInteractionListener;
-import com.example.max.testjson.dummy.DummyContent.DummyItem;
 
 import java.util.List;
 
 
 public class BorrowedItemViewAdapter extends RecyclerView.Adapter<BorrowedItemViewAdapter.ViewHolder> {
 
-    private final List<Item> mValues;
+    private final List<BorrowedItem> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public BorrowedItemViewAdapter(List<Item> items, OnListFragmentInteractionListener listener) {
+    public BorrowedItemViewAdapter(List<BorrowedItem> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -33,7 +32,8 @@ public class BorrowedItemViewAdapter extends RecyclerView.Adapter<BorrowedItemVi
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).getItemTag());
-        holder.mContentView.setText(mValues.get(position).toString());
+        holder.mLocationView.setText("Location: "+mValues.get(position).getBorrwedLocation());
+        holder.mTimestampView.setText("Borrowed Time: "+mValues.get(position).getBorrowedTimeStamp().substring(0,10));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,19 +55,22 @@ public class BorrowedItemViewAdapter extends RecyclerView.Adapter<BorrowedItemVi
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mIdView;
-        public final TextView mContentView;
+        public final TextView mLocationView;
+        public final TextView mTimestampView;
+
         public Item mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mIdView = (TextView)view.findViewById(R.id.id);
+            mLocationView = (TextView) view.findViewById(R.id.location);
+            mTimestampView = (TextView) view.findViewById(R.id.timestamp);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + mLocationView.getText() + "'" + mTimestampView.getText() + "'";
         }
     }
 }
