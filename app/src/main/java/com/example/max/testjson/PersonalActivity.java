@@ -42,15 +42,20 @@ public class PersonalActivity extends AppCompatActivity implements BorrowedFragm
             case R.id.tab_menu_home:
                 fragment = mFragments[0];
                 break;
+
+            case R.id.tab_menu_new:
+                fragment = mFragments[2];
+                break;
+
             case R.id.tab_menu_discovery:
                 fragment = mFragments[1];
                 break;
 
-            case R.id.tab_menu_attention:
-                fragment = mFragments[2];
+            case R.id.tab_menu_available:
+                fragment = mFragments[3];
                 break;
             case R.id.tab_menu_profile:
-                fragment = mFragments[3];
+                fragment = mFragments[4];
                 break;
         }
         if(fragment!=null) {
