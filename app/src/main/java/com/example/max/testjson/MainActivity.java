@@ -101,13 +101,12 @@ public class MainActivity extends AppCompatActivity {
                             registerIntent.putExtra("cardID", id);
                             startActivity(registerIntent);
                         } else {
-
-
-                            String studentNumber = json.getString("email");
+                            String studentNumber = json.getString("kuleuvenID");
                             String userName = json.getString("userName");
                             String email = json.getString("email");
                             Person user = new Person(userName,studentNumber,email);
                             user.setCardID(id);
+                            user.getAllItem();
                             TestJson.setUser(user);
 
                             Intent personalIntent = new Intent(MainActivity.this, PersonalActivity.class);
@@ -195,7 +194,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        libInstance.stopForeGroundDispatch();
     }
 
 

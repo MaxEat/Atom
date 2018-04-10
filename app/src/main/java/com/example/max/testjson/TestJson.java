@@ -2,6 +2,10 @@ package com.example.max.testjson;
 
 import android.app.Application;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
@@ -20,6 +24,7 @@ public class TestJson extends Application {
 
     private static TestJson instance;
     private static Person user;
+    public static Object syncToken = new Object();
     @Override
     public void onCreate() {
         super.onCreate();

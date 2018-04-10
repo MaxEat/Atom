@@ -9,7 +9,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-public class PersonalActivity extends AppCompatActivity {
+public class PersonalActivity extends AppCompatActivity implements BorrowedFragment.OnListFragmentInteractionListener {
     private BottomNavigationView mBottomNavigationView;
     private Fragment []mFragments;
     @Override
@@ -61,5 +61,10 @@ public class PersonalActivity extends AppCompatActivity {
         if(fragment!=null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.home_container,fragment).commit();
         }
+    }
+
+    @Override
+    public void onListFragmentInteraction(Item item) {
+
     }
 }
