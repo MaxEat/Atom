@@ -2,7 +2,7 @@ package com.example.max.testjson;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,8 +13,6 @@ import android.view.ViewGroup;
 import com.example.max.testjson.dummy.DummyContent;
 import com.example.max.testjson.dummy.DummyContent.DummyItem;
 
-import java.util.List;
-
 /**
  * A fragment representing a list of Items.
  * <p/>
@@ -23,9 +21,8 @@ import java.util.List;
  */
 public class BorrowedFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
+
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
@@ -36,7 +33,6 @@ public class BorrowedFragment extends Fragment {
     public BorrowedFragment() {
     }
 
-    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static BorrowedFragment newInstance(int columnCount) {
         BorrowedFragment fragment = new BorrowedFragment();
@@ -69,7 +65,7 @@ public class BorrowedFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyItemRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setAdapter(new BorrowedItemViewAdapter(Item.sample, mListener));
         }
         return view;
     }
@@ -104,6 +100,6 @@ public class BorrowedFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(Item item);
     }
 }

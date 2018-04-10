@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 public class HomeFragment extends Fragment {
     private String mFrom;
+
     static HomeFragment newInstance(String from){
         HomeFragment fragment = new HomeFragment();
         Bundle bundle = new Bundle();

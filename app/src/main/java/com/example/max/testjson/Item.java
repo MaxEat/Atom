@@ -6,6 +6,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by max on 2018/4/5.
@@ -16,6 +19,23 @@ public class Item {
     private String itemLocation;
     private String boughtTime;
     private int itemPermission;
+    public static List<Item> sample;
+
+    public static final Map<String, Item> sample_MAP = new HashMap<String, Item>();
+    private static Item createItem(int position) {
+        return new Item("123",Integer.toString(position));
+    }
+
+    private static void addItem(Item item) {
+        sample.add(item);
+        sample_MAP.put(item.itemTag, item);
+    }
+    static {
+        // Add some sample items.
+        for (int i = 1; i <= 4; i++) {
+            Item.addItem(Item.createItem(i));
+        }
+    }
 
     int error;
 
@@ -84,5 +104,13 @@ public class Item {
         return error;
     }
 
+    @Override
+    public String toString() {
+        return "Item{" +
+                "Tag='" + itemTag + '\'' +
+                ", Location=" + itemLocation +
+                ", BoughTime=" + boughtTime +
+                '}';
+    }
 
 }
