@@ -150,6 +150,7 @@ public class Person {
                             BorrowedItem item = new BorrowedItem();
                             item.setBorrowedTimeStamp(json.getString("borrowTimestamp"));
                             item.setBorrwedLocation(json.getString("borrowLocation"));
+                            item.setImageURL(json.getString("borrowLocation"));
                             borrowedItems.add(item);
                             borrowedItemMAP.put(Integer.toString(item.getId()), item);
                         }

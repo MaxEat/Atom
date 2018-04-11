@@ -15,9 +15,7 @@ import android.widget.Toast;
 
 public class AvailableItemFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
@@ -48,7 +46,6 @@ public class AvailableItemFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_availableitem_list, container, false);
 
-        // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
@@ -57,10 +54,12 @@ public class AvailableItemFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-//            Toast.makeText(getContext(),AvailableItem.availableItems.size(),Toast.LENGTH_SHORT).show();
-            recyclerView.setAdapter(new AvailableItemRecyclerViewAdapter(AvailableItem.availableItems, mListener));
-            recyclerView.addItemDecoration(new DividerItemDecoration(
-                    getContext(), DividerItemDecoration.VERTICAL));
+          
+            AvailableItemRecyclerViewAdapter adapter = new AvailableItemRecyclerViewAdapter(AvailableItem.availableItems, mListener);
+            recyclerView.setAdapter(adapter);
+
+//            recyclerView.addItemDecoration(new DividerItemDecoration(
+//                    getContext(), DividerItemDecoration.VERTICAL));
         }
         return view;
     }

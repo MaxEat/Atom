@@ -1,8 +1,5 @@
 package com.example.max.testjson;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Created by max on 2018/4/10.
  */
@@ -14,11 +11,7 @@ public class BorrowedItem extends Item {
     int id;
     String borrowedTimeStamp;
     String borrwedLocation;
-    String imageURL;
 
-    public String getImageURL() {
-        return imageURL;
-    }
 
     public String getBorrowedTimeStamp() {
         return borrowedTimeStamp;
@@ -32,6 +25,7 @@ public class BorrowedItem extends Item {
     BorrowedItem() {
         super();
     }
+
     BorrowedItem(String ItemTag) {
         super(ItemTag);
     }
@@ -39,6 +33,7 @@ public class BorrowedItem extends Item {
     BorrowedItem(String aitemTag, String aitemLocation) {
         super(aitemTag, aitemLocation);
     }
+
     public int getId() {
         return id;
     }

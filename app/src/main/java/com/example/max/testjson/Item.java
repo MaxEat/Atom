@@ -7,10 +7,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by max on 2018/4/5.
@@ -23,7 +19,7 @@ public class Item {
     private String boughtTime;
     private String classification;
     private int itemPermission;
-
+    private String imageURL;
     int error;
 
     Item() { }
@@ -37,8 +33,6 @@ public class Item {
             itemLocation = aitemLocation;
             itemPermission = 1;
     }
-
-
 
     public String getItemTag() {
         return itemTag;
@@ -60,6 +54,13 @@ public class Item {
         return itemPermission;
     }
 
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL( String url) {
+        imageURL = url;
+    }
 
     public int register() {
         JSONObject postdata = new JSONObject();
