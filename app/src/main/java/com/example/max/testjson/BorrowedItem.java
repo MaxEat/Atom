@@ -16,6 +16,11 @@ public class BorrowedItem extends Item {
     int id;
     String borrowedTimeStamp;
     String borrwedLocation;
+    String imageURL;
+
+    public String getImageURL() {
+        return imageURL;
+    }
 
     public String getBorrowedTimeStamp() {
         return borrowedTimeStamp;

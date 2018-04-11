@@ -32,7 +32,6 @@ public class AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter<Avail
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-      //  holder.mIdView.setText(mValues.get(position).getId());
         holder.mLocationView.setText(mValues.get(position).getItemLocation());
         holder.mTypeView.setText(mValues.get(position).getType());
 
@@ -55,7 +54,6 @@ public class AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter<Avail
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
         public final TextView mLocationView;
         public final TextView mTypeView;
         public AvailableItem mItem;
@@ -63,14 +61,13 @@ public class AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter<Avail
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
             mLocationView = (TextView) view.findViewById(R.id.location);
             mTypeView = (TextView) view.findViewById(R.id.type);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mIdView.getText() + " '" + mTypeView.getText() + " '" + mLocationView.getText() + "'" +  " '";
+            return super.toString() + " '"  + " '" + mTypeView.getText() + " '" + mLocationView.getText() + "'" +  " '";
         }
     }
 }

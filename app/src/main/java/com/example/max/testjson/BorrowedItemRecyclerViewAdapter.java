@@ -1,5 +1,6 @@
 package com.example.max.testjson;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.max.testjson.BorrowedFragment.OnListFragmentInteractionListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -17,10 +19,15 @@ public class BorrowedItemRecyclerViewAdapter extends RecyclerView.Adapter<Borrow
 
     private final List<BorrowedItem> mValues;
     private final OnListFragmentInteractionListener mListener;
+    private Context context;
 
     public BorrowedItemRecyclerViewAdapter(List<BorrowedItem> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
+    }
+
+    public void setContext(Context aContext) {
+        context = aContext;
     }
 
     @Override
@@ -33,9 +40,8 @@ public class BorrowedItemRecyclerViewAdapter extends RecyclerView.Adapter<Borrow
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-      //  holder.mIdView.setText(mValues.get(position).getItemTag());
-        holder.mLocationView.setText("At "+mValues.get(position).getBorrwedLocation());
-        holder.mTimestampView.setText(mValues.get(position).getBorrowedTimeStamp().substring(0,10));
+        Picasso.with(this.context).load(mValues.get(position).getImageURL());
+        holder.mContentView.setText(mValues.get(position).getBorrwedLocation() + " "+ mValues.get(position).getBorrowedTimeStamp());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,8 +63,7 @@ public class BorrowedItemRecyclerViewAdapter extends RecyclerView.Adapter<Borrow
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final ImageView mImage;
-        public final TextView mLocationView;
-        public final TextView mTimestampView;
+        public final TextView mContentView;
 
         public Item mItem;
 
@@ -66,13 +71,12 @@ public class BorrowedItemRecyclerViewAdapter extends RecyclerView.Adapter<Borrow
             super(view);
             mView = view;
             mImage = (ImageView)view.findViewById(R.id.imageView);
-            mLocationView = (TextView) view.findViewById(R.id.location);
-            mTimestampView = (TextView) view.findViewById(R.id.timestamp);
+            mContentView = (TextView) view.findViewById(R.id.content);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mLocationView.getText() + "'" + mTimestampView.getText() + "'";
+            return super.toString() + " '" + mContentView.getText() + "'";
         }
     }
 }

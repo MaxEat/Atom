@@ -3,6 +3,7 @@ package com.example.max.testjson;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -61,6 +62,8 @@ public class AvailableItemFragment extends Fragment {
             }
 //            Toast.makeText(getContext(),AvailableItem.availableItems.size(),Toast.LENGTH_SHORT).show();
             recyclerView.setAdapter(new AvailableItemRecyclerViewAdapter(AvailableItem.availableItems, mListener));
+            recyclerView.addItemDecoration(new DividerItemDecoration(
+                    getContext(), DividerItemDecoration.VERTICAL));
         }
         return view;
     }
