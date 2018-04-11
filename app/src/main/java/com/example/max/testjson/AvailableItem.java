@@ -66,7 +66,8 @@ public class AvailableItem extends Item {
                 public void onSuccess(String result) {
                     Log.i("Success", "result----" + result);
                     try {
-
+                        availableItems = new ArrayList<AvailableItem>();
+                        availableItemMap = new HashMap<String, AvailableItem>();
                         JSONObject jsonObject = new JSONObject(result);
                         JSONArray jsonArray = jsonObject.getJSONArray("list");
                         for (int i = 0; i < jsonArray.length(); i++) {
