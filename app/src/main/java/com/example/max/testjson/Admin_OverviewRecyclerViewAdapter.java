@@ -1,23 +1,26 @@
 package com.example.max.testjson;
 
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+/**
+ * Created by ASUS on 2018/4/11.
+ */
 
-import com.example.max.testjson.AvailableItemFragment.OnListFragmentInteractionListener;
+    import android.support.v7.widget.RecyclerView;
+    import android.view.LayoutInflater;
+    import android.view.View;
+    import android.view.ViewGroup;
+    import android.widget.TextView;
+
+    import com.example.max.testjson.Admin_OverviewFragment.OnListFragmentInteractionListener;
 
 
-import java.util.List;
+    import java.util.List;
 
-
-public class AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter<AvailableItemRecyclerViewAdapter.ViewHolder> {
-
-    private final List<AvailableItem> mValues;
+public class Admin_OverviewRecyclerViewAdapter extends RecyclerView.Adapter<Admin_OverviewRecyclerViewAdapter.ViewHolder> {
+    private final List<Admin_Overview> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public AvailableItemRecyclerViewAdapter(List<AvailableItem> items, OnListFragmentInteractionListener listener) {
+    public Admin_OverviewRecyclerViewAdapter(List<Admin_Overview> items, OnListFragmentInteractionListener listener)
+    {
         mValues = items;
         mListener = listener;
     }
@@ -25,7 +28,7 @@ public class AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter<Avail
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_availableitem, parent, false);
+                .inflate(R.layout.fragment_admin_overview, parent, false);
         return new ViewHolder(view);
     }
 
@@ -56,13 +59,13 @@ public class AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter<Avail
         public final View mView;
         public final TextView mLocationView;
         public final TextView mTypeView;
-        public AvailableItem mItem;
+        public Admin_Overview mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mLocationView = (TextView) view.findViewById(R.id.location);
-            mTypeView = (TextView) view.findViewById(R.id.type);
+            mLocationView = (TextView) view.findViewById(R.id.admin_location);
+            mTypeView = (TextView) view.findViewById(R.id.admin_type);
         }
 
         @Override
@@ -71,3 +74,4 @@ public class AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter<Avail
         }
     }
 }
+

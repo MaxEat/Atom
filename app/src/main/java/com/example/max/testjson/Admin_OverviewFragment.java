@@ -12,19 +12,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-
-public class AvailableItemFragment extends Fragment {
-
+public class Admin_OverviewFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
 
-    public AvailableItemFragment() {
+    public Admin_OverviewFragment() {
     }
 
-    public static AvailableItemFragment newInstance(int columnCount) {
-        AvailableItemFragment fragment = new AvailableItemFragment();
+
+    public static Admin_OverviewFragment newInstance(int columnCount) {
+        Admin_OverviewFragment fragment = new Admin_OverviewFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -43,7 +42,7 @@ public class AvailableItemFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_availableitem_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_admin_overview_list, container, false);
 
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -53,8 +52,8 @@ public class AvailableItemFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-          
-            AvailableItemRecyclerViewAdapter adapter = new AvailableItemRecyclerViewAdapter(AvailableItem.availableItems, mListener);
+
+            Admin_OverviewRecyclerViewAdapter adapter = new Admin_OverviewRecyclerViewAdapter(Admin_Overview.admin_Overviews, mListener);
             recyclerView.setAdapter(adapter);
 
 //            recyclerView.addItemDecoration(new DividerItemDecoration(
@@ -93,6 +92,6 @@ public class AvailableItemFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(AvailableItem item);
+        void onListFragmentInteraction(Admin_Overview item);
     }
 }
