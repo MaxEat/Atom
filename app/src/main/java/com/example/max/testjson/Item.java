@@ -2,7 +2,6 @@ package com.example.max.testjson;
 
 import android.util.Log;
 
-import com.example.max.testjson.dummy.DummyContent;
 
 import org.json.JSONException;
 import org.json.JSONObject;

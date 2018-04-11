@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.max.testjson.AvailableItemFragment.OnListFragmentInteractionListener;
-import com.example.max.testjson.dummy.DummyContent.DummyItem;
 
 import java.util.List;
 

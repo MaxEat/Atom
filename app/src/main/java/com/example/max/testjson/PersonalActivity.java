@@ -1,15 +1,17 @@
 package com.example.max.testjson;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.design.widget.BottomNavigationView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-public class PersonalActivity extends AppCompatActivity implements BorrowedFragment.OnListFragmentInteractionListener, AvailableItemFragment.OnListFragmentInteractionListener{
+public class PersonalActivity extends AppCompatActivity implements BorrowedFragment.OnListFragmentInteractionListener, AvailableItemFragment.OnListFragmentInteractionListener, ScanResultReceiver{
     private BottomNavigationView mBottomNavigationView;
     private Fragment []mFragments;
     @Override
@@ -44,11 +46,14 @@ public class PersonalActivity extends AppCompatActivity implements BorrowedFragm
                 break;
 
             case R.id.tab_menu_new:
-                fragment = mFragments[2];
+                fragment = mFragments[1];
                 break;
 
             case R.id.tab_menu_discovery:
-                fragment = mFragments[1];
+                TestJson.getUser().getAllItem();
+                Log.i("item quantity",Integer.toString(TestJson.getUser().getBorrowedItems().size()));
+
+                fragment = mFragments[2];
                 break;
 
             case R.id.tab_menu_available:
@@ -71,5 +76,18 @@ public class PersonalActivity extends AppCompatActivity implements BorrowedFragm
     @Override
     public void onListFragmentInteraction(AvailableItem item) {
 
+    }
+
+
+    @Override
+    public void scanResultData(String codeFormat, String codeContent) {
+        Toast.makeText(this, "FORMAT: " + codeFormat, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "CONTENT: " + codeContent, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void scanResultData(NoScanResultException noScanData) {
+        Toast toast = Toast.makeText(this,noScanData.getMessage(), Toast.LENGTH_SHORT);
+        toast.show();
     }
 }

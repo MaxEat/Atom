@@ -125,6 +125,7 @@ public class Person {
     }
 
     public void getAllItem() {
+
         JSONObject postdata = new JSONObject();
         try {
             postdata.put("kuleuvenID",  getKuleuvenID());
@@ -139,6 +140,8 @@ public class Person {
                 public void onSuccess(String result) {
                     Log.i("Success","result----"+result);
                     try {
+                        borrowedItems = new ArrayList<BorrowedItem>();
+                        borrowedItemMAP = new HashMap<String, BorrowedItem>();
 
                         JSONObject jsonObject = new JSONObject(result);
                         JSONArray jsonArray = jsonObject.getJSONArray("list");
@@ -167,14 +170,16 @@ public class Person {
 
     }
 
-    public int borrowItem(Item item) {
+    public int borrowItem(String itemTag, String currentLocation) {
+
+        if(currentLocation == "") currentLocation = "GroepT";
+
         JSONObject postdata = new JSONObject();
         try {
-            postdata.put("cardID", "aaa");
-            postdata.put("itemTag", "itemTag1");
-            postdata.put("borrowLocation", "groept");
+            postdata.put("cardID", this.getCardID());
+            postdata.put("itemTag", itemTag);
+            postdata.put("borrowLocation", currentLocation);
         } catch(JSONException e){
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         try {

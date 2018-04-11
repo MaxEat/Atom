@@ -1,7 +1,5 @@
 package com.example.max.testjson;
 
-import com.example.max.testjson.dummy.DummyContent;
-
 import java.util.HashMap;
 import java.util.Map;
 

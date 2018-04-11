@@ -1,107 +1,83 @@
 package com.example.max.testjson;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.support.v4.app.Fragment;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link addItemFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link addItemFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class addItemFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+public class AddItemFragment extends Fragment {
 
-    private OnFragmentInteractionListener mListener;
+    private String codeFormat,codeContent;
+    private final String noResultErrorMsg = "No scan data received!";
 
-    public addItemFragment() {
-        // Required empty public constructor
+    public AddItemFragment() {
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment addItemFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static addItemFragment newInstance(String param1, String param2) {
-        addItemFragment fragment = new addItemFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+    public static AddItemFragment newInstance() {
+        AddItemFragment fragment = new AddItemFragment();
         return fragment;
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_item, container, false);
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+        IntentIntegrator integrator = new IntentIntegrator(this.getActivity()).forSupportFragment(this);
+        // use forSupportFragment or forFragment method to use fragments instead of activity
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.ONE_D_CODE_TYPES);
+        integrator.setPrompt(this.getString(R.string.scan_bar_code));
+       // integrator.setResultDisplayDuration(0); // milliseconds to display result on screen after scan
+        integrator.setCameraId(0);  // Use a specific camera of the device
+        integrator.initiateScan();
     }
 
     /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
+     * function handle scan result
+     * @param requestCode scanned code
+     * @param resultCode  result of scanned code
+     * @param intent intent
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        //retrieve scan result
+        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+        ScanResultReceiver parentActivity = (ScanResultReceiver) this.getActivity();
+
+        if (scanningResult != null) {
+
+            codeContent = scanningResult.getContents();
+            codeFormat = scanningResult.getFormatName();
+            // send received data
+            parentActivity.scanResultData(codeFormat,codeContent);
+            studentBorrowItem(codeContent);
+        }else{
+            // send exception
+            parentActivity.scanResultData(new NoScanResultException(noResultErrorMsg));
+        }
     }
+
+
+    public void studentBorrowItem(String itemTag) {
+
+        Log.i("state", "borrowing");
+        TestJson.getUser().borrowItem(itemTag, "");
+
+
+    }
+
 }
