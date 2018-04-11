@@ -64,6 +64,8 @@ public class RegisterActivity extends AppCompatActivity {
             if(error!=3)
             {
                 TestJson.setUser(user);
+                user.getAllItem();
+                AvailableItem.getAllAvailableItems();
                 Intent personalIntent = new Intent(RegisterActivity.this, PersonalActivity.class);
                 startActivity(personalIntent);
             }
@@ -102,40 +104,3 @@ public class RegisterActivity extends AppCompatActivity {
 
 }
 
-
-//Test: get all item of certain person
-// user.getAllItem();
-
-
-//Test: register item
-//    Item item = new Item("test1", "Agora");
-//        error = item.register();
-//        if(error == 2)
-//            Toast.makeText(getApplicationContext(), "This item already registered", Toast.LENGTH_SHORT).show();
-//        else
-//            Toast.makeText(getApplicationContext(), "Item registered successfully", Toast.LENGTH_SHORT).show();
-//
-//
-//        //Test: user borrow item
-//        error = user.borrowItem(item);
-//        if(error == 4)
-//            Toast.makeText(getApplicationContext(), "This person does not exist", Toast.LENGTH_SHORT).show();
-//        else
-//            Toast.makeText(getApplicationContext(), "Found Person", Toast.LENGTH_SHORT).show();
-//
-//
-
-
-//Test: duplicate person
-
-//  user = new Person("Wang Siyuan","r0609653","r0609653@kuleuven.be");
-//    user.register();
-// user.getItem();
-
-//        user = new Person("aaa");
-//
-//        Item item = new Item("itemTag3","2017-04-06 00:00:00.000000", "groepT");
-//        item.register();
-//        Item item2 = new Item("itemTag3","2017-04-06 00:00:00.000000", "groepT");
-//        item2.register();
-//user.returnItem(item);

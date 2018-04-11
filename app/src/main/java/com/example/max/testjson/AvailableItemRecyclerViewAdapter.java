@@ -6,17 +6,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.max.testjson.BorrowedFragment.OnListFragmentInteractionListener;
+import com.example.max.testjson.AvailableItemFragment.OnListFragmentInteractionListener;
+import com.example.max.testjson.dummy.DummyContent.DummyItem;
 
 import java.util.List;
 
 
-public class BorrowedItemViewAdapter extends RecyclerView.Adapter<BorrowedItemViewAdapter.ViewHolder> {
+public class AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter<AvailableItemRecyclerViewAdapter.ViewHolder> {
 
-    private final List<BorrowedItem> mValues;
+    private final List<AvailableItem> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public BorrowedItemViewAdapter(List<BorrowedItem> items, OnListFragmentInteractionListener listener) {
+    public AvailableItemRecyclerViewAdapter(List<AvailableItem> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -24,16 +25,16 @@ public class BorrowedItemViewAdapter extends RecyclerView.Adapter<BorrowedItemVi
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_item, parent, false);
+                .inflate(R.layout.fragment_availableitem, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).getItemTag());
-        holder.mLocationView.setText("Location: "+mValues.get(position).getBorrwedLocation());
-        holder.mTimestampView.setText("Borrowed Time: "+mValues.get(position).getBorrowedTimeStamp().substring(0,10));
+      //  holder.mIdView.setText(mValues.get(position).getId());
+        holder.mLocationView.setText(mValues.get(position).getItemLocation());
+        holder.mTypeView.setText(mValues.get(position).getType());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,21 +57,20 @@ public class BorrowedItemViewAdapter extends RecyclerView.Adapter<BorrowedItemVi
         public final View mView;
         public final TextView mIdView;
         public final TextView mLocationView;
-        public final TextView mTimestampView;
-
-        public Item mItem;
+        public final TextView mTypeView;
+        public AvailableItem mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView)view.findViewById(R.id.id);
+            mIdView = (TextView) view.findViewById(R.id.id);
             mLocationView = (TextView) view.findViewById(R.id.location);
-            mTimestampView = (TextView) view.findViewById(R.id.timestamp);
+            mTypeView = (TextView) view.findViewById(R.id.type);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mLocationView.getText() + "'" + mTimestampView.getText() + "'";
+            return super.toString() + " '" + mIdView.getText() + " '" + mTypeView.getText() + " '" + mLocationView.getText() + "'" +  " '";
         }
     }
 }

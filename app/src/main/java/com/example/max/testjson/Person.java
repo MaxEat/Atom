@@ -134,7 +134,7 @@ public class Person {
         }
 
         try {
-            BackgroundTask.getInstance().postAsyncJsonn(BackgroundTask.getAllItemsURL, postdata.toString(),new BackgroundTask.MyCallback() {
+            BackgroundTask.getInstance().postAsyncJsonn(BackgroundTask.getAllBorrowedItemsURL, postdata.toString(),new BackgroundTask.MyCallback() {
                 @Override
                 public void onSuccess(String result) {
                     Log.i("Success","result----"+result);

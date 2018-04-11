@@ -22,6 +22,7 @@ public class Item {
     private String itemTag;
     private String itemLocation;
     private String boughtTime;
+    private String classification;
     private int itemPermission;
 
     int error;
@@ -52,6 +53,10 @@ public class Item {
         return boughtTime;
     }
 
+    public String getClassification() {
+        return classification;
+    }
+
     public int getItemPermission() {
         return itemPermission;
     }
@@ -63,7 +68,9 @@ public class Item {
             postdata.put("itemTag", getItemTag());
             postdata.put("itemLocation", getItemLocation());
             postdata.put("boughtTime", getBoughtTime());
+            postdata.put("itemClassification", getClassification());
             postdata.put("itemPermission", getItemPermission());
+
         } catch(JSONException e){
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -99,6 +106,7 @@ public class Item {
                 "Tag='" + itemTag + '\'' +
                 ", Location=" + itemLocation +
                 ", BoughTime=" + boughtTime +
+                ", Classfication=" + classification +
                 '}';
     }
 
