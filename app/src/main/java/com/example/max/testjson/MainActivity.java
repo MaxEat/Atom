@@ -112,7 +112,8 @@ public class MainActivity extends AppCompatActivity {
                             TestJson.setUser(user);
                             TestJson.getUser().getWishListFromDatabase();
                             AvailableItem.getAllAvailableItems();
-                            Admin_Overview.getAllAdmin_Overviews();
+                            //AvailableItem.getAllAdmin_Overviews();
+
 
                             if(userType.equals("Student"))
                             {
