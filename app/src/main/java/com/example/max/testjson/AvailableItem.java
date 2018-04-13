@@ -22,7 +22,6 @@ public class AvailableItem extends Item {
     public static Map<String, AvailableItem> availableItemMap = new HashMap<String, AvailableItem>();
 
     private int quantity;
-    private String type;
     private int id;
 
 
@@ -36,16 +35,8 @@ public class AvailableItem extends Item {
         this.quantity = quantity;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public int getQuantity() {
         return quantity;
-    }
-
-    public String getType() {
-        return type;
     }
 
     public void setId(int id) {
@@ -72,10 +63,8 @@ public class AvailableItem extends Item {
                         JSONArray jsonArray = jsonObject.getJSONArray("list");
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject json = jsonArray.getJSONObject(i);
-                            Log.i("tag", json.getString("itemTag"));
-                            Log.i("location", json.getString("itemLocation"));
                             AvailableItem item = new AvailableItem(json.getString("itemTag"), json.getString("itemLocation"));
-                            item.setType(json.getString("itemClassification"));
+                            item.setClassification(json.getString("itemClassification"));
                             item.setId(i);
                             availableItems.add(item);
                             availableItemMap.put(Integer.toString(item.getId()), item);

@@ -21,9 +21,6 @@ import okhttp3.Response;
 public class BackgroundTask {
 
     static final MediaType MEDIA_TYPE = MediaType.parse("application/json; charset=utf-8");
-    //代表的就是请求包体内容的类型。
-    static private Context context;
-
     static String registerPersonURL = "https://labtools.groept.be/inventory/sql/php_addPerson.php";
     static String registerItemURL = "https://labtools.groept.be/inventory/sql/php_addItem.php";
     static String getAllBorrowedItemsURL = "https://labtools.groept.be/inventory/sql/php_selectItemByUser.php";
@@ -32,6 +29,11 @@ public class BackgroundTask {
     static String duplicatePersonURL = "https://labtools.groept.be/inventory/sql/php_duplicatePerson.php";
     static String getInfoByCardURL = "https://labtools.groept.be/inventory/sql/php_getUserInfoByCard.php";
     static String getAllAvailableItemsURL = "https://labtools.groept.be/inventory/sql/php_selectAvailableItem.php";
+    static String addItemToWishListURL = "https://labtools.groept.be/inventory/sql/php_addItemToWish.php";
+    static String removeItemFromWishListURL = "https://labtools.groept.be/inventory/sql/php_removeItemFromWish.php";
+    static String checkItemAvailableURL = "https://labtools.groept.be/inventory/sql/php_selectAvailableItem.php";
+    static String getInfoByItemTagURL = "https://labtools.groept.be/inventory/sql/php_getItemInfoByTag.php";
+    static String getAllWishListItemsURL = "https://labtools.groept.be/inventory/sql/php_getWishItems.php";
 
     private Handler okHttpHandler;
     private OkHttpClient mOkHttpClient;

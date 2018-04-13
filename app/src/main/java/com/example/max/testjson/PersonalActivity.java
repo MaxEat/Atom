@@ -1,5 +1,6 @@
 package com.example.max.testjson;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,7 +12,9 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-public class PersonalActivity extends AppCompatActivity implements BorrowedFragment.OnListFragmentInteractionListener, AvailableItemFragment.OnListFragmentInteractionListener, ScanResultReceiver{
+import com.example.max.testjson.dashboard.News;
+
+public class PersonalActivity extends AppCompatActivity implements BorrowedFragment.OnListFragmentInteractionListener, AvailableItemFragment.OnListFragmentInteractionListener, SettingFragment.OnFragmentInteractionListener,ScanResultReceiver{
     private BottomNavigationView mBottomNavigationView;
     private Fragment []mFragments;
     @Override
@@ -68,7 +71,11 @@ public class PersonalActivity extends AppCompatActivity implements BorrowedFragm
     }
 
     @Override
-    public void onListFragmentInteraction(Item item) {
+    public void onListFragmentInteraction(BorrowedItem borrowedItem) {
+            Intent intent = new Intent(PersonalActivity.this, Borrowed_Item_Detail.class);
+            intent.putExtra("item",borrowedItem);
+            startActivity(intent);
+
 
     }
 
@@ -88,5 +95,10 @@ public class PersonalActivity extends AppCompatActivity implements BorrowedFragm
     public void scanResultData(NoScanResultException noScanData) {
         Toast toast = Toast.makeText(this,noScanData.getMessage(), Toast.LENGTH_SHORT);
         toast.show();
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

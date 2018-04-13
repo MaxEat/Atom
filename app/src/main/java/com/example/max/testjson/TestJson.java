@@ -24,12 +24,29 @@ public class TestJson extends Application {
 
     private static TestJson instance;
     private static Person user;
-    public static Object syncToken = new Object();
+    public static int alertDay = 14;
+    public static HashMap<String, Integer> permission_days_student = new HashMap<String, Integer>();
+    public static HashMap<String, Integer> permission_days_worker = new HashMap<String, Integer>();
+
     @Override
     public void onCreate() {
         super.onCreate();
         this.instance = this;
+        permission_days_student.put("laptop", 14);
+        permission_days_student.put("FPGA", 14);
+        permission_days_student.put("ipad", 14);
+        permission_days_worker.put("laptop",28);
+        permission_days_worker.put("FPGA", 28);
+        permission_days_worker.put("ipad", 28);
     }
+
+    public void addPermission_days(String userType, String itemType, int days) {
+        if(userType.equals("Student"))
+            permission_days_student.put(itemType,days);
+        if(userType.equals("worker"))
+            permission_days_worker.put(itemType,days);
+    }
+
 
     public static TestJson getInstance() {
         return instance;

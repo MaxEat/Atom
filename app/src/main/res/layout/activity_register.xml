@@ -5,9 +5,48 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.max.testjson.RegisterActivity">
-    <WebView
-        android:id="@+id/webview"
+
+    <ToggleButton
+        android:id="@+id/userType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="visible" />
+        android:layout_marginBottom="84dp"
+        android:layout_marginLeft="196dp"
+        android:layout_x="0dp"
+        android:layout_y="390dp"
+        android:checked="true"
+        android:text="ToggleButton"
+        android:textOff="Student"
+        android:textOn="Administrator"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <WebView
+        android:id="@+id/webview"
+        android:layout_width="380dp"
+        android:layout_height="354dp"
+        android:visibility="visible" >
+
+    </WebView>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="96dp"
+        android:layout_marginLeft="72dp"
+        android:text="Are you student?"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <Button
+        android:id="@+id/register"
+        android:layout_width="259dp"
+        android:layout_height="37dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="76dp"
+        android:text="Ok, I am done"
+        android:onClick="register"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
 </android.support.constraint.ConstraintLayout>

@@ -5,10 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.example.max.testjson.BorrowedFragment.OnListFragmentInteractionListener;
 import com.squareup.picasso.Picasso;
 
@@ -41,14 +39,12 @@ public class BorrowedItemRecyclerViewAdapter extends RecyclerView.Adapter<Borrow
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         Picasso.with(this.context).load(mValues.get(position).getImageURL());
-        holder.mContentView.setText(mValues.get(position).getBorrwedLocation() + " "+ mValues.get(position).getBorrowedTimeStamp());
+        holder.mContentView.setText(mValues.get(position).getBorrowedLocation() + " "+ mValues.get(position).getBorrowedTimeStamp());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
                     mListener.onListFragmentInteraction(holder.mItem);
                 }
             }
@@ -65,7 +61,7 @@ public class BorrowedItemRecyclerViewAdapter extends RecyclerView.Adapter<Borrow
         public final ImageView mImage;
         public final TextView mContentView;
 
-        public Item mItem;
+        public BorrowedItem mItem;
 
         public ViewHolder(View view) {
             super(view);

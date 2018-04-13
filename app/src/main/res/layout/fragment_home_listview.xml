@@ -17,14 +17,12 @@
         android:id="@+id/ItemTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView01"
         android:textSize="20dp" />
 
     <TextView
         android:id="@+id/ItemText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ItemTitle"
-        android:text="TextView02" />
+        android:layout_below="@+id/ItemTitle" />
 
 </RelativeLayout>

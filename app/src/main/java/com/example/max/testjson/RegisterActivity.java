@@ -5,18 +5,29 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.Toast;
+import android.widget.ToggleButton;
+
 import org.json.JSONObject;
 
 public class RegisterActivity extends AppCompatActivity {
 
     private Person user;
     private String cardID;
-    WebView wv;
+    private ToggleButton userType;
+    private Button register;
+    private WebView wv;
+
+    private String studentNumber = "None";
+    private String userName = "None";
+    private String email = "None";
+    private String userPermission = "Student";
 
     @SuppressLint("JavascriptInterface")
     @Override
@@ -26,7 +37,10 @@ public class RegisterActivity extends AppCompatActivity {
         Intent intent = getIntent();
         cardID = intent.getStringExtra("cardID");
 
+        userType = (ToggleButton) findViewById(R.id.userType);
+        register = (Button) findViewById(R.id.register);
         wv  = (WebView) findViewById(R.id.webview);
+
         wv.getSettings().setJavaScriptEnabled(true);
         wv.addJavascriptInterface(new InJavaScriptLocalObj(), "local_obj");
         wv.getSettings().setDomStorageEnabled(true);
@@ -56,10 +70,17 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    private void showStudentNumber() {
+    public void register(View view) {
+        if(userType.isChecked())
+            userPermission = "student";
+        else
+            userPermission = "administrator";
+        user = new Person(userName,studentNumber,email);
+        user.setCardID(cardID);
+        user.setUserType(userPermission);
+
         if (!user.getUserName().equals("None"))
         {
-            Toast.makeText(getApplicationContext(), "Welcome! " + user.getUserName(), Toast.LENGTH_LONG).show();
             int error = user.register();
             if(error!=3)
             {
@@ -72,7 +93,6 @@ public class RegisterActivity extends AppCompatActivity {
             else
                 Toast.makeText(getApplicationContext(), "The user already registered! " + user.getUserName(), Toast.LENGTH_LONG).show();
         }
-
     }
 
     public final class InJavaScriptLocalObj {
@@ -82,19 +102,11 @@ public class RegisterActivity extends AppCompatActivity {
             Log.i("HTML", htmlSource);
             try {
 
-                String studentNumber = "None";
-                String userName = "None";
-                String email = "None";
-
                 JSONObject obj = new JSONObject(htmlSource);
                 userName = obj.getString("email").split("@")[0].replace(".", " ");
                 studentNumber = obj.getString("user").split("@")[0]; Log.i("user", studentNumber);
                 email = obj.getString("email");
-
-                user = new Person(userName,studentNumber,email);
-                user.setCardID(cardID);
-
-                showStudentNumber();
+                Toast.makeText(getApplicationContext(), "Welcome! " + userName, Toast.LENGTH_LONG).show();
 
             } catch (Throwable t) {
                 Log.e("My info", "Could not parse malformed JSON: \"" + htmlSource + "\"");

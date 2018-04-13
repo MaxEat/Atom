@@ -4,6 +4,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.example.max.testjson.AvailableItemFragment.OnListFragmentInteractionListener;
@@ -33,7 +35,23 @@ public class AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter<Avail
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mLocationView.setText(mValues.get(position).getItemLocation());
-        holder.mTypeView.setText(mValues.get(position).getType());
+        holder.mTypeView.setText(mValues.get(position).getClassification());
+        holder.mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+            {
+                if ( isChecked )
+                {
+                    TestJson.getUser().addItemToWish(holder.mItem);
+                }
+                else
+                {
+                    TestJson.getUser().removeItemFromWish(holder.mItem);
+                }
+
+            }
+        });
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,12 +75,14 @@ public class AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter<Avail
         public final TextView mLocationView;
         public final TextView mTypeView;
         public AvailableItem mItem;
+        public CheckBox mCheckBox;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             mLocationView = (TextView) view.findViewById(R.id.location);
             mTypeView = (TextView) view.findViewById(R.id.type);
+            mCheckBox = (CheckBox)view.findViewById(R.id.add_to_wish);
         }
 
         @Override

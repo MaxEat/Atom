@@ -1,0 +1,97 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.max.testjson.SettingFragment">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/my_image"
+            android:layout_width="141dp"
+            android:layout_height="168dp"
+            android:layout_marginBottom="324dp"
+            android:layout_marginLeft="68dp"
+            android:src="@android:drawable/sym_def_app_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <TextView
+            android:id="@+id/second_email"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_marginBottom="272dp"
+            android:layout_marginLeft="68dp"
+            android:text="Contact email:"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <EditText
+            android:id="@+id/email_input"
+            android:layout_width="143dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="276dp"
+            android:layout_marginLeft="176dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="......@......."
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginBottom="200dp"
+            android:layout_marginLeft="68dp"
+            android:text="Return reminder:"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <CheckBox
+            android:id="@+id/oneweek"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="180dp"
+            android:layout_marginLeft="176dp"
+            android:checked="true"
+            android:text="One week before"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <CheckBox
+            android:id="@+id/threedays"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="228dp"
+            android:layout_marginLeft="176dp"
+            android:text="Three days before"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <CheckBox
+            android:id="@+id/twoweeks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="132dp"
+            android:layout_marginLeft="176dp"
+            android:text="Two weeks before"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <Button
+            android:id="@+id/submit_setting"
+            android:layout_width="263dp"
+            android:layout_height="44dp"
+            android:layout_marginBottom="48dp"
+            android:layout_marginLeft="76dp"
+            android:text="Submit"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</FrameLayout>

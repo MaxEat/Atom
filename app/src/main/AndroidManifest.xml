@@ -40,7 +40,8 @@
         </activity>
         <activity android:name=".RegisterActivity" />
         <activity android:name=".PersonalActivity" />
-        <activity android:name=".AdminActivity"></activity>
+        <activity android:name=".AdminActivity" />
+        <activity android:name=".Borrowed_Item_Detail"></activity>
     </application>
 
 </manifest>
