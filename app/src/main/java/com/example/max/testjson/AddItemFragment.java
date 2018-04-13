@@ -24,12 +24,14 @@ public class AddItemFragment extends Fragment {
 
     private String codeFormat,codeContent;
     private final String noResultErrorMsg = "No scan data received!";
+    private static int dataGenerator;
 
     public AddItemFragment() {
     }
 
-    public static AddItemFragment newInstance() {
+    public static AddItemFragment newInstance(int aDataGenerator) {
         AddItemFragment fragment = new AddItemFragment();
+        dataGenerator = aDataGenerator;
         return fragment;
     }
 
@@ -107,7 +109,13 @@ public class AddItemFragment extends Fragment {
             codeFormat = scanningResult.getFormatName();
             // send received data
             parentActivity.scanResultData(codeFormat,codeContent);
-            studentBorrowItem(codeContent);
+            if(dataGenerator == 1){
+                studentBorrowItem(codeContent);
+            }
+            else{
+                updateItemState(codeContent);
+            }
+
         }else{
             parentActivity.scanResultData(new NoScanResultException(noResultErrorMsg));
         }
@@ -119,6 +127,12 @@ public class AddItemFragment extends Fragment {
         Log.i("state", "borrowing");
         TestJson.getUser().borrowItem(itemTag, "");
 
+    }
+
+    public void updateItemState(String itemTag) {
+
+        Log.i("updateState", "maintaining");
+        TestJson.getUser().updateItemState(itemTag);
 
     }
 

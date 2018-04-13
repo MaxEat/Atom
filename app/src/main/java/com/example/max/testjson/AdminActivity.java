@@ -11,7 +11,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-public class AdminActivity extends AppCompatActivity implements Admin_OverviewFragment.OnListFragmentInteractionListener{
+public class AdminActivity extends AppCompatActivity implements Admin_OverviewFragment.OnListFragmentInteractionListener,ScanResultReceiver{
     private BottomNavigationView mBottomNavigationView;
     private Fragment[]mFragments;
     @Override
@@ -69,6 +69,18 @@ public class AdminActivity extends AppCompatActivity implements Admin_OverviewFr
     @Override
     public void onListFragmentInteraction(Admin_Overview item) {
 
+    }
+
+    @Override
+    public void scanResultData(String codeFormat, String codeContent) {
+        Toast.makeText(this, "FORMAT: " + codeFormat, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "CONTENT: " + codeContent, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void scanResultData(NoScanResultException noScanData) {
+        Toast toast = Toast.makeText(this,noScanData.getMessage(), Toast.LENGTH_SHORT);
+        toast.show();
     }
 }
 

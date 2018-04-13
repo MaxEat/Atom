@@ -32,6 +32,7 @@ public class BackgroundTask {
     static String duplicatePersonURL = "https://labtools.groept.be/inventory/sql/php_duplicatePerson.php";
     static String getInfoByCardURL = "https://labtools.groept.be/inventory/sql/php_getUserInfoByCard.php";
     static String getAllAvailableItemsURL = "https://labtools.groept.be/inventory/sql/php_selectAvailableItem.php";
+    static String updateItemStateUrl = "https://labtools.groept.be/inventory/sql/php_maintainItem.php";
 
     private Handler okHttpHandler;
     private OkHttpClient mOkHttpClient;

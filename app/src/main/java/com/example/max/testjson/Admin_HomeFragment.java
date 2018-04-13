@@ -72,35 +72,29 @@ public class Admin_HomeFragment extends Fragment {
         // 添加并且显示
         list.setAdapter(listItemAdapter);
 
-        // 添加点击
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-                                    long arg3) {
-                // setTitle("点击第" + arg2 + "项");
-            }
-        });
-
-        // 添加长按点击
-        list.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
-            @Override
-            public void onCreateContextMenu(ContextMenu menu, View v,
-                                            ContextMenu.ContextMenuInfo menuInfo) {
-                menu.setHeaderTitle("长按菜单-ContextMenu");
-                menu.add(0, 0, 0, "弹出长按菜单0");
-                menu.add(0, 1, 0, "弹出长按菜单1");
-            }
-        });
+//        // 添加点击
+//        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//
+//            @Override
+//            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+//                                    long arg3) {
+//                // setTitle("点击第" + arg2 + "项");
+//            }
+//        });
+//
+//        // 添加长按点击
+//        list.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
+//            @Override
+//            public void onCreateContextMenu(ContextMenu menu, View v,
+//                                            ContextMenu.ContextMenuInfo menuInfo) {
+//                menu.setHeaderTitle("长按菜单-ContextMenu");
+//                menu.add(0, 0, 0, "弹出长按菜单0");
+//                menu.add(0, 1, 0, "弹出长按菜单1");
+//            }
+//        });
 
 
         return view;
     }
 
-//    // 长按菜单响应函数
-//    @Override
-//    public boolean onContextItemSelected(MenuItem item) {
-//        setTitle("点击了长按菜单的第" + item.getItemId() + "项");
-//        return super.onContextItemSelected(item);
-//    }
 }

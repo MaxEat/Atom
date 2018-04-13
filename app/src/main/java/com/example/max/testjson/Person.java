@@ -171,6 +171,37 @@ public class Person {
 
     }
 
+    public void updateItemState(String itemTag){
+        JSONObject postdata = new JSONObject();
+        try {
+            postdata.put("itemTag", itemTag);
+        } catch(JSONException e){
+            e.printStackTrace();
+        }
+        try {
+            BackgroundTask.getInstance().postAsyncJsonn(BackgroundTask.updateItemStateUrl, postdata.toString(),new BackgroundTask.MyCallback() {
+                @Override
+                public void onSuccess(String result) {
+                    Log.i("Success","result----"+result);
+                    try {
+                        JSONObject json = new JSONObject(result);
+                        error = json.getInt("error_message");
+                        Log.i("error", Integer.toString(error));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+                @Override
+                public void onFailture() {
+
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public int borrowItem(String itemTag, String currentLocation) {
 
         if(currentLocation == "") currentLocation = "GroepT";
