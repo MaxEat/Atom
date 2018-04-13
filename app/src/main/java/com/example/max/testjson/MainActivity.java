@@ -109,11 +109,11 @@ public class MainActivity extends AppCompatActivity {
                             user.getAllItem();
                             TestJson.setUser(user);
                             AvailableItem.getAllAvailableItems();
-                            Admin_Overview.getAllAdmin_Overviews();
+                            //AvailableItem.getAllAdmin_Overviews();
 
-//                            Intent personalIntent = new Intent(MainActivity.this, PersonalActivity.class);
-//                            Toast.makeText(getApplicationContext(), "Found Person", Toast.LENGTH_SHORT).show();
-//                            startActivity(personalIntent);
+                            Intent personalIntent = new Intent(MainActivity.this, PersonalActivity.class);
+                            Toast.makeText(getApplicationContext(), "Found Person", Toast.LENGTH_SHORT).show();
+                            startActivity(personalIntent);
 
                             Intent adminIntent = new Intent(MainActivity.this, AdminActivity.class);
                             Toast.makeText(getApplicationContext(), "Found Administrator", Toast.LENGTH_SHORT).show();

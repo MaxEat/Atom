@@ -11,7 +11,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-public class AdminActivity extends AppCompatActivity implements Admin_OverviewFragment.OnListFragmentInteractionListener,ScanResultReceiver{
+public class AdminActivity extends AppCompatActivity implements AvailableItemFragment.OnListFragmentInteractionListener,ScanResultReceiver{
     private BottomNavigationView mBottomNavigationView;
     private Fragment[]mFragments;
     @Override
@@ -67,7 +67,7 @@ public class AdminActivity extends AppCompatActivity implements Admin_OverviewFr
     }
 
     @Override
-    public void onListFragmentInteraction(Admin_Overview item) {
+    public void onListFragmentInteraction(AvailableItem item) {
 
     }
 
