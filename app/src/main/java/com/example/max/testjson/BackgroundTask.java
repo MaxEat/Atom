@@ -33,6 +33,8 @@ public class BackgroundTask {
     static String getInfoByCardURL = "https://labtools.groept.be/inventory/sql/php_getUserInfoByCard.php";
     static String getAllAvailableItemsURL = "https://labtools.groept.be/inventory/sql/php_selectAvailableItem.php";
     static String updateItemStateUrl = "https://labtools.groept.be/inventory/sql/php_maintainItem.php";
+    static final String UPLOAD_URL = "https://labtools.groept.be/inventory/upload.php";
+    static final String IMAGES_URL = "http://labtools.groept.be/inventory/getImages.php";
 
     private Handler okHttpHandler;
     private OkHttpClient mOkHttpClient;
