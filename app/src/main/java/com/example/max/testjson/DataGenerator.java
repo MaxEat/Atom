@@ -22,7 +22,7 @@ public class DataGenerator {
         fragments[1] = AddItemFragment.newInstance(1);
         fragments[2] = BorrowedFragment.newInstance(2);
         fragments[3] = AvailableItemFragment.newInstance(1);
-        fragments[4] = HomeFragment.newInstance(from);
+        fragments[4] = SettingFragment.newInstance();
         return fragments;
     }
 

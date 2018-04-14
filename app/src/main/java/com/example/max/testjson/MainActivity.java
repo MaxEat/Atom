@@ -104,20 +104,31 @@ public class MainActivity extends AppCompatActivity {
                             String studentNumber = json.getString("kuleuvenID");
                             String userName = json.getString("userName");
                             String email = json.getString("email");
+                            String userType = json.getString("userType");
                             Person user = new Person(userName,studentNumber,email);
                             user.setCardID(id);
                             user.getAllItem();
+                            user.setUserType(userType);
                             TestJson.setUser(user);
+                            TestJson.getUser().getWishListFromDatabase();
                             AvailableItem.getAllAvailableItems();
                             //AvailableItem.getAllAdmin_Overviews();
 
-//                            Intent personalIntent = new Intent(MainActivity.this, PersonalActivity.class);
-//                            Toast.makeText(getApplicationContext(), "Found Person", Toast.LENGTH_SHORT).show();
-//                            startActivity(personalIntent);
 
-                            Intent adminIntent = new Intent(MainActivity.this, AdminActivity.class);
-                            Toast.makeText(getApplicationContext(), "Found Administrator", Toast.LENGTH_SHORT).show();
-                            startActivity(adminIntent);
+                            if(userType.equals("Student"))
+                            {
+                                Intent personalIntent = new Intent(MainActivity.this, PersonalActivity.class);
+                                Toast.makeText(getApplicationContext(), "Found Person", Toast.LENGTH_SHORT).show();
+                                startActivity(personalIntent);
+
+                            }
+                            if(userType.equals("Worker"))
+                            {
+                                Intent adminIntent = new Intent(MainActivity.this, AdminActivity.class);
+                                Toast.makeText(getApplicationContext(), "Found Administrator", Toast.LENGTH_SHORT).show();
+                                startActivity(adminIntent);
+                            }
+
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

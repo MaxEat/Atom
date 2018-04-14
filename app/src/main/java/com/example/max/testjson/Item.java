@@ -7,12 +7,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * Created by max on 2018/4/5.
  */
 
-public class Item {
+public class Item implements Serializable {
 
     private String itemTag;
     private String itemLocation;
@@ -20,6 +21,8 @@ public class Item {
     private String classification;
     private int itemPermission;
     private String imageURL;
+    private String status;
+    private boolean available;
     int error;
 
     Item() { }
@@ -62,6 +65,48 @@ public class Item {
         imageURL = url;
     }
 
+    public void setClassification(String classification) {
+        this.classification = classification;
+    }
+
+    public void setItemLocation(String location) {
+        itemLocation = location;
+    }
+
+    public void setInfos() {
+        JSONObject postdata = new JSONObject();
+        try {
+            postdata.put("itemTag", getItemTag());
+        } catch(JSONException e){
+            e.printStackTrace();
+        }
+
+        try {
+            BackgroundTask.getInstance().postAsyncJsonn(BackgroundTask.getInfoByItemTagURL, postdata.toString(),new BackgroundTask.MyCallback() {
+                @Override
+                public void onSuccess(String result) {
+                    Log.i("Success","result----"+result);
+                    try {
+                        JSONObject json = new JSONObject(result);
+                        itemLocation = json.getString("itemLocation");
+                        classification = json.getString("itemClassification");
+                        status = json.getString("itemStatus");
+                        error = json.getInt("error_message");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+                @Override
+                public void onFailture() {
+
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public int register() {
         JSONObject postdata = new JSONObject();
         try {
@@ -98,6 +143,13 @@ public class Item {
             e.printStackTrace();
         }
         return error;
+    }
+
+    public boolean checkItemAvailable(){
+        if(status!="Borrowing" && status!="Maintaining")
+            return true;
+        else
+            return false;
     }
 
     @Override
