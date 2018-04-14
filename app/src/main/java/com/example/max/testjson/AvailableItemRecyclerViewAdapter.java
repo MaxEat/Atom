@@ -43,11 +43,11 @@ public class AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter<Avail
             {
                 if ( isChecked )
                 {
-                    TestJson.getUser().addItemToWish(holder.mItem);
+                    ((Student)TestJson.getUser()).addItemToWish(holder.mItem);
                 }
                 else
                 {
-                    TestJson.getUser().removeItemFromWish(holder.mItem);
+                    ((Student)TestJson.getUser()).removeItemFromWish(holder.mItem);
                 }
 
             }

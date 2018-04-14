@@ -3,6 +3,7 @@ package com.example.max.testjson;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.max.testjson.dashboard.Item_Expiring_News;
 import com.example.max.testjson.dashboard.News;
 
 import org.json.JSONArray;
@@ -19,17 +20,16 @@ import java.util.Map;
  */
 
 public class Person {
-    private int error;
-    private String kuleuvenID;
-    private String cardID;
-    private String email;
-    private String userType;
-    private String userName;
-    private String alertEmail;
-    private ArrayList<BorrowedItem> borrowedItems;
-    private ArrayList<Item> wishItems;
-    private Map<String, BorrowedItem> borrowedItemMAP = new HashMap<String, BorrowedItem>();
-    private ArrayList<News> dashboard;
+    protected int error;
+    protected String kuleuvenID;
+    protected String cardID;
+    protected String email;
+    protected String userType;
+    protected String userName;
+    protected String alertEmail;
+    protected ArrayList<BorrowedItem> borrowedItems;
+    protected Map<String, BorrowedItem> borrowedItemMAP = new HashMap<String, BorrowedItem>();
+    protected ArrayList<News> dashboard;
 
     Person(String aUserName, String aKuleuvenID, String Email) {
         kuleuvenID = aKuleuvenID;
@@ -37,9 +37,7 @@ public class Person {
         email = Email;
         alertEmail = Email;
         borrowedItems = new ArrayList<BorrowedItem>();
-        wishItems = new ArrayList<Item>();
-
-
+        dashboard = new ArrayList<News>();
     }
 
     public ArrayList<BorrowedItem> getBorrowedItems() {
@@ -91,9 +89,7 @@ public class Person {
         return userName;
     }
 
-    public ArrayList<Item> getWishItems() {
-        return wishItems;
-    }
+
 
     public int register() {
         JSONObject postdata = new JSONObject();
@@ -152,7 +148,7 @@ public class Person {
             BackgroundTask.getInstance().postAsyncJsonn(BackgroundTask.getAllBorrowedItemsURL, postdata.toString(), new BackgroundTask.MyCallback() {
                 @Override
                 public void onSuccess(String result) {
-                    Log.i("Success", "result----" + result);
+                    Log.i("Success get items", "result----" + result);
                     try {
                         borrowedItems = new ArrayList<BorrowedItem>();
                         borrowedItemMAP = new HashMap<String, BorrowedItem>();
@@ -169,6 +165,8 @@ public class Person {
                             borrowedItems.add(item);
                             borrowedItemMAP.put(Integer.toString(item.getId()), item);
                         }
+                        setDashboardAlertItems();
+                        setDashboardExpiredItems();
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -292,127 +290,28 @@ public class Person {
         return error;
     }
 
-    public void addItemToWish(final Item item) {
-        JSONObject postdata = new JSONObject();
-        try {
-            postdata.put("cardID", getCardID());
-            postdata.put("itemLocation", item.getItemLocation());
-            postdata.put("itemClassification", item.getClassification());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        try {
-            BackgroundTask.getInstance().postAsyncJsonn(BackgroundTask.addItemToWishListURL, postdata.toString(), new BackgroundTask.MyCallback() {
-                @Override
-                public void onSuccess(String result) {
-                    Log.i("Success", "result----" + result);
-                    try {
-                        JSONObject json = new JSONObject(result);
-                        error = json.getInt("error_message");
-                        if(error == 0)
-                            wishItems.add(item);
-                        else
-                            Log.i("error", "You have already added this before");
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-
-                @Override
-                public void onFailture() {
-
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void removeItemFromWish(final Item item) {
-        JSONObject postdata = new JSONObject();
-        try {
-            postdata.put("cardID", getCardID());
-            postdata.put("itemLocation", item.getItemLocation());
-            postdata.put("itemClassification", item.getClassification());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        try {
-            BackgroundTask.getInstance().postAsyncJsonn(BackgroundTask.removeItemFromWishListURL, postdata.toString(), new BackgroundTask.MyCallback() {
-                @Override
-                public void onSuccess(String result) {
-                    Log.i("Success", "result----" + result);
-                    try {
-                        JSONObject json = new JSONObject(result);
-                        error = json.getInt("error_message");
-                        if(error == 0)
-                            wishItems.remove(item);
-                        if(error == 8)
-                            Log.i("error", "You wish list doesn't have such item");
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-
-                @Override
-                public void onFailture() {
-
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void getWishListFromDatabase() {
-        JSONObject postdata = new JSONObject();
-        try {
-            postdata.put("cardID", getCardID());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        try {
-            BackgroundTask.getInstance().postAsyncJsonn(BackgroundTask.getAllWishListItemsURL, postdata.toString(), new BackgroundTask.MyCallback() {
-                @Override
-                public void onSuccess(String result) {
-                    Log.i("Success", "result----" + result);
-                    try {
-                        wishItems = new ArrayList<Item>();
-                        JSONObject jsonObject = new JSONObject(result);
-                        JSONArray jsonArray = jsonObject.getJSONArray("wishlist");
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject json = jsonArray.getJSONObject(i);
-                            Item item = new Item();
-                            item.setItemLocation(json.getString("itemLocation"));
-                            item.setClassification(json.getString("itemClassification"));
-                            wishItems.add(item);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-
-                @Override
-                public void onFailture() {
-
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public ArrayList<News> getDashboard(){
-        Log.i("number of wish", Integer.toString(wishItems.size()));
-        dashboard = News.createDashBoard(this);
-        Log.i("dashboard", Integer.toString(dashboard.size()));
         return dashboard;
     }
 
+    public void setDashboardAlertItems() {
+        for (BorrowedItem borrowedItem : borrowedItems) {
+            int leftDays = Integer.parseInt(borrowedItem.getLeftDays());
+            if ( leftDays <= TestJson.alertDay && leftDays >=0) {
+                Item_Expiring_News news = new Item_Expiring_News(borrowedItem);
+                dashboard.add(news);
+            }
+        }
+    }
+
+    public void setDashboardExpiredItems() {
+        for (BorrowedItem borrowedItem : borrowedItems) {
+            int leftDays = Integer.parseInt(borrowedItem.getLeftDays());
+            if (leftDays<0) {
+                Item_Expiring_News news = new Item_Expiring_News(borrowedItem);
+                dashboard.add(news);
+            }
+        }
+    }
 }
 

@@ -35,7 +35,7 @@ public class BackgroundTask {
     static String getInfoByItemTagURL = "https://labtools.groept.be/inventory/sql/php_getItemInfoByTag.php";
     static String getAllWishListItemsURL = "https://labtools.groept.be/inventory/sql/php_getWishItems.php";
     static String updateItemStateUrl = "https://labtools.groept.be/inventory/sql/php_maintainItem.php";
-
+    static String getExpiredItemURL = "https://labtools.groept.be/inventory/sql/php_getExpiredItems.php";
 
     private Handler okHttpHandler;
     private OkHttpClient mOkHttpClient;
