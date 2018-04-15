@@ -4,11 +4,14 @@ import android.util.Log;
 import android.widget.TextView;
 
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import okhttp3.Response;
 
@@ -26,7 +29,10 @@ public class Item implements Serializable {
     private String imageURL;
     private String status;
     int error;
-    private String[] itemClassifications;
+    private static String[] itemClassifications;
+    private static int classificationNumber;
+    private String pictureNumberString;
+    private int picturNumber;
 
     Item() { }
 
@@ -76,11 +82,87 @@ public class Item implements Serializable {
         itemLocation = location;
     }
 
-    public String[] getAllClassifications(){
+    public static String[] getAllClassifications(){
+
+//        JSONObject postdata = new JSONObject();
+//        try {
+//            postdata.put("itemTag", getItemTag());
+//        } catch(JSONException e){
+//            e.printStackTrace();
+//        }
+//        try {
+//            BackgroundTask.getInstance().postAsyncJsonn(BackgroundTask.getPictureNumberUrl, postdata.toString(),new BackgroundTask.MyCallback() {
+//                @Override
+//                public void onSuccess(String result) {
+//                    Log.i("Success","result----"+result);
+//                    try {
+//                        JSONObject json = new JSONObject(result);
+//                        pictureNumberString = json.getString("pictureNumber");
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                }
+//                @Override
+//                public void onFailture() {
+//
+//                }
+//            });
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        picturNumber = Integer.parseInt(pictureNumberString);
+//        itemClassifications = new String[picturNumber];
+//
 
 
+
+        JSONObject postdata = new JSONObject();
+        try {
+            postdata.put("kuleuvenID",null);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            BackgroundTask.getInstance().postAsyncJsonn(BackgroundTask.getAllClassificationsURL, postdata.toString(), new BackgroundTask.MyCallback() {
+                @Override
+                public void onSuccess(String result) {
+                    Log.i("Success get items", "result----" + result);
+                    try {
+
+                        JSONObject jsonObject = new JSONObject(result);
+                        JSONArray jsonArray = jsonObject.getJSONArray("list");
+
+                        classificationNumber = jsonArray.length();
+                        itemClassifications = new String[jsonArray.length()];
+
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject json = jsonArray.getJSONObject(i);
+                            itemClassifications[i] = json.getString("itemPictureClassification");
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+                @Override
+                public void onFailture() {
+
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return itemClassifications;
+    }
+
+    public static int getClassificationNumber(){
+        return classificationNumber;
     }
 
 

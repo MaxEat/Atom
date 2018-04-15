@@ -54,16 +54,30 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
     private Button BarCode;
     private Button TextRecognize;
 
+    private Button confirmBtn;
+
+    private EditText locationText;
+
     //private EditText boughtTime;
     private static final String TAG = "Admin_AddItemFragment";
 
     private TextView mDisplayDate;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
 
+    //qr variable
+    private String itemTagAdmin;
 
-    //spinner variable
-    private String[] s ;
+
+    //classification spinner variable
+    private String[] itemClassifications ;
     private String set;
+
+    private String[] s;
+
+    //permission spinner variable
+    private String[] permit ;
+    private String permission;
+
 
 
 
@@ -82,6 +96,7 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
 
     //Uri to store the image uri
     private Uri filePath;
+
 
     public Admin_AddItemFragment() {
         // Required empty public constructor
@@ -118,6 +133,10 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
         TextRecognize = (Button) view.findViewById(R.id.Text_scan_admin);
 
         mDisplayDate = (TextView) view.findViewById(R.id.tvDate);
+
+        confirmBtn = (Button)view.findViewById(R.id.confirmButton);
+
+        locationText = (EditText)view.findViewById(R.id.itemLocationText);
 
 
         //Setting clicklistener
@@ -165,6 +184,7 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
         s[0] = "laptop";
         s[1] = "FPGA";
         s[2] = "ipad";
+        //itemClassifications = Item.getAllClassifications();
 
         Spinner mySpinner = (Spinner) view.findViewById(R.id.spinnerClassification);
 
@@ -177,22 +197,64 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-                if (i == 0) {
-                    set = s[0];
-                } else if (i == 1)
-                    set = s[1];
-                else if (i == 2) {
-                    set = s[2];
-                }
-
-                //Log.i("setsetsetsetsetstsetst", set);
+               // for(int j = 0; j < Item.getClassificationNumber();j++){
+                    //for(int j = 0; j < s.length;j++){
+                        set = s[i];
+                    //}
+                //}
 
                 Toast.makeText(getActivity().getApplicationContext(),set,Toast.LENGTH_SHORT ).show();
+                //Toast.makeText(getActivity().getApplicationContext(),Item.getClassificationNumber(),Toast.LENGTH_SHORT ).show();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
+            }
+        });
+
+
+
+
+        //spinner select item permission
+        permit = new String[3] ;
+        permit[0] = "permission1";
+        permit[1] = "permission2";
+        permit[2] = "permission3";
+        //itemClassifications = Item.getAllClassifications();
+
+        Spinner permissionSpinner = (Spinner) view.findViewById(R.id.spinnerPermission);
+
+        ArrayAdapter<String> permissionAdapter = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_list_item_1,permit);
+        permissionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        permissionSpinner.setAdapter(permissionAdapter);
+
+        permissionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                // for(int j = 0; j < Item.getClassificationNumber();j++){
+                //for(int j = 0; j < s.length;j++){
+                permission = permit[i];
+                //}
+                //}
+
+                Toast.makeText(getActivity().getApplicationContext(),permission,Toast.LENGTH_SHORT ).show();
+                //Toast.makeText(getActivity().getApplicationContext(),Item.getClassificationNumber(),Toast.LENGTH_SHORT ).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+        confirmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uploadItemInfo(v);
             }
         });
 
@@ -241,6 +303,8 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
 
         //getting the actual path of the image
         String path = getPath(filePath);
+
+        Toast.makeText(getActivity().getApplicationContext(),path,Toast.LENGTH_SHORT).show();
 
         //Uploading code
         try {
@@ -295,8 +359,10 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
             codeContent = scanningResult.getContents();
             Toast.makeText(getActivity(),codeContent,Toast.LENGTH_SHORT).show();
             codeFormat = scanningResult.getFormatName();
+            itemTagAdmin = codeContent;
             // send received data
             parentActivity.scanResultData(codeFormat,codeContent);
+
 
         }else{
             parentActivity.scanResultData(new NoScanResultException(noResultErrorMsg));
@@ -390,6 +456,14 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
 
         String date = year + "-" + month + "-" +day ;
         mDisplayDate.setText(date);
+    }
+
+    public void uploadItemInfo(View view){
+        String currentLocation = locationText.getText().toString().trim();
+        String timestamp =  mDisplayDate.getText().toString().trim();
+
+        TestJson.getUser().administratorAddItem(itemTagAdmin, currentLocation, timestamp, set,
+                permission);
     }
 
 //    public void administratorAddItem(String itemTag) {

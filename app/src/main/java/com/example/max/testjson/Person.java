@@ -313,45 +313,48 @@ public class Person {
         }
 
     }
-//aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-//    public int administratorAddItem(String itemTag, String currentLocation) {
-//
-//        if (currentLocation == "") currentLocation = "GroepT";
-//
-//        JSONObject postdata = new JSONObject();
-//        try {
-//            postdata.put("cardID", this.getCardID());
-//            postdata.put("itemTag", itemTag);
-//            postdata.put("borrowLocation", currentLocation);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//        try {
-//            BackgroundTask.getInstance().postAsyncJsonn(BackgroundTask.borrowItemURL, postdata.toString(), new BackgroundTask.MyCallback() {
-//                @Override
-//                public void onSuccess(String result) {
-//                    Log.i("Success", "result----" + result);
-//                    try {
-//                        JSONObject json = new JSONObject(result);
-//                        error = json.getInt("error_message");
-//                        Log.i("error", Integer.toString(error));
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                }
-//
-//                @Override
-//                public void onFailture() {
-//
-//                }
-//            });
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return error;
-//    }
-//    nbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+
+    public int administratorAddItem(String itemTag, String currentLocation, String timestamp, String itemClassification,
+                                    String itemPermission) {
+
+        if (currentLocation == "") currentLocation = "GroepT";
+
+        JSONObject postdata = new JSONObject();
+        try {
+            postdata.put("itemTag", itemTag);
+            postdata.put("itemLocation", currentLocation);
+            postdata.put("boughtTime", timestamp);
+            postdata.put("itemClassification", itemClassification);
+            postdata.put("itemPermission", itemPermission);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            BackgroundTask.getInstance().postAsyncJsonn(BackgroundTask.addNewItemURL, postdata.toString(), new BackgroundTask.MyCallback() {
+                @Override
+                public void onSuccess(String result) {
+                    Log.i("Success", "result----" + result);
+                    try {
+                        JSONObject json = new JSONObject(result);
+                        error = json.getInt("error_message");
+                        Log.i("error", Integer.toString(error));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+                @Override
+                public void onFailture() {
+
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return error;
+    }
+
 
 
 }
