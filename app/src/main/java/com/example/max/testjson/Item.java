@@ -1,6 +1,7 @@
 package com.example.max.testjson;
 
 import android.util.Log;
+import android.widget.TextView;
 
 
 import org.json.JSONException;
@@ -8,6 +9,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.Serializable;
+
+import okhttp3.Response;
 
 /**
  * Created by max on 2018/4/5.
@@ -22,7 +25,6 @@ public class Item implements Serializable {
     private int itemPermission;
     private String imageURL;
     private String status;
-    private boolean available;
     int error;
     private String[] itemClassifications;
 
@@ -81,7 +83,28 @@ public class Item implements Serializable {
         return itemClassifications;
     }
 
-    public void setInfos() {
+
+    public void setInfoSyn() {
+        JSONObject postdata = new JSONObject();
+        try {
+            postdata.put("itemTag", getItemTag());
+        } catch(JSONException e){
+            e.printStackTrace();
+        }
+        try{
+            Response response =   BackgroundTask.getInstance().postSyncJson(BackgroundTask.getInfoByItemTagURL, postdata.toString());
+            if (response.isSuccessful()){
+                String responseStr = response.body().string();
+                Log.i("Get item info",responseStr);
+            }else{
+                Log.i("Get item info","error");
+            }
+            } catch (IOException e) {
+                e.printStackTrace();
+        }
+    }
+
+    public void setInfos(final TextView view) {
         JSONObject postdata = new JSONObject();
         try {
             postdata.put("itemTag", getItemTag());
@@ -100,6 +123,7 @@ public class Item implements Serializable {
                         classification = json.getString("itemClassification");
                         status = json.getString("itemStatus");
                         error = json.getInt("error_message");
+                        view.setText(itemLocation + " at " +classification);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

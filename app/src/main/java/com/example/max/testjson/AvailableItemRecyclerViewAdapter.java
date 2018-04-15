@@ -1,26 +1,33 @@
 package com.example.max.testjson;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.example.max.testjson.AvailableItemFragment.OnListFragmentInteractionListener;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 
-public class AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter<AvailableItemRecyclerViewAdapter.ViewHolder> {
+public class AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter<AvailableItemRecyclerViewAdapter.ViewHolder> implements Filterable{
 
-    private final List<AvailableItem> mValues;
+    private List<AvailableItem> mValues;
+    private List<AvailableItem> tempValue;
     private final OnListFragmentInteractionListener mListener;
+    TestFilter myFilter;
 
     public AvailableItemRecyclerViewAdapter(List<AvailableItem> items, OnListFragmentInteractionListener listener) {
         mValues = items;
+        tempValue = items;
         mListener = listener;
     }
 
@@ -34,8 +41,10 @@ public class AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter<Avail
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mLocationView.setText(mValues.get(position).getItemLocation());
-        holder.mTypeView.setText(mValues.get(position).getClassification());
+        String content = holder.mItem.getClassification() + " at "+holder.mItem.getItemLocation();
+        holder.mContent.setText(content);
+        if(((Student)TestJson.getUser()).inWishList(holder.mItem))
+                holder.mCheckBox.setChecked(true);
         holder.mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
             @Override
@@ -43,11 +52,11 @@ public class AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter<Avail
             {
                 if ( isChecked )
                 {
-                    TestJson.getUser().addItemToWish(holder.mItem);
+                    ((Student)TestJson.getUser()).addItemToWish(holder.mItem);
                 }
                 else
                 {
-                    TestJson.getUser().removeItemFromWish(holder.mItem);
+                    ((Student)TestJson.getUser()).removeItemFromWish(holder.mItem);
                 }
 
             }
@@ -57,8 +66,6 @@ public class AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter<Avail
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
                     mListener.onListFragmentInteraction(holder.mItem);
                 }
             }
@@ -72,22 +79,67 @@ public class AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter<Avail
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mLocationView;
-        public final TextView mTypeView;
+        public final TextView mContent;
         public AvailableItem mItem;
         public CheckBox mCheckBox;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mLocationView = (TextView) view.findViewById(R.id.location);
-            mTypeView = (TextView) view.findViewById(R.id.type);
+            mContent = (TextView) view.findViewById(R.id.content);
             mCheckBox = (CheckBox)view.findViewById(R.id.add_to_wish);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '"  + " '" + mTypeView.getText() + " '" + mLocationView.getText() + "'" +  " '";
+            return super.toString()+mContent.getText();
         }
     }
+
+    @Override
+    public Filter getFilter() {
+
+        if (myFilter == null) {
+            myFilter = new TestFilter();
+        }
+        return myFilter;
+    }
+
+    class TestFilter extends Filter {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+
+            List<AvailableItem> newItemList = new ArrayList<AvailableItem>();
+            if (constraint != null && constraint.toString().trim().length() > 0) {
+                for (int i = 0; i < tempValue.size(); i++) {
+                    String content = tempValue.get(i).getClassification() + " "+tempValue.get(i).getItemLocation();
+                    if (content.contains(constraint)) {
+                        newItemList.add(tempValue.get(i));
+
+                    }
+                }
+
+            }else {
+                newItemList = tempValue;
+            }
+            FilterResults filterResults = new FilterResults();
+            filterResults.count = newItemList.size();
+            filterResults.values = newItemList;
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            mValues = (List)results.values;
+            if (results.count > 0) {
+                notifyDataSetChanged();
+            } else {
+                mValues = new ArrayList(){};
+                notifyDataSetChanged();
+            }
+
+        }
+
+    }
+
 }

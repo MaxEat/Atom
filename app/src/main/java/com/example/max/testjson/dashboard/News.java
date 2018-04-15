@@ -26,25 +26,33 @@ public class News {
         return newsTitle;
     }
 
-    public static ArrayList<News> createDashBoard(Person person) {
-        ArrayList<News> dashboard = new ArrayList<>();
-        ArrayList<Item> wishes = person.getWishItems();
-        for (Item wish:wishes) {
-            if(wish.checkItemAvailable())
-            {
-                News news = new Wish_Item_Available_News(wish);
-                dashboard.add(news);
-            }
-        }
-        ArrayList<BorrowedItem> borrowedItems = person.getBorrowedItems();
-        for(BorrowedItem borrowedItem:borrowedItems) {
-            if(Integer.parseInt(borrowedItem.getLeftDays()) <= TestJson.alertDay){
-                News news = new Item_Expiring_News(borrowedItem);
-                dashboard.add(news);
-            }
-        }
-        return dashboard;
-    }
+//    public static ArrayList<News> createDashBoard(Person person) {
+//        ArrayList<News> dashboard = new ArrayList<>();
+//
+//        if(TestJson.getUser().getUserType() == "Student")
+//        {
+//            ArrayList<Item> wishes = person.getWishItems();
+//            for (Item wish:wishes) {
+//                if(wish.checkItemAvailable())
+//                {
+//                    News news = new Wish_Item_Available_News(wish);
+//                    dashboard.add(news);
+//                }
+//            }
+//            ArrayList<BorrowedItem> borrowedItems = person.getBorrowedItems();
+//            for(BorrowedItem borrowedItem:borrowedItems) {
+//                if(Integer.parseInt(borrowedItem.getLeftDays()) <= TestJson.alertDay){
+//                    News news = new Item_Expiring_News(borrowedItem);
+//                    dashboard.add(news);
+//                }
+//            }
+//        }
+//        if(TestJson.getUser().getUserType() == "Worker"){
+//
+//        }
+//
+//        return dashboard;
+//    }
 
 
 

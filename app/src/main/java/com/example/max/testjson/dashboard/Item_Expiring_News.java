@@ -12,10 +12,10 @@ import com.example.max.testjson.Item;
 public class Item_Expiring_News extends News {
     private BorrowedItem item;
 
-    Item_Expiring_News(BorrowedItem item) {
+    public Item_Expiring_News(BorrowedItem item) {
         Log.i("info","expiring create");
         newsTitle = "Expiring";
-        newsContent = "The item" + item.getClassification()+" you are borrowing is expired!";
+        newsContent = "The item " + item.getClassification()+" you are borrowing is expired!";
     }
 
 

@@ -41,8 +41,8 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home,null);
         ListView list = (ListView)view.findViewById(R.id.list_view_home);
-
         ArrayList<HashMap<String, Object>> listItem = new ArrayList<HashMap<String, Object>>();
+
         ArrayList<News> personalNews = TestJson.getUser().getDashboard();
         for(News news: personalNews)
         {

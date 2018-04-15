@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.example.max.testjson.BorrowedFragment.OnListFragmentInteractionListener;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 
@@ -39,6 +41,7 @@ public class BorrowedItemRecyclerViewAdapter extends RecyclerView.Adapter<Borrow
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         Picasso.with(this.context).load(mValues.get(position).getImageURL());
+        holder.mClassification.setText(mValues.get(position).getClassification());
         holder.mContentView.setText(mValues.get(position).getBorrowedLocation() + " "+ mValues.get(position).getBorrowedTimeStamp());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -60,6 +63,7 @@ public class BorrowedItemRecyclerViewAdapter extends RecyclerView.Adapter<Borrow
         public final View mView;
         public final ImageView mImage;
         public final TextView mContentView;
+        public final TextView mClassification;
 
         public BorrowedItem mItem;
 
@@ -68,11 +72,12 @@ public class BorrowedItemRecyclerViewAdapter extends RecyclerView.Adapter<Borrow
             mView = view;
             mImage = (ImageView)view.findViewById(R.id.imageView);
             mContentView = (TextView) view.findViewById(R.id.content);
+            mClassification = (TextView)view.findViewById(R.id.classfication);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + mClassification + " '" + mContentView.getText() + " '";
         }
     }
 }

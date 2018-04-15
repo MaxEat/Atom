@@ -35,12 +35,6 @@ public class BorrowedItem extends Item implements Serializable{
         return borrowedLocation;
     }
 
-
-
-    BorrowedItem() {
-        super();
-    }
-
     BorrowedItem(String ItemTag) {
         super(ItemTag);
     }

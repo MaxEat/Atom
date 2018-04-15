@@ -2,6 +2,8 @@ package com.example.max.testjson;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
@@ -30,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     private IPlusSL3 plusSL3 = null;
     private NxpNfcLib libInstance = null;
-    private CardType mCardType = CardType.UnknownCard;
+    private CardType mCardType = CardType.UnknownCard; //不能删
 
 
     @Override
@@ -80,6 +82,63 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void checkUserType(String kuleuvenID, String userName, String email, String userType, String id){
+
+        if (userType.equals("Administrator"))
+        {
+          showDialog(kuleuvenID, userName, email, userType, id);
+        }
+        else
+        {
+            Person user = new Student(userName, kuleuvenID, email);
+            user.setUserType(userType);
+            user.setCardID(id);
+            user.getAllItem();
+            TestJson.setUser(user);
+
+            Intent personalIntent = new Intent(MainActivity.this, PersonalActivity.class);
+            Toast.makeText(getApplicationContext(), "Found Person", Toast.LENGTH_SHORT).show();
+            startActivity(personalIntent);
+        }
+
+
+    }
+    public void showDialog(final String kuleuvenID, final String userName, final String email, final String userType, final String cardid) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setPositiveButton(R.string.administrator, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+                Person user = new Worker(userName, kuleuvenID, email);
+                user.setCardID(cardid);
+                user.setUserType(userType);
+                TestJson.setUser(user);
+
+                Intent adminIntent = new Intent(MainActivity.this, AdminActivity.class);
+                Toast.makeText(getApplicationContext(), "Found Administrator", Toast.LENGTH_SHORT).show();
+                startActivity(adminIntent);
+            }
+        });
+        builder.setNegativeButton(R.string.user, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+                Person user = new Student(userName, kuleuvenID, email);
+                user.setCardID(cardid);
+                user.setUserType(userType);
+                user.getAllItem();
+                TestJson.setUser(user);
+
+                AvailableItem.getAllAvailableItems();
+                Intent personalIntent = new Intent(MainActivity.this, PersonalActivity.class);
+                Toast.makeText(getApplicationContext(), "Found Person", Toast.LENGTH_SHORT).show();
+                startActivity(personalIntent);
+
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
     public void checkId(final String id) {
         JSONObject postdata = new JSONObject();
         try {
@@ -101,41 +160,17 @@ public class MainActivity extends AppCompatActivity {
                             registerIntent.putExtra("cardID", id);
                             startActivity(registerIntent);
                         } else {
-                            String studentNumber = json.getString("kuleuvenID");
+                            String kuleuvenID = json.getString("kuleuvenID");
                             String userName = json.getString("userName");
                             String email = json.getString("email");
                             String userType = json.getString("userType");
-                            Person user = new Person(userName,studentNumber,email);
-                            user.setCardID(id);
-                            user.getAllItem();
-                            user.setUserType(userType);
-                            TestJson.setUser(user);
-                            TestJson.getUser().getWishListFromDatabase();
-                            AvailableItem.getAllAvailableItems();
-                            //AvailableItem.getAllAdmin_Overviews();
-
-
-                            if(userType.equals("Student"))
-                            {
-                                Intent personalIntent = new Intent(MainActivity.this, PersonalActivity.class);
-                                Toast.makeText(getApplicationContext(), "Found Person", Toast.LENGTH_SHORT).show();
-                                startActivity(personalIntent);
-
-                            }
-                            if(userType.equals("Worker"))
-                            {
-                                Intent adminIntent = new Intent(MainActivity.this, AdminActivity.class);
-                                Toast.makeText(getApplicationContext(), "Found Administrator", Toast.LENGTH_SHORT).show();
-                                startActivity(adminIntent);
-                            }
-
+                            checkUserType(kuleuvenID, userName, email, userType, id);
                         }
-                    } catch (JSONException e) {
+                    }
+                     catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                 }
-
                 @Override
                 public void onFailture() {
 

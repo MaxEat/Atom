@@ -55,7 +55,7 @@ public class AvailableItem extends Item {
             BackgroundTask.getInstance().postAsyncJsonn(BackgroundTask.getAllAvailableItemsURL, postdata.toString(), new BackgroundTask.MyCallback() {
                 @Override
                 public void onSuccess(String result) {
-                    Log.i("Success", "result----" + result);
+                    Log.i("Success get available", "result----" + result);
                     try {
                         availableItems = new ArrayList<AvailableItem>();
                         availableItemMap = new HashMap<String, AvailableItem>();
