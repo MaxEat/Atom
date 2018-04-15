@@ -8,12 +8,12 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="0dip"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
         android:layout_weight="8"
-        android:src="@drawable/launcher"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
+        android:src="@drawable/launcher"
         app:srcCompat="@drawable/ic_dashboard" />
 
 

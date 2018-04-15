@@ -23,6 +23,7 @@ public class AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter<Avail
     private List<AvailableItem> mValues;
     private List<AvailableItem> tempValue;
     private final OnListFragmentInteractionListener mListener;
+
     TestFilter myFilter;
 
     public AvailableItemRecyclerViewAdapter(List<AvailableItem> items, OnListFragmentInteractionListener listener) {
@@ -70,6 +71,11 @@ public class AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter<Avail
                 }
             }
         });
+    }
+
+
+    public AvailableItem getItem(int position){
+        return mValues.get(position);
     }
 
     @Override
@@ -141,5 +147,8 @@ public class AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter<Avail
         }
 
     }
+
+
+
 
 }

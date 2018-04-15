@@ -7,14 +7,15 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v7.widget.SearchView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Filter;
 import android.widget.Spinner;
-import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 
 
@@ -60,6 +61,7 @@ public class AvailableItemFragment extends Fragment implements SearchView.OnQuer
         } else {
             recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
+
         chooseLocation = (Spinner)view.findViewById(R.id.choose_location);
         String[] items = new String[]{"1", "2", "three"};
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items);
@@ -76,6 +78,29 @@ public class AvailableItemFragment extends Fragment implements SearchView.OnQuer
         return view;
     }
 
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
+//
+//    @Override
+//    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//        AvailableItem city = adapter.getItem(position);
+//
+//        adapter.getFilter().filter(Long.toString(city.getId()),new Filter.FilterListener() {
+//            @Override
+//            public void onFilterComplete(int count) {
+//
+//            }
+//        });
+//    }
 
     @Override
     public void onAttach(Context context) {

@@ -1,7 +1,13 @@
 package com.example.max.testjson;
 
+import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +16,12 @@ import android.widget.TextView;
 import com.example.max.testjson.BorrowedFragment.OnListFragmentInteractionListener;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 
@@ -21,6 +31,7 @@ public class BorrowedItemRecyclerViewAdapter extends RecyclerView.Adapter<Borrow
     private final OnListFragmentInteractionListener mListener;
     private Context context;
 
+
     public BorrowedItemRecyclerViewAdapter(List<BorrowedItem> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
@@ -28,6 +39,10 @@ public class BorrowedItemRecyclerViewAdapter extends RecyclerView.Adapter<Borrow
 
     public void setContext(Context aContext) {
         context = aContext;
+    }
+
+    public Context getContext() {
+        return context;
     }
 
     @Override
@@ -44,6 +59,7 @@ public class BorrowedItemRecyclerViewAdapter extends RecyclerView.Adapter<Borrow
         holder.mClassification.setText(mValues.get(position).getClassification());
         holder.mContentView.setText(mValues.get(position).getBorrowedLocation() + " "+ mValues.get(position).getBorrowedTimeStamp());
 
+
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,6 +68,40 @@ public class BorrowedItemRecyclerViewAdapter extends RecyclerView.Adapter<Borrow
                 }
             }
         });
+        JSONObject postdata = new JSONObject();
+        try {
+            postdata.put("itemClassfication", holder.mItem.getClassification());
+        } catch(JSONException e){
+            e.printStackTrace();
+        }
+
+        try {
+            BackgroundTask.getInstance().postAsyncJsonn(BackgroundTask.getItemPictureURL, postdata.toString(),new BackgroundTask.MyCallback() {
+                @Override
+                public void onSuccess(String result) {
+                    Log.i("Success","result----"+result);
+                    try {
+                        JSONObject json = new JSONObject(result);
+                        String url = json.getString("pictureUrl");
+                        holder.mItem.setImageURL(url);
+                        Log.i("url",url);
+                        Picasso.with(context).load(url).resize(120, 60).into(holder.mImage);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+                @Override
+                public void onFailture() {
+
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
     }
 
     @Override
@@ -73,7 +123,9 @@ public class BorrowedItemRecyclerViewAdapter extends RecyclerView.Adapter<Borrow
             mImage = (ImageView)view.findViewById(R.id.imageView);
             mContentView = (TextView) view.findViewById(R.id.content);
             mClassification = (TextView)view.findViewById(R.id.classfication);
+
         }
+
 
         @Override
         public String toString() {

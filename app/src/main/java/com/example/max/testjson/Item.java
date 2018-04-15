@@ -1,6 +1,9 @@
 package com.example.max.testjson;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -8,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 
 import okhttp3.Response;
@@ -25,6 +29,7 @@ public class Item implements Serializable {
     private int itemPermission;
     private String imageURL;
     private String status;
+    private Bitmap bitmap;
     int error;
 
     Item() { }
@@ -76,22 +81,75 @@ public class Item implements Serializable {
     }
 
     public void setInfoSyn() {
-        JSONObject postdata = new JSONObject();
+        final JSONObject postdata = new JSONObject();
         try {
             postdata.put("itemTag", getItemTag());
         } catch(JSONException e){
             e.printStackTrace();
         }
-        try{
-            Response response =   BackgroundTask.getInstance().postSyncJson(BackgroundTask.getInfoByItemTagURL, postdata.toString());
-            if (response.isSuccessful()){
+        new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        Response response = BackgroundTask.getInstance().postSyncJson(BackgroundTask.getInfoByItemTagURL, postdata.toString());
+                        if (response.isSuccessful()) {
+                            String responseStr = response.body().string();
+                            Log.i("Get item info", responseStr);
+                        } else {
+                            Log.i("Get item info", "error");
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+        }.start();
+    }
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    public void setBitmap() {
+        try {
+            InputStream in = new java.net.URL(imageURL).openStream();
+            bitmap = BitmapFactory.decodeStream(in);
+
+        } catch (Exception e) {
+            Log.e("Error Message", e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
+
+    public void setImageFromDatabase() {
+        final JSONObject postdata = new JSONObject();
+
+        try {
+            postdata.put("itemClassification", getClassification());
+            Response response = BackgroundTask.getInstance().postSyncJson(BackgroundTask.getItemPictureURL, postdata.toString());
+            if (response.isSuccessful()) {
                 String responseStr = response.body().string();
-                Log.i("Get item info",responseStr);
-            }else{
-                Log.i("Get item info","error");
+                JSONObject json = new JSONObject(responseStr);
+                imageURL = json.getString("pictureUrl");
+                Log.i("Get item info", imageURL);
+
+                try {
+                    InputStream in = new java.net.URL(imageURL).openStream();
+                    bitmap = BitmapFactory.decodeStream(in);
+
+                } catch (Exception e) {
+                    Log.e("Error Message", e.getMessage());
+                    e.printStackTrace();
+                }
+
+            } else {
+                Log.i("Get item info", "error");
             }
-            } catch (IOException e) {
-                e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 

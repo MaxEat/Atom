@@ -1,15 +1,22 @@
 package com.example.max.testjson;
 
+
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.app.FragmentManager;
+
+import java.io.InputStream;
 
 public class BorrowedFragment extends Fragment {
 
@@ -17,6 +24,8 @@ public class BorrowedFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    private RecyclerView recyclerView;
+    private BorrowedItemRecyclerViewAdapter adapter;
 
     public BorrowedFragment() { }
 
@@ -26,6 +35,7 @@ public class BorrowedFragment extends Fragment {
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
         return fragment;
+
     }
 
     @Override
@@ -45,22 +55,19 @@ public class BorrowedFragment extends Fragment {
 
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-
-            BorrowedItemRecyclerViewAdapter adapter =  new BorrowedItemRecyclerViewAdapter(TestJson.getUser().getBorrowedItems(), mListener);
+            adapter = new BorrowedItemRecyclerViewAdapter(TestJson.getUser().getBorrowedItems(), mListener);
             adapter.setContext(getContext());
             recyclerView.setAdapter(adapter);
             recyclerView.addItemDecoration(new DividerItemDecoration(
                     getContext(), DividerItemDecoration.VERTICAL));
             recyclerView.addItemDecoration(new DividerItemDecoration(
                     getContext(), DividerItemDecoration.HORIZONTAL));
-
-
         }
         return view;
     }

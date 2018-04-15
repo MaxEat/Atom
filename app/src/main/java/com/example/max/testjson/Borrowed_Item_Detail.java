@@ -8,6 +8,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import org.w3c.dom.Text;
 
 public class Borrowed_Item_Detail extends AppCompatActivity {
@@ -47,6 +49,10 @@ public class Borrowed_Item_Detail extends AppCompatActivity {
         borrowDate.setEnabled(false);
         returnDate.setEnabled(false);
         daysLeft.setEnabled(false);
+
+        Log.i("url__",currentItem.getImageURL());
+        Picasso.with(getApplicationContext()).load(currentItem.getImageURL()).resize(100, 60).into(imageView);
+
 
     }
 }
