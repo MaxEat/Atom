@@ -24,6 +24,7 @@ public class Item implements Serializable {
     private String status;
     private boolean available;
     int error;
+    private String[] itemClassifications;
 
     Item() { }
 
@@ -71,6 +72,13 @@ public class Item implements Serializable {
 
     public void setItemLocation(String location) {
         itemLocation = location;
+    }
+
+    public String[] getAllClassifications(){
+
+
+
+        return itemClassifications;
     }
 
     public void setInfos() {

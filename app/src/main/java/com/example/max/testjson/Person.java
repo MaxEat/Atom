@@ -406,6 +406,45 @@ public class Person {
             e.printStackTrace();
         }
     }
+//aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+//    public int administratorAddItem(String itemTag, String currentLocation) {
+//
+//        if (currentLocation == "") currentLocation = "GroepT";
+//
+//        JSONObject postdata = new JSONObject();
+//        try {
+//            postdata.put("cardID", this.getCardID());
+//            postdata.put("itemTag", itemTag);
+//            postdata.put("borrowLocation", currentLocation);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            BackgroundTask.getInstance().postAsyncJsonn(BackgroundTask.borrowItemURL, postdata.toString(), new BackgroundTask.MyCallback() {
+//                @Override
+//                public void onSuccess(String result) {
+//                    Log.i("Success", "result----" + result);
+//                    try {
+//                        JSONObject json = new JSONObject(result);
+//                        error = json.getInt("error_message");
+//                        Log.i("error", Integer.toString(error));
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                }
+//
+//                @Override
+//                public void onFailture() {
+//
+//                }
+//            });
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return error;
+//    }
+//    nbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 
     public ArrayList<News> getDashboard(){
         Log.i("number of wish", Integer.toString(wishItems.size()));

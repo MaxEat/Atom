@@ -1,10 +1,13 @@
 package com.example.max.testjson;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -14,20 +17,31 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.UploadNotificationConfig;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.UUID;
+
 
 public class Admin_AddItemFragment extends Fragment implements View.OnClickListener{
 
@@ -35,6 +49,27 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
     private Button buttonUpload;
     private ImageView imageView;
     private EditText editText;
+
+    private Button QR;
+    private Button BarCode;
+    private Button TextRecognize;
+
+    //private EditText boughtTime;
+    private static final String TAG = "Admin_AddItemFragment";
+
+    private TextView mDisplayDate;
+    private DatePickerDialog.OnDateSetListener mDateSetListener;
+
+
+    //spinner variable
+    private String[] s ;
+    private String set;
+
+
+
+    //scan variable
+    private String codeFormat,codeContent;
+    private final String noResultErrorMsg = "No scan data received!";
 
     //Image request code
     private int PICK_IMAGE_REQUEST = 1;
@@ -78,11 +113,118 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
         imageView = (ImageView)view. findViewById(R.id.addImage);
         editText = (EditText) view.findViewById(R.id.editTextName);
 
+        QR = (Button)view.findViewById(R.id.QR_scan_admin);
+        BarCode = (Button)view.findViewById(R.id.Barcode_scan_admin);
+        TextRecognize = (Button) view.findViewById(R.id.Text_scan_admin);
+
+        mDisplayDate = (TextView) view.findViewById(R.id.tvDate);
+
+
         //Setting clicklistener
         imageView.setOnClickListener(this);
         buttonUpload.setOnClickListener(this);
+
+        QR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scanQR(v);
+            }
+        });
+        BarCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scanBar(v);
+            }
+        });
+        TextRecognize.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scanText(v);
+            }
+        });
+
+
+        //select bought time
+        mDisplayDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectDate(view);
+            }
+        });
+
+        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                showDate(datePicker,year,month,day);
+            }
+        };
+
+
+        //spinner select item classification
+        s = new String[3] ;
+        s[0] = "laptop";
+        s[1] = "FPGA";
+        s[2] = "ipad";
+
+        Spinner mySpinner = (Spinner) view.findViewById(R.id.spinnerClassification);
+
+        ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_list_item_1,s);
+        myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mySpinner.setAdapter(myAdapter);
+
+        mySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                if (i == 0) {
+                    set = s[0];
+                } else if (i == 1)
+                    set = s[1];
+                else if (i == 2) {
+                    set = s[2];
+                }
+
+                //Log.i("setsetsetsetsetstsetst", set);
+
+                Toast.makeText(getActivity().getApplicationContext(),set,Toast.LENGTH_SHORT ).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+
         // Inflate the layout for this fragment
         return view;
+    }
+
+    public void scanQR(View view) {
+
+        IntentIntegrator integrator = new IntentIntegrator(this.getActivity()).forSupportFragment(this);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
+        integrator.setPrompt("Scan!!");
+        integrator.setCameraId(0);
+        integrator.setBeepEnabled(false);
+        integrator.setBarcodeImageEnabled(false);
+        integrator.initiateScan();
+
+    }
+
+    public void scanBar(View view) {
+        IntentIntegrator integrator = new IntentIntegrator(this.getActivity()).forSupportFragment(this); // use forSupportFragment or forFragment method to use fragments instead of activity
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.ONE_D_CODE_TYPES);
+        integrator.setPrompt(this.getString(R.string.scan_bar_code));
+        // integrator.setResultDisplayDuration(0); // milliseconds to display result on screen after scan
+        integrator.setCameraId(0);  // Use a specific camera of the device
+        integrator.initiateScan();
+    }
+
+    public void scanText(View view) {
+
     }
 
 
@@ -130,6 +272,7 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
     //handling the image chooser activity result
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //upload image
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == getActivity().RESULT_OK && data != null && data.getData() != null) {
@@ -142,6 +285,25 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
                 e.printStackTrace();
             }
         }
+
+        //get tag info
+        //retrieve scan result
+        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        ScanResultReceiver parentActivity = (ScanResultReceiver) this.getActivity();
+
+        if (scanningResult != null) {
+            codeContent = scanningResult.getContents();
+            Toast.makeText(getActivity(),codeContent,Toast.LENGTH_SHORT).show();
+            codeFormat = scanningResult.getFormatName();
+            // send received data
+            parentActivity.scanResultData(codeFormat,codeContent);
+
+        }else{
+            parentActivity.scanResultData(new NoScanResultException(noResultErrorMsg));
+        }
+
+
+
     }
 
     //method to get the file path from uri
@@ -206,5 +368,35 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
             uploadMultipart();
         }
     }
+
+    public void selectDate(View view){
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog dialog = new DatePickerDialog(
+                getContext(),
+                android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+                mDateSetListener,
+                year,month,day);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+    }
+
+    public void showDate(DatePicker datePicker, int year, int month, int day){
+        month = month + 1;
+        Log.d(TAG, "onDateSet: mm/dd/yyy: " + month + "/" + day + "/" + year);
+
+        String date = year + "-" + month + "-" +day ;
+        mDisplayDate.setText(date);
+    }
+
+//    public void administratorAddItem(String itemTag) {
+//
+//        Log.i("state", "borrowing");
+//        TestJson.getUser().administratorAddItem(itemTag, "");
+//
+//    }
 
 }
