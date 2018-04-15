@@ -254,12 +254,12 @@ public class Person {
         return error;
     }
 
-    public int returnItem(Item item) {
+    public int returnItem(String itemTag, String currentLocation) {
         JSONObject postdata = new JSONObject();
         try {
             postdata.put("cardID", getCardID());
-            postdata.put("itemTag", item.getItemTag());
-            postdata.put("returnLocation", item.getItemLocation());
+            postdata.put("itemTag", itemTag);
+            postdata.put("returnLocation", currentLocation);
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -268,7 +268,7 @@ public class Person {
             BackgroundTask.getInstance().postAsyncJsonn(BackgroundTask.returnItemURL, postdata.toString(), new BackgroundTask.MyCallback() {
                 @Override
                 public void onSuccess(String result) {
-                    Log.i("Success", "result----" + result);
+                    Log.i("Success return item", "result----" + result);
                     try {
                         JSONObject json = new JSONObject(result);
                         error = json.getInt("error_message");
@@ -276,7 +276,6 @@ public class Person {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                 }
 
                 @Override

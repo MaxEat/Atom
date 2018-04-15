@@ -53,7 +53,6 @@ public class PersonalActivity extends AppCompatActivity implements BorrowedFragm
                 break;
 
             case R.id.tab_menu_discovery:
-                TestJson.getUser().getAllItem();
                 fragment = mFragments[2];
                 break;
 

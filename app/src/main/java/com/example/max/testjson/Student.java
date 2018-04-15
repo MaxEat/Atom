@@ -1,15 +1,10 @@
 package com.example.max.testjson;
 
 import android.util.Log;
-
-import com.example.max.testjson.dashboard.Item_Expiring_News;
-import com.example.max.testjson.dashboard.News;
 import com.example.max.testjson.dashboard.Wish_Item_Available_News;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -29,6 +24,7 @@ public class Student extends Person {
     public void getAllItem(){
         super.getAllItem();
         getWishListFromDatabase();
+        AvailableItem.getAllAvailableItems();
     }
 
     public void getWishListFromDatabase() {
@@ -154,5 +150,14 @@ public class Student extends Person {
                 dashboard.add(news);
             }
         }
+    }
+
+    public boolean inWishList(Item item) {
+        for(Item i:wishItems){
+            if(i.getItemLocation().equals(item.getItemLocation()) && i.getClassification().equals(item.getClassification())){
+                return true;
+            }
+        }
+        return false;
     }
 }

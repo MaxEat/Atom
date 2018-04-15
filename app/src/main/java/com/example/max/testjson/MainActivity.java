@@ -94,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
             user.setUserType(userType);
             user.setCardID(id);
             user.getAllItem();
-            AvailableItem.getAllAvailableItems();
             TestJson.setUser(user);
 
             Intent personalIntent = new Intent(MainActivity.this, PersonalActivity.class);

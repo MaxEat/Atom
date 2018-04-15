@@ -3,6 +3,7 @@ package com.example.max.testjson;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v7.widget.RecyclerView;
 
 import java.io.IOException;
 
@@ -65,6 +66,13 @@ public class BackgroundTask {
         final RequestBody requestBody = RequestBody.create(MEDIA_TYPE, json);
         final Request request = new Request.Builder().url(url).post(requestBody).build();
         deliveryResult(mOkHttpClient.newCall(request),mCallback);
+    }
+
+
+    public Response postSyncJson(String url, String json) throws IOException {
+        final RequestBody requestBody = RequestBody.create(MEDIA_TYPE, json);
+        final Request request = new Request.Builder().url(url).post(requestBody).build();
+        return mOkHttpClient.newCall(request).execute();
     }
 
     private void deliveryResult(final Call call, final  MyCallback mCallback) {

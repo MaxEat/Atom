@@ -1,27 +1,39 @@
 package com.example.max.testjson;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v4.app.Fragment;
 
+import com.google.zxing.client.android.Intents;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import okhttp3.Response;
 
 public class AddItemFragment extends Fragment {
 
     private Button QR;
     private Button BarCode;
     private Button TextRecognize;
+    private Button Return_UnMaintain;
+    private Button Borrow_Maintain;
+    private TextView ScanResult;
+    private ImageView ItemImage;
 
+    private String itemTag;
     private String codeFormat,codeContent;
     private final String noResultErrorMsg = "No scan data received!";
     private static int dataGenerator;
@@ -48,6 +60,19 @@ public class AddItemFragment extends Fragment {
         QR = (Button)view.findViewById(R.id.QR_scan);
         BarCode = (Button)view.findViewById(R.id.Barcode_scan);
         TextRecognize = (Button) view.findViewById(R.id.Text_scan);
+        Return_UnMaintain = (Button) view.findViewById(R.id.return_item);
+        Borrow_Maintain = (Button) view.findViewById(R.id.borrow_item);
+        ScanResult = (TextView) view.findViewById(R.id.scan_result);
+        ItemImage = (ImageView)view.findViewById(R.id.itemImage);
+
+        if(dataGenerator == 1){
+            Return_UnMaintain.setText("RETURN");
+            Borrow_Maintain.setText("BORROW");
+        }
+        else{
+            Return_UnMaintain.setText("UnMaintain");
+            Borrow_Maintain.setText("Maintain");
+        }
 
         QR.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,7 +92,43 @@ public class AddItemFragment extends Fragment {
                 scanText(v);
             }
         });
+        Return_UnMaintain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(dataGenerator == 1){
+                    returnItem();
+                }
+                else {
+                    updateItemState();
+                }
+
+
+            }
+        });
+        Borrow_Maintain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(dataGenerator == 1){
+                    borrowItem();
+                }
+                else {
+                    updateItemState();
+                }
+
+            }
+        });
         return view;
+    }
+
+    private void returnItem() {
+        Log.i("state", "returning");
+        TestJson.getUser().returnItem(itemTag, "");
+    }
+
+    private void borrowItem() {
+
+        Log.i("state", "borrowing");
+        TestJson.getUser().borrowItem(itemTag, "");
     }
 
     public void scanQR(View view) {
@@ -102,38 +163,25 @@ public class AddItemFragment extends Fragment {
         ScanResultReceiver parentActivity = (ScanResultReceiver) this.getActivity();
 
         if (scanningResult != null) {
-
-
             codeContent = scanningResult.getContents();
-            Toast.makeText(getActivity(),codeContent,Toast.LENGTH_SHORT).show();
             codeFormat = scanningResult.getFormatName();
-            // send received data
             parentActivity.scanResultData(codeFormat,codeContent);
-            if(dataGenerator == 1){
-                studentBorrowItem(codeContent);
-            }
-            else{
-                updateItemState(codeContent);
-            }
-
+            setItemTag(codeContent);
         }else{
             parentActivity.scanResultData(new NoScanResultException(noResultErrorMsg));
         }
     }
 
-
-    public void studentBorrowItem(String itemTag) {
-
-        Log.i("state", "borrowing");
-        TestJson.getUser().borrowItem(itemTag, "");
-
+    public void setItemTag(String tag) {
+        itemTag = tag;
+        Item item = new Item(tag);
+        item.setInfos(ScanResult);
+       // ScanResult.setText(item.getClassification()+" at " + item.getItemLocation());
     }
 
-    public void updateItemState(String itemTag) {
-
-        Log.i("updateState", "maintaining");
+    public void updateItemState() {
+        Log.i("updateState", "maintain or unmaintain");
         TestJson.getUser().updateItemState(itemTag);
-
     }
 
 }

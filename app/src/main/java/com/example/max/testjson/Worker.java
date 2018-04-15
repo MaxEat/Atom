@@ -33,13 +33,6 @@ public class Worker extends Person{
     public void getExpiredItemPersonDatabase() {
         JSONObject postdata = new JSONObject();
         try {
-            postdata.put("location", administorLocation);
-            postdata.put("type", administorType);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        try {
             BackgroundTask.getInstance().postAsyncJsonn(BackgroundTask.getExpiredItemURL, postdata.toString(), new BackgroundTask.MyCallback() {
                 @Override
                 public void onSuccess(String result) {
