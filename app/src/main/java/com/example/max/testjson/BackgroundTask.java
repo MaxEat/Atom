@@ -36,11 +36,13 @@ public class BackgroundTask {
     static String getInfoByItemTagURL = "https://labtools.groept.be/inventory/sql/php_getItemInfoByTag.php";
     static String getAllWishListItemsURL = "https://labtools.groept.be/inventory/sql/php_getWishItems.php";
     static String updateItemStateUrl = "https://labtools.groept.be/inventory/sql/php_maintainItem.php";
+    static final String getPictureNumberUrl = "https://labtools.groept.be/inventory/sql/php_getItemPictureNumber.php";
+    static final String getAllClassificationsURL = "https://labtools.groept.be/inventory/sql/php_getAllClassifications.php";
     static String getExpiredItemURL = "https://labtools.groept.be/inventory/sql/php_getExpiredItems.php";
+    static String addNewItemURL = "https://labtools.groept.be/inventory/sql/php_addItem.php";
     static final String UPLOAD_URL = "https://labtools.groept.be/inventory/upload.php";
     static final String IMAGES_URL = "http://labtools.groept.be/inventory/getImages.php";
     static final String getItemPictureURL = "https://labtools.groept.be/inventory/getImages.php";
-
 
     private Handler okHttpHandler;
     private OkHttpClient mOkHttpClient;
