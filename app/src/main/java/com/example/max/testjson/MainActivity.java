@@ -1,6 +1,7 @@
 package com.example.max.testjson;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -26,6 +27,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import static com.example.max.testjson.TestJson.wv;
+
 public class MainActivity extends  AppCompatActivity implements BorrowedFragment.OnListFragmentInteractionListener, AvailableItemFragment.OnListFragmentInteractionListener, SettingFragment.OnFragmentInteractionListener,ScanResultReceiver{
 
     private android.support.v4.app.Fragment[]mFragments;
@@ -46,6 +49,11 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        wv = (CustomedWebview) findViewById(R.id.webview);
+        wv.getSettings().setJavaScriptEnabled(true);
+        wv.getSettings().setDomStorageEnabled(true);
+        wv.hide();
         mFragments = DataGenerator.getFragments("BottomNavigationView Tab");
         getPermission();
         initializeLibrary();
@@ -90,7 +98,8 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
 
     }
 
-    public void checkUserType(String kuleuvenID, String userName, String email, String userType, String id){
+    @SuppressLint("JavascriptInterface")
+    public void checkUserType(String kuleuvenID, String userName, String email, String userType, String id) throws IOException {
 
         if (userType.equals("Administrator"))
         {
@@ -99,9 +108,12 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
         else
         {
             Person user = new Student(userName, kuleuvenID, email);
+            wv.addJavascriptInterface(user, "Person");
             user.setUserType(userType);
             user.setCardID(id);
-            user.getAllItem();
+            user.getAllItem_createJson();
+            wv.loadUrl(CustomedWebview.getAllBorrowedItemsURL);
+//            user.getAllItem();
             TestJson.setUser(user);
 
             fragment = mFragments[5];
@@ -122,9 +134,11 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
     public void showDialog(final String kuleuvenID, final String userName, final String email, final String userType, final String cardid) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setPositiveButton(R.string.administrator, new DialogInterface.OnClickListener() {
+            @SuppressLint("JavascriptInterface")
             public void onClick(DialogInterface dialog, int id) {
 
                 Person user = new Worker(userName, kuleuvenID, email);
+                wv.addJavascriptInterface(user, "Person");
                 user.setCardID(cardid);
                 user.setUserType(userType);
                 TestJson.setUser(user);
@@ -142,19 +156,27 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
             }
         });
         builder.setNegativeButton(R.string.user, new DialogInterface.OnClickListener() {
+            @SuppressLint("JavascriptInterface")
             public void onClick(DialogInterface dialog, int id) {
 
+
+                Log.i("place", "here");
                 Person user = new Student(userName, kuleuvenID, email);
+                wv.addJavascriptInterface(user, "Person");
                 user.setCardID(cardid);
                 user.setUserType(userType);
-                user.getAllItem();
+                try {
+                    user.getAllItem();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 TestJson.setUser(user);
-
                 AvailableItem.getAllAvailableItems();
 
                 fragment = mFragments[5];
 
                 if(fragment!=null) {
+                    Log.i("place", "here2");
                     getSupportFragmentManager().beginTransaction().replace(R.id.home_container_main,fragment).commit();
                 }
 
@@ -211,6 +233,8 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                         }
                     }
                      catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }

@@ -23,6 +23,8 @@ public class Worker extends Person{
     private String administorType;
     private ArrayList<ExpiredItem> expiredItems;
 
+    Worker(String CardID) {super(CardID);}
+
     Worker(String aUserName, String aKuleuvenID, String Email){
         super(aUserName, aKuleuvenID, Email);
         expiredItems = new ArrayList<ExpiredItem>();

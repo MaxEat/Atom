@@ -26,10 +26,10 @@ public class TestJson extends Application {
     private static TestJson instance;
     private static Person user;
     public static int alertDay = 14;
+    public static CustomedWebview wv;
     public static HashMap<String, Integer> permission_days_student = new HashMap<String, Integer>();
     public static HashMap<String, Integer> permission_days_worker = new HashMap<String, Integer>();
 
-    public static WebView wv;
     @Override
     public void onCreate() {
         super.onCreate();

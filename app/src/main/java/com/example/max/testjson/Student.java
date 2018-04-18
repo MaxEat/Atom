@@ -15,13 +15,17 @@ import java.util.ArrayList;
 public class Student extends Person {
     public ArrayList<Item> wishItems;
 
+    Student(String CardID) {
+        super(CardID);
+    }
+
     Student(String aUserName, String aKuleuvenID, String Email){
         super(aUserName, aKuleuvenID, Email);
         wishItems = new ArrayList<Item>();
     }
 
     @Override
-    public void getAllItem(){
+    public void getAllItem() throws IOException {
         super.getAllItem();
         getWishListFromDatabase();
         AvailableItem.getAllAvailableItems();

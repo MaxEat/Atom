@@ -95,12 +95,16 @@ public class AddItemFragment extends Fragment {
         Return_UnMaintain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(dataGenerator == 1){
-                    returnItem();
-                }
-                else {
-                    updateItemState();
-                }
+
+                    try {
+                        if(dataGenerator == 1) {
+                            returnItem();
+                        }
+                        else
+                            updateItemState();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
 
             }
@@ -108,11 +112,14 @@ public class AddItemFragment extends Fragment {
         Borrow_Maintain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(dataGenerator == 1){
-                    borrowItem();
-                }
-                else {
-                    updateItemState();
+                try {
+                    if(dataGenerator == 1) {
+                        borrowItem();
+                    }
+                    else
+                        updateItemState();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
 
             }
@@ -120,12 +127,12 @@ public class AddItemFragment extends Fragment {
         return view;
     }
 
-    private void returnItem() {
+    private void returnItem() throws IOException {
         Log.i("state", "returning");
         TestJson.getUser().returnItem(itemTag, "");
     }
 
-    private void borrowItem() {
+    private void borrowItem() throws IOException {
 
         Log.i("state", "borrowing");
         TestJson.getUser().borrowItem(itemTag, "");
@@ -179,7 +186,7 @@ public class AddItemFragment extends Fragment {
        // ScanResult.setText(item.getClassification()+" at " + item.getItemLocation());
     }
 
-    public void updateItemState() {
+    public void updateItemState() throws IOException {
         Log.i("updateState", "maintain or unmaintain");
         TestJson.getUser().updateItemState(itemTag);
     }
