@@ -39,6 +39,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         userType = (ToggleButton) findViewById(R.id.userType);
         register = (Button) findViewById(R.id.register);
+
+
         wv  = (WebView) findViewById(R.id.webview);
 
         wv.getSettings().setJavaScriptEnabled(true);
@@ -64,7 +66,9 @@ public class RegisterActivity extends AppCompatActivity {
             public void onPageFinished(WebView view, String url) {
                 if(url.contains("secure")) {
                     view.loadUrl("javascript:window.local_obj.getHtmlSource(document.body.innerHTML)");
+
                 }
+
             }
         });
 

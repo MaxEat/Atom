@@ -229,7 +229,7 @@ public class Person {
             e.printStackTrace();
         }
         try {
-            BackgroundTask.getInstance().postAsyncJsonn(BackgroundTask.borrowItemURL, postdata.toString(), new BackgroundTask.MyCallback() {
+            BackgroundTask.getInstance().postAsyncJsonn(BackgroundTask.borrowItemURLSecure, postdata.toString(), new BackgroundTask.MyCallback() {
                 @Override
                 public void onSuccess(String result) {
                     Log.i("Success", "result----" + result);

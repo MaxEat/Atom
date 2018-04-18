@@ -26,6 +26,7 @@ public class BackgroundTask {
     static String registerItemURL = "https://labtools.groept.be/inventory/sql/php_addItem.php";
     static String getAllBorrowedItemsURL = "https://labtools.groept.be/inventory/sql/php_selectItemByUser.php";
     static String borrowItemURL = "https://labtools.groept.be/inventory/sql/php_borrowItem.php";
+    static String borrowItemURLSecure = "https://labtools.groept.be/inventory/secure/php_borrowItem.php";
     static String returnItemURL = "https://labtools.groept.be/inventory/sql/php_returnItem.php";
     static String duplicatePersonURL = "https://labtools.groept.be/inventory/sql/php_duplicatePerson.php";
     static String getInfoByCardURL = "https://labtools.groept.be/inventory/sql/php_getUserInfoByCard.php";
