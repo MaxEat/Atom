@@ -31,7 +31,7 @@ public class Person {
     protected Map<String, BorrowedItem> borrowedItemMAP = new HashMap<String, BorrowedItem>();
     protected ArrayList<News> dashboard;
 
-    Person(String aUserName, String aKuleuvenID, String Email) {
+    public Person(String aUserName, String aKuleuvenID, String Email) {
         kuleuvenID = aKuleuvenID;
         userName = aUserName;
         email = Email;

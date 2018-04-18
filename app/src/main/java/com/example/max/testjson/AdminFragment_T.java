@@ -1,29 +1,47 @@
 package com.example.max.testjson;
 
+import android.content.Context;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
+import android.view.ViewGroup;
+import android.support.v4.app.Fragment;
+import android.widget.TextView;
 
-public class AdminActivity extends AppCompatActivity implements AvailableItemFragment.OnListFragmentInteractionListener,ScanResultReceiver{
+
+public class AdminFragment_T extends Fragment {
     private BottomNavigationView mBottomNavigationView;
-    private Fragment[]mFragments;
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin);
-        mFragments = Admin_DataGenerator.getFragments("adminBottomNavigationView Tab");
-        initView();
+    private android.support.v4.app.Fragment[]mFragments;
+
+    public AdminFragment_T() {
+        // Required empty public constructor
     }
 
-    private void initView() {
-        mBottomNavigationView = (BottomNavigationView) findViewById(R.id.adminBottom_navigation_view);
+    public static AdminFragment_T newInstance() {
+        AdminFragment_T fragment = new AdminFragment_T();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.activity_admin, container, false);
+
+        mFragments = Admin_DataGenerator.getFragments("BottomNavigationView Tab");
+
+        mBottomNavigationView = (BottomNavigationView)view.findViewById(R.id.adminBottom_navigation_view);
         //mBottomNavigationView.getMaxItemCount()
 
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -36,10 +54,14 @@ public class AdminActivity extends AppCompatActivity implements AvailableItemFra
         // 由于第一次进来没有回调onNavigationItemSelected，因此需要手动调用一下切换状态的方法
         onTabItemSelected(R.id.tab_adminMenu_dashboard);
 
+
+        return view;
     }
 
+
+
     private void onTabItemSelected(int id){
-        Fragment fragment = null;
+        android.support.v4.app.Fragment fragment = null;
         switch (id){
             case R.id.tab_adminMenu_dashboard:
                 fragment = mFragments[0];
@@ -62,25 +84,8 @@ public class AdminActivity extends AppCompatActivity implements AvailableItemFra
                 break;
         }
         if(fragment!=null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.adminHome_container,fragment).commit();
+            getChildFragmentManager().beginTransaction().replace(R.id.adminHome_container,fragment).commit();
         }
     }
 
-    @Override
-    public void onListFragmentInteraction(AvailableItem item) {
-
-    }
-
-    @Override
-    public void scanResultData(String codeFormat, String codeContent) {
-        Toast.makeText(this, "FORMAT: " + codeFormat, Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, "CONTENT: " + codeContent, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void scanResultData(NoScanResultException noScanData) {
-        Toast toast = Toast.makeText(this,noScanData.getMessage(), Toast.LENGTH_SHORT);
-        toast.show();
-    }
 }
-

@@ -6,7 +6,9 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,7 +26,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends  AppCompatActivity implements BorrowedFragment.OnListFragmentInteractionListener, AvailableItemFragment.OnListFragmentInteractionListener, SettingFragment.OnFragmentInteractionListener,ScanResultReceiver{
+
+    private android.support.v4.app.Fragment[]mFragments;
 
     private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
     private static final int STORAGE_PERMISSION_WRITE = 113;
@@ -34,11 +38,15 @@ public class MainActivity extends AppCompatActivity {
     private NxpNfcLib libInstance = null;
     private CardType mCardType = CardType.UnknownCard; //不能删
 
+    Fragment fragment = null;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mFragments = DataGenerator.getFragments("BottomNavigationView Tab");
         getPermission();
         initializeLibrary();
     }
@@ -96,9 +104,17 @@ public class MainActivity extends AppCompatActivity {
             user.getAllItem();
             TestJson.setUser(user);
 
-            Intent personalIntent = new Intent(MainActivity.this, PersonalActivity.class);
-            Toast.makeText(getApplicationContext(), "Found Person", Toast.LENGTH_SHORT).show();
-            startActivity(personalIntent);
+            fragment = mFragments[5];
+
+            if(fragment!=null) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.home_container_main,fragment).commit();
+            }
+
+//            Intent personalIntent = new Intent(MainActivity.this, PersonalActivity.class);
+//            Toast.makeText(getApplicationContext(), "Found Person", Toast.LENGTH_SHORT).show();
+//            startActivity(personalIntent);
+
+
         }
 
 
@@ -113,9 +129,16 @@ public class MainActivity extends AppCompatActivity {
                 user.setUserType(userType);
                 TestJson.setUser(user);
 
-                Intent adminIntent = new Intent(MainActivity.this, AdminActivity.class);
-                Toast.makeText(getApplicationContext(), "Found Administrator", Toast.LENGTH_SHORT).show();
-                startActivity(adminIntent);
+
+//                Intent adminIntent = new Intent(MainActivity.this, AdminActivity.class);
+//                Toast.makeText(getApplicationContext(), "Found Administrator", Toast.LENGTH_SHORT).show();
+//                startActivity(adminIntent);
+
+                fragment = mFragments[6];
+
+                if(fragment!=null) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.home_container_main,fragment).commit();
+                }
             }
         });
         builder.setNegativeButton(R.string.user, new DialogInterface.OnClickListener() {
@@ -128,9 +151,16 @@ public class MainActivity extends AppCompatActivity {
                 TestJson.setUser(user);
 
                 AvailableItem.getAllAvailableItems();
-                Intent personalIntent = new Intent(MainActivity.this, PersonalActivity.class);
-                Toast.makeText(getApplicationContext(), "Found Person", Toast.LENGTH_SHORT).show();
-                startActivity(personalIntent);
+
+                fragment = mFragments[5];
+
+                if(fragment!=null) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.home_container_main,fragment).commit();
+                }
+
+//                Intent personalIntent = new Intent(MainActivity.this, PersonalActivity.class);
+//                Toast.makeText(getApplicationContext(), "Found Person", Toast.LENGTH_SHORT).show();
+//                startActivity(personalIntent);
 
             }
         });
@@ -156,9 +186,22 @@ public class MainActivity extends AppCompatActivity {
                         JSONObject json = new JSONObject(result);
                         if (json.getInt("error_message") == 4) {
                             Toast.makeText(getApplicationContext(), "This person does not exist", Toast.LENGTH_SHORT).show();
-                            Intent registerIntent = new Intent(MainActivity.this, RegisterActivity.class);
-                            registerIntent.putExtra("cardID", id);
-                            startActivity(registerIntent);
+
+
+                            fragment = mFragments[7];
+
+                            Bundle bundle = new Bundle();
+                            bundle.putString("cardID",id);
+                            fragment.setArguments(bundle);
+
+                            if(fragment!=null) {
+                                getSupportFragmentManager().beginTransaction().replace(R.id.home_container_main,fragment).commit();
+                            }
+
+
+//                            Intent registerIntent = new Intent(MainActivity.this, RegisterActivity.class);
+//                            registerIntent.putExtra("cardID", id);
+//                            startActivity(registerIntent);
                         } else {
                             String kuleuvenID = json.getString("kuleuvenID");
                             String userName = json.getString("userName");
@@ -246,6 +289,37 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+
+    @Override
+    public void onListFragmentInteraction(BorrowedItem borrowedItem) {
+        Intent intent = new Intent(this, Borrowed_Item_Detail.class);
+        intent.putExtra("item",borrowedItem);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onListFragmentInteraction(AvailableItem item) {
+
+    }
+
+
+    @Override
+    public void scanResultData(String codeFormat, String codeContent) {
+        Toast.makeText(this, "FORMAT: " + codeFormat, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "CONTENT: " + codeContent, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void scanResultData(NoScanResultException noScanData) {
+        Toast toast = Toast.makeText(this,noScanData.getMessage(), Toast.LENGTH_SHORT);
+        toast.show();
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 
 

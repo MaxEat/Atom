@@ -17,12 +17,16 @@ public class DataGenerator {
     public static final String []mTabTitle = new String[]{"首页","发现","关注","我的"};
 
     public static Fragment[] getFragments(String from){
-        Fragment fragments[] = new Fragment[5];
+        Fragment fragments[] = new Fragment[8];
         fragments[0] = HomeFragment.newInstance(from);
         fragments[1] = AddItemFragment.newInstance(1);
         fragments[2] = BorrowedFragment.newInstance(2);
         fragments[3] = AvailableItemFragment.newInstance(1);
         fragments[4] = SettingFragment.newInstance();
+        fragments[5] = PersonalFragment_T.newInstance();
+        fragments[6] = AdminFragment_T.newInstance();
+        fragments[7] = RegisterFragment_T.newInstance();
+
         return fragments;
     }
 
