@@ -254,7 +254,11 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploadItemInfo(v);
+                try {
+                    uploadItemInfo(v);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -458,7 +462,7 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
         mDisplayDate.setText(date);
     }
 
-    public void uploadItemInfo(View view){
+    public void uploadItemInfo(View view) throws IOException {
         String currentLocation = locationText.getText().toString().trim();
         String timestamp =  mDisplayDate.getText().toString().trim();
 
