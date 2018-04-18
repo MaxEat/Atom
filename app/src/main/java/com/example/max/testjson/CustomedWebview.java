@@ -51,6 +51,10 @@ public class CustomedWebview extends WebView {
         setVisibility(View.VISIBLE);
     }
 
+    @SuppressLint("JavascriptInterface")
+    public void addInterface(Object object, String name) {
+        addJavascriptInterface(object, name);
+    }
 
     @SuppressLint("JavascriptInterface")
     CustomedWebview(Context context, AttributeSet attr) {
@@ -106,27 +110,27 @@ public class CustomedWebview extends WebView {
 
 
                 //here
-                if(url.equals(registerItemURL))
-                    view.loadUrl("javascript:window.local_obj.parseBorrowItem(document.body.innerHTML)");
-
-
-                if(url.equals(getInfoByCardURL))
-                    view.loadUrl("javascript:window.local_obj.parseBorrowItem(document.body.innerHTML)");
-
-
-
-                if(url.equals(addItemToWishListURL))
-                    view.loadUrl("javascript:window.local_obj.parseBorrowItem(document.body.innerHTML)");
-
-                if(url.equals(removeItemFromWishListURL))
-                    view.loadUrl("javascript:window.local_obj.parseBorrowItem(document.body.innerHTML)");
-
-                if(url.equals(checkItemAvailableURL))
-                    view.loadUrl("javascript:window.local_obj.parseBorrowItem(document.body.innerHTML)");
-
-
-                if(url.equals(getAllWishListItemsURL))
-                    view.loadUrl("javascript:window.local_obj.parseBorrowItem(document.body.innerHTML)");
+//                if(url.equals(registerItemURL))
+//                    view.loadUrl("javascript:window.local_obj.parseBorrowItem(document.body.innerHTML)");
+//
+//
+//                if(url.equals(getInfoByCardURL))
+//                    view.loadUrl("javascript:window.local_obj.parseBorrowItem(document.body.innerHTML)");
+//
+//
+//
+//                if(url.equals(addItemToWishListURL))
+//                    view.loadUrl("javascript:window.local_obj.parseBorrowItem(document.body.innerHTML)");
+//
+//                if(url.equals(removeItemFromWishListURL))
+//                    view.loadUrl("javascript:window.local_obj.parseBorrowItem(document.body.innerHTML)");
+//
+//                if(url.equals(checkItemAvailableURL))
+//                    view.loadUrl("javascript:window.local_obj.parseBorrowItem(document.body.innerHTML)");
+//
+//
+//                if(url.equals(getAllWishListItemsURL))
+//                    view.loadUrl("javascript:window.local_obj.parseBorrowItem(document.body.innerHTML)");
 
 
             }

@@ -122,12 +122,6 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
             if(fragment!=null) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.home_container_main,fragment).commit();
             }
-
-//            Intent personalIntent = new Intent(MainActivity.this, PersonalActivity.class);
-//            Toast.makeText(getApplicationContext(), "Found Person", Toast.LENGTH_SHORT).show();
-//            startActivity(personalIntent);
-
-
         }
 
 
@@ -143,11 +137,6 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                 user.setCardID(cardid);
                 user.setUserType(userType);
                 TestJson.setUser(user);
-
-
-//                Intent adminIntent = new Intent(MainActivity.this, AdminActivity.class);
-//                Toast.makeText(getApplicationContext(), "Found Administrator", Toast.LENGTH_SHORT).show();
-//                startActivity(adminIntent);
 
                 fragment = mFragments[6];
 
@@ -181,10 +170,6 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                     getSupportFragmentManager().beginTransaction().replace(R.id.home_container_main,fragment).commit();
                 }
 
-//                Intent personalIntent = new Intent(MainActivity.this, PersonalActivity.class);
-//                Toast.makeText(getApplicationContext(), "Found Person", Toast.LENGTH_SHORT).show();
-//                startActivity(personalIntent);
-
             }
         });
 
@@ -197,7 +182,6 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
         try {
             postdata.put("cardID", id);
         } catch (JSONException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         try {
@@ -220,11 +204,6 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                             if(fragment!=null) {
                                 getSupportFragmentManager().beginTransaction().replace(R.id.home_container_main,fragment).commit();
                             }
-
-
-//                            Intent registerIntent = new Intent(MainActivity.this, RegisterActivity.class);
-//                            registerIntent.putExtra("cardID", id);
-//                            startActivity(registerIntent);
                         } else {
                             String kuleuvenID = json.getString("kuleuvenID");
                             String userName = json.getString("userName");

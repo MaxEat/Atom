@@ -71,7 +71,7 @@ public class AvailableItem extends Item {
         try {
             availableItems = new ArrayList<AvailableItem>();
             availableItemMap = new HashMap<String, AvailableItem>();
-            JSONObject jsonObject = null;
+            JSONObject jsonObject =  new JSONObject(htmlSource);;
 
             JSONArray jsonArray = jsonObject.getJSONArray("list");
             for (int i = 0; i < jsonArray.length(); i++) {

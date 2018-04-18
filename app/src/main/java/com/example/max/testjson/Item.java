@@ -227,44 +227,7 @@ public class Item implements Serializable {
         }
     }
 
-//    public void setImageFromDatabase() {
-//        final JSONObject postdata = new JSONObject();
-//
-//        try {
-//            postdata.put("itemClassification", getClassification());
-//            Response response = BackgroundTask.getInstance().postSyncJson(BackgroundTask.getItemPictureURL, postdata.toString());
-//            if (response.isSuccessful()) {
-//                String responseStr = response.body().string();
-//                JSONObject json = new JSONObject(responseStr);
-//                imageURL = json.getString("pictureUrl");
-//                Log.i("Get item info", imageURL);
-//
-//                try {
-//                    InputStream in = new java.net.URL(imageURL).openStream();
-//                    bitmap = BitmapFactory.decodeStream(in);
-//
-//                } catch (Exception e) {
-//                    Log.e("Error Message", e.getMessage());
-//                    e.printStackTrace();
-//                }
-//
-//            } else {
-//                Log.i("Get item info", "error");
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
-    // create internet json
-    protected byte[] createJson(JSONObject postdata) throws IOException {
-        StringEntity se = new StringEntity(postdata.toString(),"UTF-8");
-        se.setContentType("application/json");
-        byte[] array = EntityUtils.toByteArray(se);
-        return array;
-    }
 
     public void setInfos() throws IOException {
         byte[] array = setInfos_createJson();
@@ -274,6 +237,15 @@ public class Item implements Serializable {
     public void setImageFromDataBase() throws IOException {
         byte[] array = setInfos_createJson();
         wv.postUrl(CustomedWebview.getItemPictureURL, array);
+    }
+
+
+    // create internet json
+    protected byte[] createJson(JSONObject postdata) throws IOException {
+        StringEntity se = new StringEntity(postdata.toString(),"UTF-8");
+        se.setContentType("application/json");
+        byte[] array = EntityUtils.toByteArray(se);
+        return array;
     }
 
     protected byte[] setInfos_createJson() throws IOException {
@@ -369,6 +341,36 @@ public class Item implements Serializable {
 //    }
 
 
+//    public void setImageFromDatabase() {
+//        final JSONObject postdata = new JSONObject();
+//
+//        try {
+//            postdata.put("itemClassification", getClassification());
+//            Response response = BackgroundTask.getInstance().postSyncJson(BackgroundTask.getItemPictureURL, postdata.toString());
+//            if (response.isSuccessful()) {
+//                String responseStr = response.body().string();
+//                JSONObject json = new JSONObject(responseStr);
+//                imageURL = json.getString("pictureUrl");
+//                Log.i("Get item info", imageURL);
+//
+//                try {
+//                    InputStream in = new java.net.URL(imageURL).openStream();
+//                    bitmap = BitmapFactory.decodeStream(in);
+//
+//                } catch (Exception e) {
+//                    Log.e("Error Message", e.getMessage());
+//                    e.printStackTrace();
+//                }
+//
+//            } else {
+//                Log.i("Get item info", "error");
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     @Override
     public String toString() {

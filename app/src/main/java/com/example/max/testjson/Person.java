@@ -225,8 +225,6 @@ public class Person {
 
 
     protected byte[] register_createJson() throws IOException {
-
-        Log.i("person", this.toString());
         JSONObject postdata = new JSONObject();
         try {
             postdata.put("kuleuvenID", kuleuvenID);

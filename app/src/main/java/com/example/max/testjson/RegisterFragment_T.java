@@ -41,7 +41,6 @@ public class RegisterFragment_T extends Fragment {
     private String email = "None";
     private String userPermission = "Student";
 
-    @SuppressLint("JavascriptInterface")
 
     public RegisterFragment_T() {
     }
@@ -59,11 +58,6 @@ public class RegisterFragment_T extends Fragment {
     }
 
 
-
-    public void clearWebViewCache() {
-        CookieSyncManager.createInstance(getContext());
-        CookieManager.getInstance().removeAllCookie();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -98,36 +92,53 @@ public class RegisterFragment_T extends Fragment {
 
     public void register(View view) throws IOException {
 
-        Person user;
+
+
         if(userType.isChecked()){
             userPermission = "Student";
-            user = new Student(userName, kuleuvenID, email);
+            Person user = new Student(userName, kuleuvenID, email);
             user.setCardID(cardID);
             user.setUserType(userPermission);
+
+
+
+            TestJson.setUser(user);
+            user.getAllItem();
+            AvailableItem.getAllAvailableItems();
+            Log.i("info", "register1");
+            wv.addInterface(user,"Person");
+            user.register();
         }
 
         else{
             userPermission = "Administrator";
-            user = new Worker(userName, kuleuvenID, email);
+            Person user = new Worker(userName, kuleuvenID, email);
             user.setCardID(cardID);
             user.setUserType(userPermission);
-        }
-        wv.addJavascriptInterface(user,"Person");
 
-        TestJson.setUser(user);
-        user.getAllItem();
-        AvailableItem.getAllAvailableItems();
-        user.register();
-        Fragment fragment = mFragments[5];
+            wv.addInterface(user,"Person");
 
-        if(fragment!=null) {
-            wv.hide();
-            getFragmentManager().beginTransaction().replace(R.id.home_container_main,fragment).commit();
+            TestJson.setUser(user);
+            user.getAllItem();
+            AvailableItem.getAllAvailableItems();
+            Log.i("info", "register2");
+            wv.addInterface(user,"Person");
+            user.register();
         }
-        else
-        {
-            Log.i("here", "null");
-        }
+        wv.hide();
+
+
+
+//        Fragment fragment = mFragments[5];
+//
+//        if(fragment!=null) {
+//            wv.hide();
+//            getFragmentManager().beginTransaction().replace(R.id.home_container_main,fragment).commit();
+//        }
+//        else
+//        {
+//            Log.i("here", "null");
+//        }
 
     }
 
