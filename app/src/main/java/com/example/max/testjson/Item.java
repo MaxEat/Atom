@@ -3,10 +3,13 @@ package com.example.max.testjson;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+import android.webkit.JavascriptInterface;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import org.apache.http.entity.StringEntity;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,6 +21,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import okhttp3.Response;
+
+import static com.example.max.testjson.TestJson.wv;
 
 /**
  * Created by max on 2018/4/5.
@@ -51,6 +56,10 @@ public class Item implements Serializable {
             itemPermission = 1;
     }
 
+    public static int getClassificationNumber(){
+        return classificationNumber;
+    }
+
     public String getItemTag() {
         return itemTag;
     }
@@ -71,9 +80,14 @@ public class Item implements Serializable {
         return itemPermission;
     }
 
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
     public String getImageURL() {
         return imageURL;
     }
+
 
     public void setImageURL( String url) {
         imageURL = url;
@@ -86,6 +100,14 @@ public class Item implements Serializable {
     public void setItemLocation(String location) {
         itemLocation = location;
     }
+
+    public boolean checkItemAvailable(){
+        if(status!="Borrowing" && status!="Maintaining")
+            return true;
+        else
+            return false;
+    }
+
 
     public static String[] getAllClassifications(){
 
@@ -166,10 +188,6 @@ public class Item implements Serializable {
         return itemClassifications;
     }
 
-    public static int getClassificationNumber(){
-        return classificationNumber;
-    }
-
 
     public void setInfoSyn() {
         final JSONObject postdata = new JSONObject();
@@ -196,9 +214,7 @@ public class Item implements Serializable {
         }.start();
     }
 
-    public Bitmap getBitmap() {
-        return bitmap;
-    }
+
 
     public void setBitmap() {
         try {
@@ -210,8 +226,6 @@ public class Item implements Serializable {
             e.printStackTrace();
         }
     }
-
-
 
     public void setImageFromDatabase() {
         final JSONObject postdata = new JSONObject();
@@ -239,6 +253,45 @@ public class Item implements Serializable {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // create internet json
+    protected byte[] createJson(JSONObject postdata) throws IOException {
+        StringEntity se = new StringEntity(postdata.toString(),"UTF-8");
+        se.setContentType("application/json");
+        byte[] array = EntityUtils.toByteArray(se);
+        return array;
+    }
+
+    public void webview_setInfos() throws IOException {
+        byte[] array = setInfos_createJson();
+        wv.postUrl(CustomedWebview.getInfoByItemTagURL, array);
+    }
+
+    protected byte[] setInfos_createJson() throws IOException {
+
+        JSONObject postdata = new JSONObject();
+        try {
+            postdata.put("itemTag", getItemTag());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return createJson(postdata);
+    }
+
+    @JavascriptInterface
+    public void setInfos_interface(String htmlSource) {
+        Log.i("set item info", htmlSource);
+        try {
+            JSONObject json = new JSONObject(htmlSource);
+            itemLocation = json.getString("itemLocation");
+            classification = json.getString("itemClassification");
+            status = json.getString("itemStatus");
+            error = json.getInt("error_message");
+        //    view.setText(itemLocation + " at " +classification);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -279,50 +332,7 @@ public class Item implements Serializable {
         }
     }
 
-    public int register() {
-        JSONObject postdata = new JSONObject();
-        try {
-            postdata.put("itemTag", getItemTag());
-            postdata.put("itemLocation", getItemLocation());
-            postdata.put("boughtTime", getBoughtTime());
-            postdata.put("itemClassification", getClassification());
-            postdata.put("itemPermission", getItemPermission());
 
-        } catch(JSONException e){
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        try {
-            BackgroundTask.getInstance().postAsyncJsonn(BackgroundTask.registerItemURL, postdata.toString(),new BackgroundTask.MyCallback() {
-                @Override
-                public void onSuccess(String result) {
-                    Log.i("Success","result----"+result);
-                    try {
-                        JSONObject json = new JSONObject(result);
-                        error = json.getInt("error_message");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-                @Override
-                public void onFailture() {
-
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return error;
-    }
-
-    public boolean checkItemAvailable(){
-        if(status!="Borrowing" && status!="Maintaining")
-            return true;
-        else
-            return false;
-    }
 
     @Override
     public String toString() {

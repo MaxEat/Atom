@@ -5,6 +5,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -38,6 +40,7 @@ public class CustomedWebview extends WebView {
     static final String UPLOAD_URL = "https://labtools.groept.be/inventory/secure/upload.php";
     static final String IMAGES_URL = "http://labtools.groept.be/inventory/secure/getImages.php";
     static final String getItemPictureURL = "https://labtools.groept.be/inventory/secure/getImages.php";
+
 
 
     public void hide() {

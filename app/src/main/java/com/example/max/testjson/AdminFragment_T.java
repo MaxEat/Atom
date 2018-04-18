@@ -17,9 +17,7 @@ public class AdminFragment_T extends Fragment {
     private BottomNavigationView mBottomNavigationView;
     private android.support.v4.app.Fragment[]mFragments;
 
-    public AdminFragment_T() {
-        // Required empty public constructor
-    }
+    public AdminFragment_T() {}
 
     public static AdminFragment_T newInstance() {
         AdminFragment_T fragment = new AdminFragment_T();

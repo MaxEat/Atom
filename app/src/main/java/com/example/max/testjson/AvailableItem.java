@@ -25,8 +25,6 @@ public class AvailableItem extends Item {
     private int id;
 
 
-
-
     AvailableItem(String aitemTag, String aitemLocation) {
         super(aitemTag,aitemLocation);
     }

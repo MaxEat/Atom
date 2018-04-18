@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -58,6 +60,10 @@ public class RegisterFragment_T extends Fragment {
 
 
 
+    public void clearWebViewCache() {
+        CookieSyncManager.createInstance(getContext());
+        CookieManager.getInstance().removeAllCookie();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,7 +79,7 @@ public class RegisterFragment_T extends Fragment {
         wv.addJavascriptInterface(new getFormData(),"local");
         wv.show();
         wv.loadUrl(CustomedWebview.baseIndexURL);
-        wv.hide();
+
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,12 +118,15 @@ public class RegisterFragment_T extends Fragment {
         user.getAllItem();
         AvailableItem.getAllAvailableItems();
 
-        Fragment fragment = null;
-
-        fragment = mFragments[5];
+        Fragment fragment = mFragments[5];
 
         if(fragment!=null) {
-                getFragmentManager().beginTransaction().replace(R.id.home_container_main,fragment).commit();
+            wv.hide();
+            getFragmentManager().beginTransaction().replace(R.id.home_container_main,fragment).commit();
+        }
+        else
+        {
+            Log.i("here", "null");
         }
 
     }
