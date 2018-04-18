@@ -78,7 +78,7 @@ public class RegisterFragment_T extends Fragment {
 
         wv.addJavascriptInterface(new getFormData(),"local");
         wv.show();
-        wv.loadUrl(CustomedWebview.baseIndexURL);
+        wv.loadUrl(CustomedWebview.baseURL);
 
 
         register.setOnClickListener(new View.OnClickListener() {
@@ -113,11 +113,11 @@ public class RegisterFragment_T extends Fragment {
             user.setUserType(userPermission);
         }
         wv.addJavascriptInterface(user,"Person");
-        user.register();
+
         TestJson.setUser(user);
         user.getAllItem();
         AvailableItem.getAllAvailableItems();
-
+        user.register();
         Fragment fragment = mFragments[5];
 
         if(fragment!=null) {

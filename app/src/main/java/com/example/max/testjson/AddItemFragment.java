@@ -23,6 +23,8 @@ import java.io.IOException;
 
 import okhttp3.Response;
 
+import static com.example.max.testjson.TestJson.wv;
+
 public class AddItemFragment extends Fragment {
 
     private Button QR;
@@ -173,16 +175,22 @@ public class AddItemFragment extends Fragment {
             codeContent = scanningResult.getContents();
             codeFormat = scanningResult.getFormatName();
             parentActivity.scanResultData(codeFormat,codeContent);
-            setItemTag(codeContent);
+            try {
+                setItemTag(codeContent);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }else{
             parentActivity.scanResultData(new NoScanResultException(noResultErrorMsg));
         }
     }
 
-    public void setItemTag(String tag) {
+    public void setItemTag(String tag) throws IOException {
         itemTag = tag;
         Item item = new Item(tag);
-        item.setInfos(ScanResult);
+        wv.addJavascriptInterface(item,"Item");
+        item.setInfos();
+        ScanResult.setText(item.getClassification());
        // ScanResult.setText(item.getClassification()+" at " + item.getItemLocation());
     }
 

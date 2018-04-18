@@ -227,36 +227,36 @@ public class Item implements Serializable {
         }
     }
 
-    public void setImageFromDatabase() {
-        final JSONObject postdata = new JSONObject();
-
-        try {
-            postdata.put("itemClassification", getClassification());
-            Response response = BackgroundTask.getInstance().postSyncJson(BackgroundTask.getItemPictureURL, postdata.toString());
-            if (response.isSuccessful()) {
-                String responseStr = response.body().string();
-                JSONObject json = new JSONObject(responseStr);
-                imageURL = json.getString("pictureUrl");
-                Log.i("Get item info", imageURL);
-
-                try {
-                    InputStream in = new java.net.URL(imageURL).openStream();
-                    bitmap = BitmapFactory.decodeStream(in);
-
-                } catch (Exception e) {
-                    Log.e("Error Message", e.getMessage());
-                    e.printStackTrace();
-                }
-
-            } else {
-                Log.i("Get item info", "error");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
+//    public void setImageFromDatabase() {
+//        final JSONObject postdata = new JSONObject();
+//
+//        try {
+//            postdata.put("itemClassification", getClassification());
+//            Response response = BackgroundTask.getInstance().postSyncJson(BackgroundTask.getItemPictureURL, postdata.toString());
+//            if (response.isSuccessful()) {
+//                String responseStr = response.body().string();
+//                JSONObject json = new JSONObject(responseStr);
+//                imageURL = json.getString("pictureUrl");
+//                Log.i("Get item info", imageURL);
+//
+//                try {
+//                    InputStream in = new java.net.URL(imageURL).openStream();
+//                    bitmap = BitmapFactory.decodeStream(in);
+//
+//                } catch (Exception e) {
+//                    Log.e("Error Message", e.getMessage());
+//                    e.printStackTrace();
+//                }
+//
+//            } else {
+//                Log.i("Get item info", "error");
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     // create internet json
     protected byte[] createJson(JSONObject postdata) throws IOException {
@@ -266,9 +266,14 @@ public class Item implements Serializable {
         return array;
     }
 
-    public void webview_setInfos() throws IOException {
+    public void setInfos() throws IOException {
         byte[] array = setInfos_createJson();
         wv.postUrl(CustomedWebview.getInfoByItemTagURL, array);
+    }
+
+    public void setImageFromDataBase() throws IOException {
+        byte[] array = setInfos_createJson();
+        wv.postUrl(CustomedWebview.getItemPictureURL, array);
     }
 
     protected byte[] setInfos_createJson() throws IOException {
@@ -276,6 +281,17 @@ public class Item implements Serializable {
         JSONObject postdata = new JSONObject();
         try {
             postdata.put("itemTag", getItemTag());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return createJson(postdata);
+    }
+
+    public byte[] setImageFromDatabase_createJson() throws IOException {
+        JSONObject postdata = new JSONObject();
+
+        try {
+            postdata.put("itemClassification", getClassification());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -297,40 +313,60 @@ public class Item implements Serializable {
         }
     }
 
-    public void setInfos(final TextView view) {
-        JSONObject postdata = new JSONObject();
-        try {
-            postdata.put("itemTag", getItemTag());
-        } catch(JSONException e){
+    @JavascriptInterface
+    public void setImageFromDatabase_interface(String htmlSource) {
+        Log.i("Get item info", htmlSource);
+        try{
+            JSONObject json = new JSONObject(htmlSource);
+            imageURL = json.getString("pictureUrl");
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 
         try {
-            BackgroundTask.getInstance().postAsyncJsonn(BackgroundTask.getInfoByItemTagURL, postdata.toString(),new BackgroundTask.MyCallback() {
-                @Override
-                public void onSuccess(String result) {
-                    Log.i("Success","result----"+result);
-                    try {
-                        JSONObject json = new JSONObject(result);
-                        itemLocation = json.getString("itemLocation");
-                        classification = json.getString("itemClassification");
-                        status = json.getString("itemStatus");
-                        error = json.getInt("error_message");
-                        view.setText(itemLocation + " at " +classification);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+            InputStream in = new java.net.URL(imageURL).openStream();
+            bitmap = BitmapFactory.decodeStream(in);
 
-                }
-                @Override
-                public void onFailture() {
-
-                }
-            });
-        } catch (IOException e) {
+        } catch (Exception e) {
+            Log.e("Error Message", e.getMessage());
             e.printStackTrace();
         }
     }
+
+//    public void setInfos(final TextView view) {
+//        JSONObject postdata = new JSONObject();
+//        try {
+//            postdata.put("itemTag", getItemTag());
+//        } catch(JSONException e){
+//            e.printStackTrace();
+//        }
+//
+//        try {
+//            BackgroundTask.getInstance().postAsyncJsonn(BackgroundTask.getInfoByItemTagURL, postdata.toString(),new BackgroundTask.MyCallback() {
+//                @Override
+//                public void onSuccess(String result) {
+//                    Log.i("Success","result----"+result);
+//                    try {
+//                        JSONObject json = new JSONObject(result);
+//                        itemLocation = json.getString("itemLocation");
+//                        classification = json.getString("itemClassification");
+//                        status = json.getString("itemStatus");
+//                        error = json.getInt("error_message");
+//                        view.setText(itemLocation + " at " +classification);
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                }
+//                @Override
+//                public void onFailture() {
+//
+//                }
+//            });
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 
 

@@ -226,6 +226,7 @@ public class Person {
 
     protected byte[] register_createJson() throws IOException {
 
+        Log.i("person", this.toString());
         JSONObject postdata = new JSONObject();
         try {
             postdata.put("kuleuvenID", kuleuvenID);
@@ -272,7 +273,6 @@ public class Person {
 
     @JavascriptInterface
     public void registerPerson_interface(String htmlSource) {
-        Log.i("here","1");
         Log.i("register", htmlSource);
         try {
             JSONObject json = new JSONObject(htmlSource);
@@ -358,6 +358,17 @@ public class Person {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "kuleuvenid='" + kuleuvenID +
+                ", cardId=" + cardID +
+                ", email=" + email +
+                ", username=" + userName +
+                ", userType=" + userType +
+                '}';
     }
 //    public void getAllItem() {
 //

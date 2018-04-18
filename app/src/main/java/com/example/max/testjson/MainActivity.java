@@ -27,6 +27,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import static com.example.max.testjson.AvailableItem.getAllAvailableItems;
 import static com.example.max.testjson.TestJson.wv;
 
 public class MainActivity extends  AppCompatActivity implements BorrowedFragment.OnListFragmentInteractionListener, AvailableItemFragment.OnListFragmentInteractionListener, SettingFragment.OnFragmentInteractionListener,ScanResultReceiver{
@@ -167,11 +168,11 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                 user.setUserType(userType);
                 try {
                     user.getAllItem();
+                    TestJson.setUser(user);
+                    getAllAvailableItems();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                TestJson.setUser(user);
-                AvailableItem.getAllAvailableItems();
 
                 fragment = mFragments[5];
 
