@@ -40,8 +40,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".PersonalActivity" />
-        <activity android:name=".AdminActivity" />
+        <activity android:name=".obviousVersion.PersonalActivity" />
+        <activity android:name=".obviousVersion.AdminActivity" />
         <activity android:name=".Borrowed_Item_Detail"></activity>
     </application>
 
