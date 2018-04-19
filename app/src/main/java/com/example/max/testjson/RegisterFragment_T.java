@@ -79,7 +79,6 @@ public class RegisterFragment_T extends Fragment {
             @Override
             public void onClick(View v) {
                 try {
-
                     register(v);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -94,35 +93,19 @@ public class RegisterFragment_T extends Fragment {
 
         Fragment fragment;
 
-
-
         if(userType.isChecked()){
             userPermission = "Student";
             Person user = new Student(userName, kuleuvenID, email);
             user.setCardID(cardID);
             user.setUserType(userPermission);
 
-
-
             TestJson.setUser(user);
             user.getAllItem();
             AvailableItem.getAllAvailableItems();
-            Log.i("info", "register1");
+
             wv.addInterface(user,"Person");
             user.register();
-
-
-
             fragment = mFragments[5];
-
-            if(fragment!=null) {
-                wv.hide();
-                getFragmentManager().beginTransaction().replace(R.id.home_container_main,fragment).commit();
-            }
-            else
-            {
-                Log.i("here", "null");
-            }
         }
 
         else{
@@ -131,20 +114,15 @@ public class RegisterFragment_T extends Fragment {
             user.setCardID(cardID);
             user.setUserType(userPermission);
 
-            wv.addInterface(user,"Person");
-
             TestJson.setUser(user);
             user.getAllItem();
             AvailableItem.getAllAvailableItems();
-            Log.i("info", "register2");
+
             wv.addInterface(user,"Person");
             user.register();
-
-
             fragment = mFragments[6];
-
-
         }
+
         wv.hide();
         if(fragment!=null) {
             wv.hide();

@@ -201,7 +201,7 @@ public class Person {
 
         JSONObject postdata = new JSONObject();
         try {
-            postdata.put("cardID", this.getCardID());
+            postdata.put("cardID", getCardID());
             postdata.put("itemTag", itemTag);
             postdata.put("borrowLocation", currentLocation);
         } catch (JSONException e) {
@@ -211,6 +211,9 @@ public class Person {
     }
 
     protected byte[] returnItem_createJson(String itemTag, String currentLocation) throws IOException {
+
+        if (currentLocation == "") currentLocation = "GroepT";
+
         JSONObject postdata = new JSONObject();
         try {
             postdata.put("cardID", getCardID());

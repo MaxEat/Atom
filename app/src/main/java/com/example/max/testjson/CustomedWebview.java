@@ -96,6 +96,9 @@ public class CustomedWebview extends WebView {
                 if(url.equals(updateItemStateUrl))
                     view.loadUrl("javascript:window.Person.updateItemStatus_Interface(document.body.innerHTML)");
 
+                if(url.equals(addNewItemURL))
+                    view.loadUrl("javascript:window.Person.administratorAddItem_interface(document.body.innerHTML)");
+
                 if(url.equals(getAllAvailableItemsURL))
                     view.loadUrl("javascript:window.AvailableItem.getAllAvailableItems_interface(document.body.innerHTML)");
 
@@ -108,12 +111,6 @@ public class CustomedWebview extends WebView {
 
 
 
-
-                //here
-//                if(url.equals(registerItemURL))
-//                    view.loadUrl("javascript:window.local_obj.parseBorrowItem(document.body.innerHTML)");
-//
-//
 //                if(url.equals(getInfoByCardURL))
 //                    view.loadUrl("javascript:window.local_obj.parseBorrowItem(document.body.innerHTML)");
 //

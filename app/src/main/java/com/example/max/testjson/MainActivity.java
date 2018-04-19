@@ -136,14 +136,12 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
         else
         {
             Person user = new Student(userName, kuleuvenID, email);
-            wv.addJavascriptInterface(user, "Person");
             user.setUserType(userType);
             user.setCardID(id);
-            user.getAllItem_createJson();
-            wv.loadUrl(CustomedWebview.getAllBorrowedItemsURL);
-//            user.getAllItem();
+            wv.addJavascriptInterface(user, "Person");
+            user.getAllItem();
             TestJson.setUser(user);
-
+            wv.hide();
             fragment = mFragments[5];
 
             if(fragment!=null) {
@@ -160,13 +158,12 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
             public void onClick(DialogInterface dialog, int id) {
 
                 Person user = new Worker(userName, kuleuvenID, email);
-                wv.addJavascriptInterface(user, "Person");
                 user.setCardID(cardid);
                 user.setUserType(userType);
                 TestJson.setUser(user);
 
+                wv.addJavascriptInterface(user, "Person");
                 fragment = mFragments[6];
-
                 if(fragment!=null) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.home_container_main,fragment).commit();
                 }
@@ -176,12 +173,10 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
             @SuppressLint("JavascriptInterface")
             public void onClick(DialogInterface dialog, int id) {
 
-
-                Log.i("place", "here");
                 Person user = new Student(userName, kuleuvenID, email);
-                wv.addJavascriptInterface(user, "Person");
                 user.setCardID(cardid);
                 user.setUserType(userType);
+                wv.addJavascriptInterface(user, "Person");
                 try {
                     user.getAllItem();
                     TestJson.setUser(user);
@@ -191,9 +186,7 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                 }
 
                 fragment = mFragments[5];
-
                 if(fragment!=null) {
-                    Log.i("place", "here2");
                     getSupportFragmentManager().beginTransaction().replace(R.id.home_container_main,fragment).commit();
                 }
 
