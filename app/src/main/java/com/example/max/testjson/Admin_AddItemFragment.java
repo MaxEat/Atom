@@ -121,7 +121,7 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
         View view = inflater.inflate(R.layout.fragment_admin_add_item, container, false);
 
         //Requesting storage permission
-        requestStoragePermission();
+        //requestStoragePermission();
 
         //Initializing views
         buttonUpload = (Button) view.findViewById(R.id.buttonUpload);

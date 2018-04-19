@@ -36,6 +36,10 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
 
     private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
     private static final int STORAGE_PERMISSION_WRITE = 113;
+    private static final int STORAGE= 114;
+    private static final int CAMERA= 115;
+
+
     private static String packageKey = "27a687a3baf16019e54c1f622d814a06";
 
     private IPlusSL3 plusSL3 = null;
@@ -51,12 +55,15 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        getPermission();
+
+
         wv = (CustomedWebview) findViewById(R.id.webview);
         wv.getSettings().setJavaScriptEnabled(true);
         wv.getSettings().setDomStorageEnabled(true);
         wv.hide();
         mFragments = DataGenerator.getFragments("BottomNavigationView Tab");
-        getPermission();
+        //getPermission();
         initializeLibrary();
     }
 
@@ -87,16 +94,36 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
     }
 
 
-    public void getPermission() {
-        boolean readPermission = (ContextCompat.checkSelfPermission(MainActivity.this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
+//    public void getPermission() {
+//        boolean readPermission = (ContextCompat.checkSelfPermission(MainActivity.this,
+//                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
+//
+//        if (!readPermission) {
+//            ActivityCompat.requestPermissions(MainActivity.this,
+//                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_WRITE
+//            );
+//        }
+//
+//    }
 
-        if (!readPermission) {
+    public void getPermission() {
+        boolean storagePermission = (ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission_group.STORAGE) == PackageManager.PERMISSION_GRANTED);
+
+        boolean cameraPermission = (ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED);
+
+        if (!storagePermission) {
             ActivityCompat.requestPermissions(MainActivity.this,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_WRITE
+                    new String[]{Manifest.permission_group.STORAGE}, STORAGE
             );
         }
 
+        if (!cameraPermission) {
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[]{Manifest.permission.CAMERA}, CAMERA
+            );
+        }
     }
 
     @SuppressLint("JavascriptInterface")
