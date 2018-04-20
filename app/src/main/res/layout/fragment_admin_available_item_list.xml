@@ -10,4 +10,4 @@
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context="com.example.max.testjson.Admin_AvailableItemFragment"
-    tools:listitem="@layout/fragment_item3" />
+    tools:listitem="@layout/fragment_admin_available_item" />
