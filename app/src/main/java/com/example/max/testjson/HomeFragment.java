@@ -4,6 +4,8 @@ package com.example.max.testjson;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.ArrayList;
 import android.view.ContextMenu;
@@ -77,6 +79,12 @@ public class HomeFragment extends Fragment {
                 menu.add(0, 1, 0, "弹出长按菜单1");
             }
         });
+
+        try {
+            TestJson.getUser().getAllAvailableItems();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return view;
     }

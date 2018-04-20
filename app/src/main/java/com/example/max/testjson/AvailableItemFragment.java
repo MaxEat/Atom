@@ -18,6 +18,10 @@ import android.widget.Filter;
 import android.widget.Spinner;
 import android.support.v7.widget.Toolbar;
 
+import java.io.IOException;
+
+import static com.example.max.testjson.TestJson.wv;
+
 
 public class AvailableItemFragment extends Fragment implements SearchView.OnQueryTextListener {
 
@@ -70,7 +74,8 @@ public class AvailableItemFragment extends Fragment implements SearchView.OnQuer
         toolbar= (Toolbar)view.findViewById(R.id.toolbar);
         searchView= (SearchView)view.findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(this);
-        adapter = new AvailableItemRecyclerViewAdapter(AvailableItem.availableItems, mListener);
+
+        adapter = new AvailableItemRecyclerViewAdapter(TestJson.getUser().availableItems, mListener);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(
                     getContext(), DividerItemDecoration.VERTICAL));

@@ -74,7 +74,6 @@ public class RegisterFragment_T extends Fragment {
         wv.show();
         wv.loadUrl(CustomedWebview.baseURL);
 
-
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,9 +100,9 @@ public class RegisterFragment_T extends Fragment {
 
             TestJson.setUser(user);
 
+
             wv.addInterface(user,"Person");
             user.register();
-          //  user.getAllItem();
 
             fragment = mFragments[5];
         }
@@ -118,9 +117,7 @@ public class RegisterFragment_T extends Fragment {
 
             wv.addInterface(user,"Person");
             user.register();
-//            wv.addJavascriptInterface(new AvailableItem(), "AvailableItem");
-//            AvailableItem.getAllAvailableItems();
-            //user.getAllItem();
+           // user.getAllAvailableItems();
             fragment = mFragments[6];
         }
 //        wv.addJavascriptInterface(new AvailableItem(), "AvailableItem");
@@ -129,10 +126,6 @@ public class RegisterFragment_T extends Fragment {
         if(fragment!=null) {
             wv.hide();
             getFragmentManager().beginTransaction().replace(R.id.home_container_main,fragment).commit();
-        }
-        else
-        {
-            Log.i("here", "null");
         }
 
 

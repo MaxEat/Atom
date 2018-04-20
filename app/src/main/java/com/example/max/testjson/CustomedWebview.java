@@ -100,7 +100,7 @@ public class CustomedWebview extends WebView {
                     view.loadUrl("javascript:window.Person.administratorAddItem_interface(document.body.innerHTML)");
 
                 if(url.equals(getAllAvailableItemsURL))
-                    view.loadUrl("javascript:window.AvailableItem.getAllAvailableItems_interface(document.body.innerHTML)");
+                    view.loadUrl("javascript:window.Person.getAllAvailableItems_interface(document.body.innerHTML)");
 
                 if(url.equals(getInfoByItemTagURL))
                     view.loadUrl("javascript:window.Item.setInfos_interface(document.body.innerHTML)");

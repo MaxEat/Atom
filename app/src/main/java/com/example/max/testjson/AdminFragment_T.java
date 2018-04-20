@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.support.v4.app.Fragment;
 import android.widget.TextView;
 
+import java.io.IOException;
+
 
 public class AdminFragment_T extends Fragment {
     private BottomNavigationView mBottomNavigationView;
@@ -52,7 +54,11 @@ public class AdminFragment_T extends Fragment {
         // 由于第一次进来没有回调onNavigationItemSelected，因此需要手动调用一下切换状态的方法
         onTabItemSelected(R.id.tab_adminMenu_dashboard);
 
-
+        try {
+            TestJson.getUser().getAllAvailableItems();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return view;
     }
 

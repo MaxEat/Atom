@@ -61,22 +61,12 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
         wv.getSettings().setJavaScriptEnabled(true);
         wv.getSettings().setDomStorageEnabled(true);
         wv.hide();
-
-        try {
-            initAvailableItems();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         mFragments = DataGenerator.getFragments("BottomNavigationView Tab");
         //getPermission();
         initializeLibrary();
     }
 
 
-    public void initAvailableItems() throws IOException {
-        wv.addJavascriptInterface(new AvailableItem(), "AvailableItem");
-        AvailableItem.getAllAvailableItems();
-    }
 
     @Override
     protected void onStart() {
