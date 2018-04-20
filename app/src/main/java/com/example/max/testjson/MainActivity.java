@@ -27,7 +27,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
-import static com.example.max.testjson.AvailableItem.getAllAvailableItems;
 import static com.example.max.testjson.TestJson.wv;
 
 public class MainActivity extends  AppCompatActivity implements BorrowedFragment.OnListFragmentInteractionListener, AvailableItemFragment.OnListFragmentInteractionListener, SettingFragment.OnFragmentInteractionListener,ScanResultReceiver{
@@ -62,11 +61,22 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
         wv.getSettings().setJavaScriptEnabled(true);
         wv.getSettings().setDomStorageEnabled(true);
         wv.hide();
+
+        try {
+            initAvailableItems();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         mFragments = DataGenerator.getFragments("BottomNavigationView Tab");
         //getPermission();
         initializeLibrary();
     }
 
+
+    public void initAvailableItems() throws IOException {
+        wv.addJavascriptInterface(new AvailableItem(), "AvailableItem");
+        AvailableItem.getAllAvailableItems();
+    }
 
     @Override
     protected void onStart() {
@@ -163,6 +173,11 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                 TestJson.setUser(user);
 
                 wv.addJavascriptInterface(user, "Person");
+                try {
+                    user.getAllItem();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 fragment = mFragments[6];
                 if(fragment!=null) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.home_container_main,fragment).commit();
@@ -176,11 +191,10 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                 Person user = new Student(userName, kuleuvenID, email);
                 user.setCardID(cardid);
                 user.setUserType(userType);
+                TestJson.setUser(user);
                 wv.addJavascriptInterface(user, "Person");
                 try {
                     user.getAllItem();
-                    TestJson.setUser(user);
-                    getAllAvailableItems();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

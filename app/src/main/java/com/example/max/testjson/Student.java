@@ -28,7 +28,6 @@ public class Student extends Person {
     public void getAllItem() throws IOException {
         super.getAllItem();
         getWishListFromDatabase();
-        AvailableItem.getAllAvailableItems();
     }
 
     public void getWishListFromDatabase() {

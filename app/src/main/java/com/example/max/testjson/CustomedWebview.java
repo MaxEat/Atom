@@ -65,20 +65,20 @@ public class CustomedWebview extends WebView {
         getSettings().setLoadWithOverviewMode(true);
         getSettings().setSupportZoom(true);
         getSettings().setBuiltInZoomControls(true);
-        addJavascriptInterface(new AvailableItem(), "AvailableItem");
+
 
         setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return true;
-            }
+//            @Override
+//            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+//                view.loadUrl(url);
+//                return true;
+//            }
             @Override
             public void onPageFinished(WebView view, String url) {
 
                 Log.i("current url", url);
 
-                if(url.equals(baseIndexURL))
+                if(url.equals(baseIndexURL) || url.equals(baseURL))
                     view.loadUrl("javascript:window.local.getRegisterInfo(document.body.innerHTML)");
 
                 if(url.equals(getAllBorrowedItemsURL ))

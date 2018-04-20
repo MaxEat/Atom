@@ -100,11 +100,11 @@ public class RegisterFragment_T extends Fragment {
             user.setUserType(userPermission);
 
             TestJson.setUser(user);
-            user.getAllItem();
-            AvailableItem.getAllAvailableItems();
 
             wv.addInterface(user,"Person");
             user.register();
+          //  user.getAllItem();
+
             fragment = mFragments[5];
         }
 
@@ -115,15 +115,17 @@ public class RegisterFragment_T extends Fragment {
             user.setUserType(userPermission);
 
             TestJson.setUser(user);
-            user.getAllItem();
-            AvailableItem.getAllAvailableItems();
 
             wv.addInterface(user,"Person");
             user.register();
+//            wv.addJavascriptInterface(new AvailableItem(), "AvailableItem");
+//            AvailableItem.getAllAvailableItems();
+            //user.getAllItem();
             fragment = mFragments[6];
         }
-
-        wv.hide();
+//        wv.addJavascriptInterface(new AvailableItem(), "AvailableItem");
+//        AvailableItem.getAllAvailableItems();
+       // wv.hide();
         if(fragment!=null) {
             wv.hide();
             getFragmentManager().beginTransaction().replace(R.id.home_container_main,fragment).commit();

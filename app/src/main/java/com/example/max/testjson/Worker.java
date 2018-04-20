@@ -32,6 +32,11 @@ public class Worker extends Person{
         administorType = "all";
     }
 
+    @Override
+    public void getAllItem() throws IOException {
+        super.getAllItem();
+    }
+
     public void getExpiredItemPersonDatabase() {
         JSONObject postdata = new JSONObject();
         try {
