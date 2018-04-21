@@ -2,7 +2,6 @@ package com.example.max.testjson;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,14 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.support.v4.app.Fragment;
+
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import com.example.max.testjson.dummy.DummyContent;
-import com.example.max.testjson.dummy.DummyContent.DummyItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,10 +27,10 @@ public class Admin_AvailableItemFragment extends Fragment implements SearchView.
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
-    private AvailableItemFragment.OnListFragmentInteractionListener mListener;
+    private Admin_AvailableItemFragment.OnListFragmentInteractionListener mListener;
     private SearchView searchView;
     private Spinner chooseLocation;
-    private AvailableItemRecyclerViewAdapter adapter;
+    private Admin_AvailableItemAdapter adapter;
     private Toolbar toolbar;
 
     public Admin_AvailableItemFragment() {
@@ -58,26 +56,26 @@ public class Admin_AvailableItemFragment extends Fragment implements SearchView.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_availableitem_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_admin_available_item_list, container, false);
 
         Context context = view.getContext();
-        RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.available_list);
+        RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.admin_available_list);
         if (mColumnCount <= 1) {
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
         } else {
             recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
 
-        chooseLocation = (Spinner)view.findViewById(R.id.choose_location);
+        chooseLocation = (Spinner)view.findViewById(R.id.admin_choose_location);
         String[] items = new String[]{"1", "2", "three"};
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items);
         chooseLocation.setAdapter(spinnerAdapter);
 
-        toolbar= (Toolbar)view.findViewById(R.id.toolbar);
-        searchView= (SearchView)view.findViewById(R.id.search_view);
+        toolbar= (Toolbar)view.findViewById(R.id.admin_toolbar);
+        searchView= (SearchView)view.findViewById(R.id.admin_search_view);
         searchView.setOnQueryTextListener(this);
 
-        adapter = new AvailableItemRecyclerViewAdapter(TestJson.getUser().availableItems, mListener);
+        adapter = new Admin_AvailableItemAdapter(TestJson.getUser().admin_availableItems, mListener);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(
                 getContext(), DividerItemDecoration.VERTICAL));
@@ -90,8 +88,8 @@ public class Admin_AvailableItemFragment extends Fragment implements SearchView.
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof AvailableItemFragment.OnListFragmentInteractionListener) {
-            mListener = (AvailableItemFragment.OnListFragmentInteractionListener) context;
+        if (context instanceof Admin_AvailableItemFragment.OnListFragmentInteractionListener) {
+            mListener = (Admin_AvailableItemFragment.OnListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
@@ -116,7 +114,7 @@ public class Admin_AvailableItemFragment extends Fragment implements SearchView.
     }
 
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(AvailableItem item);
+        void onListFragmentInteraction(Admin_AvailableItem item);
     }
 
 }

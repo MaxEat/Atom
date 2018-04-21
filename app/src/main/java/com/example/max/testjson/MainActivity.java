@@ -29,7 +29,7 @@ import java.io.IOException;
 
 import static com.example.max.testjson.TestJson.wv;
 
-public class MainActivity extends  AppCompatActivity implements BorrowedFragment.OnListFragmentInteractionListener, AvailableItemFragment.OnListFragmentInteractionListener, SettingFragment.OnFragmentInteractionListener,ScanResultReceiver{
+public class MainActivity extends  AppCompatActivity implements BorrowedFragment.OnListFragmentInteractionListener, AvailableItemFragment.OnListFragmentInteractionListener,Admin_AvailableItemFragment.OnListFragmentInteractionListener, SettingFragment.OnFragmentInteractionListener,ScanResultReceiver{
 
     private android.support.v4.app.Fragment[]mFragments;
 
@@ -329,6 +329,11 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
 
     @Override
     public void onListFragmentInteraction(AvailableItem item) {
+
+    }
+
+    @Override
+    public void onListFragmentInteraction(Admin_AvailableItem item) {
 
     }
 

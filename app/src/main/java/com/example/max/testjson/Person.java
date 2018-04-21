@@ -39,6 +39,9 @@ public class Person {
     public List<AvailableItem> availableItems = new ArrayList<AvailableItem>();
     public Map<String, AvailableItem> availableItemMap = new HashMap<String, AvailableItem>();
 
+    public List<Admin_AvailableItem> admin_availableItems = new ArrayList<Admin_AvailableItem>();
+    public Map<String, Admin_AvailableItem> admin_availableItemMap = new HashMap<String, Admin_AvailableItem>();
+
     Person(String CardID) {
         cardID = CardID;
     }
@@ -196,6 +199,30 @@ public class Person {
         }
 
     }
+
+    @JavascriptInterface
+    public void admin_getAllAvailableItems_interface(String htmlSource) {
+        Log.i("Success get available", htmlSource);
+        try {
+            admin_availableItems = new ArrayList<Admin_AvailableItem>();
+            admin_availableItemMap = new HashMap<String, Admin_AvailableItem>();
+            JSONObject jsonObject =  new JSONObject(htmlSource);;
+
+            JSONArray jsonArray = jsonObject.getJSONArray("list");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject json = jsonArray.getJSONObject(i);
+                Admin_AvailableItem item = new Admin_AvailableItem(json.getString("itemTag"), json.getString("itemLocation"));
+                item.setClassification(json.getString("itemClassification"));
+                item.setId(i);
+                admin_availableItems.add(item);
+                admin_availableItemMap.put(Integer.toString(item.getId()), item);
+            }
+        }catch (Throwable t) {
+            Log.e("My info", "Could not parse malformed JSON: \"" + htmlSource + "\"");
+        }
+
+    }
+
     public void administratorAddItem( String itemTag, String currentLocation, String timestamp, String itemClassification,
                                       String itemPermission) throws IOException {
         byte[] array = administratorAddItem_createJson(itemTag, currentLocation, timestamp, itemClassification,

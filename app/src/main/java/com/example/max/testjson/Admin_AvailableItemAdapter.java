@@ -1,5 +1,9 @@
 package com.example.max.testjson;
 
+/**
+ * Created by ASUS on 2018/4/20.
+ */
+
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,34 +15,35 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.example.max.testjson.Admin_AvailableItemFragment.OnListFragmentInteractionListener;
-import com.example.max.testjson.dummy.DummyContent.DummyItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Admin_AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter<Admin_AvailableItemRecyclerViewAdapter.ViewHolder> implements Filterable{
 
-    private List<AvailableItem> mValues;
-    private List<AvailableItem> tempValue;
-    private final AvailableItemFragment.OnListFragmentInteractionListener mListener;
+public class Admin_AvailableItemAdapter extends RecyclerView.Adapter<Admin_AvailableItemAdapter.ViewHolder> implements Filterable{
 
-    AvailableItemRecyclerViewAdapter.TestFilter myFilter;
+    private List<Admin_AvailableItem> mValues;
+    private List<Admin_AvailableItem> tempValue;
+    private final Admin_AvailableItemFragment.OnListFragmentInteractionListener mListener;
 
-    public Admin_AvailableItemRecyclerViewAdapter(List<AvailableItem> items, AvailableItemFragment.OnListFragmentInteractionListener listener) {
+    Admin_AvailableItemAdapter.TestFilter myFilter;
+
+    public Admin_AvailableItemAdapter(List<Admin_AvailableItem> items, Admin_AvailableItemFragment.OnListFragmentInteractionListener listener) {
         mValues = items;
         tempValue = items;
         mListener = listener;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_availableitem, parent, false);
-        return new Admin_AvailableItemRecyclerViewAdapter.ViewHolder(view);
+                .inflate(R.layout.fragment_admin_available_item, parent, false);
+        return new ViewHolder(view);
     }
 
+
     @Override
-    public void onBindViewHolder(final AvailableItemRecyclerViewAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final Admin_AvailableItemAdapter.ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         String content = holder.mItem.getClassification() + " at "+holder.mItem.getItemLocation();
         holder.mContent.setText(content);
@@ -72,18 +77,8 @@ public class Admin_AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter
     }
 
 
-    public AvailableItem getItem(int position){
+    public Admin_AvailableItem getItem(int position){
         return mValues.get(position);
-    }
-
-    @Override
-    public Admin_AvailableItemRecycleViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return null;
-    }
-
-    @Override
-    public void onBindViewHolder(Admin_AvailableItemRecycleViewAdapter.ViewHolder holder, int position) {
-
     }
 
     @Override
@@ -94,7 +89,7 @@ public class Admin_AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mContent;
-        public AvailableItem mItem;
+        public Admin_AvailableItem mItem;
         public CheckBox mCheckBox;
 
         public ViewHolder(View view) {
@@ -114,7 +109,7 @@ public class Admin_AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter
     public Filter getFilter() {
 
         if (myFilter == null) {
-            myFilter = new Admin_AvailableItemRecyclerViewAdapter.TestFilter();
+            myFilter = new TestFilter();
         }
         return myFilter;
     }
@@ -123,7 +118,7 @@ public class Admin_AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
 
-            List<AvailableItem> newItemList = new ArrayList<AvailableItem>();
+            List<Admin_AvailableItem> newItemList = new ArrayList<Admin_AvailableItem>();
             if (constraint != null && constraint.toString().trim().length() > 0) {
                 for (int i = 0; i < tempValue.size(); i++) {
                     String content = tempValue.get(i).getClassification() + " "+tempValue.get(i).getItemLocation();
@@ -157,3 +152,4 @@ public class Admin_AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter
     }
 
 }
+
