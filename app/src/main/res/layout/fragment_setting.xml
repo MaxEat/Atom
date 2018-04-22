@@ -30,6 +30,7 @@
                 android:id="@+id/second_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorBlueDark"
                 android:text="Contact email:" />
 
             <EditText
@@ -37,6 +38,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:textColor="@color/colorBlueDark"
+                android:textColorLink="@color/colorBlueDark"
                 android:inputType="textPersonName"
                 android:text="......@......." />
 
@@ -55,6 +58,7 @@
                 android:id="@+id/textView6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorBlueDark"
                 android:text="Return reminder:" />
 
             <LinearLayout
@@ -68,6 +72,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:checked="true"
+                    android:textColorHighlight="@color/colorBlueDark"
+                    android:textColor="@color/colorBlueDark"
                     android:text="One week before" />
 
                 <CheckBox
@@ -84,10 +90,6 @@
 
 
             </LinearLayout>
-
-
-
-
         </LinearLayout>
 
 
@@ -96,6 +98,8 @@
             android:layout_width="263dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
+            android:background="@drawable/rectangular"
+            android:textColor="@color/colorAccent"
             android:layout_gravity="center_horizontal"
             android:text="Submit" />
 
