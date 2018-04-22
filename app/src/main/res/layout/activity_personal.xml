@@ -24,8 +24,10 @@
         android:layout_height="50dp"
         app:itemBackground="@color/colorAccent"
         app:elevation="2dp"
-        app:itemTextColor="#bfbfbf"
-        app:itemIconTint="@color/colorAccent"
+        app:itemTextColor="@color/colorGreyDark"
+        app:itemIconTint="@color/colorGreyDark"
+        android:clickable="true"
+        android:focusable="true"
         app:menu="@menu/menu_personal"
         >
 

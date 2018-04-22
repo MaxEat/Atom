@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <style name="CustomAppTheme" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="android:actionMenuTextAppearance">@style/MenuTextStyle</item>
+    </style>
+
+    <style name="MenuTextStyle">
+        <item name="android:textSize">18sp</item>
+    </style>
+</resources>
+<!--<resources>-->
+    <!--<style name="CustomActionBarTheme" parent="@android:style/Theme.Holo.Light.DarkActionBar">-->
+        <!--<item name="android:actionBarStyle">@style/myActionBar</item>-->
+    <!--</style>-->
+
+    <!--<style name="myActionBar" parent="android:Widget.ActionBar">-->
+        <!--<item name="android:background">@color/colorPrimary</item>-->
+        <!--<item name="android:titleTextStyle">@style/actionbar_titleTextStyle</item>-->
+    <!--</style>-->
+
+    <!--<style name="actionbar_titleTextStyle">-->
+        <!--<item name="android:textSize">15sp</item>-->
+        <!--<item name="android:textColor">@color/colorAccent</item>-->
+    <!--</style>-->
+<!--</resources>-->
