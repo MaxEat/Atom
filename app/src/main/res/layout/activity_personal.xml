@@ -22,7 +22,7 @@
         android:id="@+id/bottom_navigation_view"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        app:itemBackground="@color/"
+        app:itemBackground="@color/colorAccent"
         app:elevation="2dp"
         app:itemTextColor="#bfbfbf"
         app:itemIconTint="@color/colorAccent"
