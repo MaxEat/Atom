@@ -5,93 +5,100 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.max.testjson.SettingFragment">
 
-    <android.support.constraint.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/my_image"
             android:layout_width="141dp"
             android:layout_height="168dp"
-            android:layout_marginBottom="324dp"
-            android:layout_marginLeft="68dp"
-            android:src="@android:drawable/sym_def_app_icon"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:src="@android:drawable/sym_def_app_icon" />
 
-        <TextView
-            android:id="@+id/second_email"
-            android:layout_width="wrap_content"
-            android:layout_height="24dp"
-            android:layout_marginBottom="272dp"
-            android:layout_marginLeft="68dp"
-            android:text="Contact email:"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" />
-
-        <EditText
-            android:id="@+id/email_input"
-            android:layout_width="143dp"
+        <LinearLayout
             android:layout_height="wrap_content"
-            android:layout_marginBottom="276dp"
-            android:layout_marginLeft="176dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="......@......."
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            android:layout_width="260dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal"
+            >
 
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:layout_marginBottom="200dp"
-            android:layout_marginLeft="68dp"
-            android:text="Return reminder:"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            <TextView
+                android:id="@+id/second_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Contact email:" />
 
-        <CheckBox
-            android:id="@+id/oneweek"
-            android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/email_input"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="......@......." />
+
+        </LinearLayout>
+
+
+        <LinearLayout
             android:layout_height="wrap_content"
-            android:layout_marginBottom="180dp"
-            android:layout_marginLeft="176dp"
-            android:checked="true"
-            android:text="One week before"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            android:layout_width="260dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal"
+            >
 
-        <CheckBox
-            android:id="@+id/threedays"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="228dp"
-            android:layout_marginLeft="176dp"
-            android:text="Three days before"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Return reminder:" />
 
-        <CheckBox
-            android:id="@+id/twoweeks"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="132dp"
-            android:layout_marginLeft="176dp"
-            android:text="Two weeks before"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <CheckBox
+                    android:id="@+id/oneweek"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="One week before" />
+
+                <CheckBox
+                    android:id="@+id/threedays"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Three days before" />
+
+                <CheckBox
+                    android:id="@+id/twoweeks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Two weeks before" />
+
+
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
 
         <Button
             android:id="@+id/submit_setting"
             android:layout_width="263dp"
-            android:layout_height="44dp"
-            android:layout_marginBottom="48dp"
-            android:layout_marginLeft="76dp"
-            android:text="Submit"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_gravity="center_horizontal"
+            android:text="Submit" />
 
-    </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
 
 </FrameLayout>
