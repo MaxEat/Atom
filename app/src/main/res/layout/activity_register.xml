@@ -1,45 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <!--//tools:context="com.example.max.testjson.RegisterFragment_T">-->
 
-    <ToggleButton
-        android:id="@+id/userType"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="84dp"
-        android:layout_marginLeft="196dp"
-        android:layout_x="0dp"
-        android:layout_y="390dp"
-        android:checked="true"
-        android:text="ToggleButton"
-        android:textOff="Student"
-        android:textOn="Administrator"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent" />
+    <LinearLayout
+        android:layout_width="210dp"
+        android:layout_height="35dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="96dp"
-        android:layout_marginLeft="72dp"
-        android:text="Are you student?"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Are you student?"
+            android:textColor="@color/colorBlueDark" />
+
+
+        <ToggleButton
+            android:id="@+id/userType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/rectangular_login"
+            android:checked="true"
+            android:text="ToggleButton"
+            android:textColor="@color/colorAccent"
+            android:textOff="Administrator"
+            android:textOn="Student" />
+
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/register"
-        android:layout_width="259dp"
-        android:layout_height="37dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="76dp"
-        android:text="Ok, I am done"
+        android:layout_width="210dp"
+        android:layout_height="35dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rectangular_login"
         android:onClick="register"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        />
-</android.support.constraint.ConstraintLayout>
+        android:text="Ok, I am done"
+        android:textColor="@color/colorAccent" />
+</LinearLayout>
+
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--xmlns:tools="http://schemas.android.com/tools"-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="match_parent">-->
+<!--&lt;!&ndash;//tools:context="com.example.max.testjson.RegisterFragment_T">&ndash;&gt;-->
+
+<!--<ToggleButton-->
+    <!--android:id="@+id/userType"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginBottom="84dp"-->
+    <!--android:layout_marginLeft="196dp"-->
+    <!--android:layout_x="0dp"-->
+    <!--android:layout_y="390dp"-->
+    <!--android:checked="true"-->
+    <!--android:text="ToggleButton"-->
+    <!--android:textOff="Student"-->
+    <!--android:textOn="Administrator"-->
+    <!--app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--app:layout_constraintLeft_toLeftOf="parent" />-->
+
+<!--<TextView-->
+    <!--android:id="@+id/textView"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginBottom="96dp"-->
+    <!--android:layout_marginLeft="72dp"-->
+    <!--android:text="Are you student?"-->
+    <!--app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--app:layout_constraintLeft_toLeftOf="parent" />-->
+
+<!--<Button-->
+    <!--android:id="@+id/register"-->
+    <!--android:layout_width="259dp"-->
+    <!--android:layout_height="37dp"-->
+    <!--android:layout_marginBottom="16dp"-->
+    <!--android:layout_marginLeft="76dp"-->
+    <!--android:text="Ok, I am done"-->
+    <!--android:onClick="register"-->
+    <!--app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--app:layout_constraintLeft_toLeftOf="parent"-->
+    <!--/>-->
+<!--</android.support.constraint.ConstraintLayout>-->
