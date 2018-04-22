@@ -332,10 +332,6 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
 
     }
 
-    @Override
-    public void onListFragmentInteraction(Admin_AvailableItem item) {
-
-    }
 
 
     @Override

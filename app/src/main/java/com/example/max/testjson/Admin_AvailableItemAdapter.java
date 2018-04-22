@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.max.testjson.Admin_AvailableItemFragment.OnListFragmentInteractionListener;
@@ -22,13 +23,13 @@ import java.util.List;
 
 public class Admin_AvailableItemAdapter extends RecyclerView.Adapter<Admin_AvailableItemAdapter.ViewHolder> implements Filterable{
 
-    private List<Admin_AvailableItem> mValues;
-    private List<Admin_AvailableItem> tempValue;
+    private List<AvailableItem> mValues;
+    private List<AvailableItem> tempValue;
     private final Admin_AvailableItemFragment.OnListFragmentInteractionListener mListener;
 
     Admin_AvailableItemAdapter.TestFilter myFilter;
 
-    public Admin_AvailableItemAdapter(List<Admin_AvailableItem> items, Admin_AvailableItemFragment.OnListFragmentInteractionListener listener) {
+    public Admin_AvailableItemAdapter(List<AvailableItem> items, Admin_AvailableItemFragment.OnListFragmentInteractionListener listener) {
         mValues = items;
         tempValue = items;
         mListener = listener;
@@ -47,24 +48,11 @@ public class Admin_AvailableItemAdapter extends RecyclerView.Adapter<Admin_Avail
         holder.mItem = mValues.get(position);
         String content = holder.mItem.getClassification() + " at "+holder.mItem.getItemLocation();
         holder.mContent.setText(content);
-        if(((Student)TestJson.getUser()).inWishList(holder.mItem))
-            holder.mCheckBox.setChecked(true);
-        holder.mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
-        {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-            {
-                if ( isChecked )
-                {
-                    ((Student)TestJson.getUser()).addItemToWish(holder.mItem);
-                }
-                else
-                {
-                    ((Student)TestJson.getUser()).removeItemFromWish(holder.mItem);
-                }
 
-            }
-        });
+        if(((Worker)TestJson.getUser()).inMaintainList(holder.mItem))
+            holder.mImage.setVisibility(View.GONE);
+        else
+            holder.mImage.setVisibility(View.VISIBLE);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,7 +65,7 @@ public class Admin_AvailableItemAdapter extends RecyclerView.Adapter<Admin_Avail
     }
 
 
-    public Admin_AvailableItem getItem(int position){
+    public AvailableItem getItem(int position){
         return mValues.get(position);
     }
 
@@ -89,14 +77,14 @@ public class Admin_AvailableItemAdapter extends RecyclerView.Adapter<Admin_Avail
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mContent;
-        public Admin_AvailableItem mItem;
-        public CheckBox mCheckBox;
+        public AvailableItem mItem;
+        public ImageView mImage;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             mContent = (TextView) view.findViewById(R.id.content);
-            mCheckBox = (CheckBox)view.findViewById(R.id.add_to_wish);
+            mImage = (ImageView) view.findViewById(R.id.maintaining);
         }
 
         @Override
@@ -118,7 +106,7 @@ public class Admin_AvailableItemAdapter extends RecyclerView.Adapter<Admin_Avail
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
 
-            List<Admin_AvailableItem> newItemList = new ArrayList<Admin_AvailableItem>();
+            List<AvailableItem> newItemList = new ArrayList<AvailableItem>();
             if (constraint != null && constraint.toString().trim().length() > 0) {
                 for (int i = 0; i < tempValue.size(); i++) {
                     String content = tempValue.get(i).getClassification() + " "+tempValue.get(i).getItemLocation();

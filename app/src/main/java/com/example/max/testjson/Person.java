@@ -39,8 +39,6 @@ public class Person {
     public List<AvailableItem> availableItems = new ArrayList<AvailableItem>();
     public Map<String, AvailableItem> availableItemMap = new HashMap<String, AvailableItem>();
 
-    public List<Admin_AvailableItem> admin_availableItems = new ArrayList<Admin_AvailableItem>();
-    public Map<String, Admin_AvailableItem> admin_availableItemMap = new HashMap<String, Admin_AvailableItem>();
 
     Person(String CardID) {
         cardID = CardID;
@@ -138,7 +136,6 @@ public class Person {
 
     }
 
-
     //internet request
     public void getAllItem() throws IOException {
         byte[] array = getAllItem_createJson();
@@ -169,66 +166,19 @@ public class Person {
         wv.postUrl(CustomedWebview.getAllAvailableItemsURL, array);
     }
 
+    public void administratorAddItem( String itemTag, String currentLocation, String timestamp, String itemClassification,
+                                      String itemPermission) throws IOException {
+        byte[] array = administratorAddItem_createJson(itemTag, currentLocation, timestamp, itemClassification,
+                itemPermission);
+        wv.postUrl(CustomedWebview.addNewItemURL, array);
+    }
+
     public byte[] getAllAvailableItems_createJson() throws IOException {
         JSONObject postdata = new JSONObject();
         StringEntity se = new StringEntity(postdata.toString(),"UTF-8");
         se.setContentType("application/json");
         byte[] array = EntityUtils.toByteArray(se);
         return array;
-    }
-
-    @JavascriptInterface
-    public void getAllAvailableItems_interface(String htmlSource) {
-        Log.i("Success get available", htmlSource);
-        try {
-            availableItems = new ArrayList<AvailableItem>();
-            availableItemMap = new HashMap<String, AvailableItem>();
-            JSONObject jsonObject =  new JSONObject(htmlSource);;
-
-            JSONArray jsonArray = jsonObject.getJSONArray("list");
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject json = jsonArray.getJSONObject(i);
-                AvailableItem item = new AvailableItem(json.getString("itemTag"), json.getString("itemLocation"));
-                item.setClassification(json.getString("itemClassification"));
-                item.setId(i);
-                availableItems.add(item);
-                availableItemMap.put(Integer.toString(item.getId()), item);
-            }
-        }catch (Throwable t) {
-            Log.e("My info", "Could not parse malformed JSON: \"" + htmlSource + "\"");
-        }
-
-    }
-
-    @JavascriptInterface
-    public void admin_getAllAvailableItems_interface(String htmlSource) {
-        Log.i("Success get available", htmlSource);
-        try {
-            admin_availableItems = new ArrayList<Admin_AvailableItem>();
-            admin_availableItemMap = new HashMap<String, Admin_AvailableItem>();
-            JSONObject jsonObject =  new JSONObject(htmlSource);;
-
-            JSONArray jsonArray = jsonObject.getJSONArray("list");
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject json = jsonArray.getJSONObject(i);
-                Admin_AvailableItem item = new Admin_AvailableItem(json.getString("itemTag"), json.getString("itemLocation"));
-                item.setClassification(json.getString("itemClassification"));
-                item.setId(i);
-                admin_availableItems.add(item);
-                admin_availableItemMap.put(Integer.toString(item.getId()), item);
-            }
-        }catch (Throwable t) {
-            Log.e("My info", "Could not parse malformed JSON: \"" + htmlSource + "\"");
-        }
-
-    }
-
-    public void administratorAddItem( String itemTag, String currentLocation, String timestamp, String itemClassification,
-                                      String itemPermission) throws IOException {
-        byte[] array = administratorAddItem_createJson(itemTag, currentLocation, timestamp, itemClassification,
-                itemPermission);
-        wv.postUrl(CustomedWebview.addNewItemURL, array);
-
     }
 
     // create internet json
@@ -238,7 +188,6 @@ public class Person {
         byte[] array = EntityUtils.toByteArray(se);
         return array;
     }
-
 
     protected byte[] getAllItem_createJson() throws IOException {
 
@@ -290,8 +239,6 @@ public class Person {
         }
         return createJson(postdata);
     }
-
-
 
     protected byte[] register_createJson() throws IOException {
         JSONObject postdata = new JSONObject();
@@ -425,6 +372,30 @@ public class Person {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @JavascriptInterface
+    public void getAllAvailableItems_interface(String htmlSource) {
+        Log.i("Success get available", htmlSource);
+        try {
+            availableItems = new ArrayList<AvailableItem>();
+            availableItemMap = new HashMap<String, AvailableItem>();
+            JSONObject jsonObject =  new JSONObject(htmlSource);;
+
+            JSONArray jsonArray = jsonObject.getJSONArray("list");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject json = jsonArray.getJSONObject(i);
+                AvailableItem item = new AvailableItem(json.getString("itemTag"), json.getString("itemLocation"));
+                item.setClassification(json.getString("itemClassification"));
+                item.setStatus(json.getString("status"));
+                item.setId(i);
+                availableItems.add(item);
+                availableItemMap.put(Integer.toString(item.getId()), item);
+            }
+        }catch (Throwable t) {
+            Log.e("My info", "Could not parse malformed JSON: \"" + htmlSource + "\"");
+        }
+
     }
 
     @Override

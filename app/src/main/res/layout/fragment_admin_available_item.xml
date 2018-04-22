@@ -14,11 +14,13 @@
         android:layout_height="wrap_content"
         android:text="Detail"></TextView>
 
-    <CheckBox
-        android:id="@+id/admin_add_to_wish"
-        android:layout_width="0dp"
+
+
+    <ImageView
+        android:id="@+id/maintaining"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Wish"/>
+        app:srcCompat="@drawable/ic_nippers" />
 
 </LinearLayout>
