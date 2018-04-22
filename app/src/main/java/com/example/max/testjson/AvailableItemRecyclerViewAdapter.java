@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.example.max.testjson.AvailableItemFragment.OnListFragmentInteractionListener;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,11 +54,19 @@ public class AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter<Avail
             {
                 if ( isChecked )
                 {
-                    ((Student)TestJson.getUser()).addItemToWish(holder.mItem);
+                    try {
+                        ((Student)TestJson.getUser()).addItemToWish(holder.mItem);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 else
                 {
-                    ((Student)TestJson.getUser()).removeItemFromWish(holder.mItem);
+                    try {
+                        ((Student)TestJson.getUser()).removeItemFromWish(holder.mItem);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
 
             }

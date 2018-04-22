@@ -59,6 +59,13 @@ public class AdminFragment_T extends Fragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        try {
+            ((Worker)TestJson.getUser()).getExpiredItemPersonDatabase();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return view;
     }
 

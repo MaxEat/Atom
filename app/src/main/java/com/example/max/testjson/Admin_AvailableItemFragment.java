@@ -75,7 +75,7 @@ public class Admin_AvailableItemFragment extends Fragment implements SearchView.
         searchView= (SearchView)view.findViewById(R.id.admin_search_view);
         searchView.setOnQueryTextListener(this);
 
-        adapter = new Admin_AvailableItemAdapter(TestJson.getUser().admin_availableItems, mListener);
+        adapter = new Admin_AvailableItemAdapter(TestJson.getUser().availableItems, mListener);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(
                 getContext(), DividerItemDecoration.VERTICAL));
@@ -114,7 +114,7 @@ public class Admin_AvailableItemFragment extends Fragment implements SearchView.
     }
 
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(Admin_AvailableItem item);
+        void onListFragmentInteraction(AvailableItem item);
     }
 
 }

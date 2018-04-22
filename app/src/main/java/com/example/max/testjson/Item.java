@@ -38,7 +38,7 @@ public class Item implements Serializable {
     private String imageURL;
     private String status;
     private Bitmap bitmap;
-    int error;
+    private int error;
     private static String[] itemClassifications;
     private static int classificationNumber;
     private String pictureNumberString;
@@ -88,6 +88,7 @@ public class Item implements Serializable {
         return imageURL;
     }
 
+    public String getStatus() { return status;}
 
     public void setImageURL( String url) {
         imageURL = url;
@@ -101,13 +102,21 @@ public class Item implements Serializable {
         itemLocation = location;
     }
 
+    public void setStatus(String Status) { status = Status; }
+
+    public boolean getAvailability() {
+        if(status.equals("Returned")){
+            return true;
+        }
+        return false;
+    }
+
     public boolean checkItemAvailable(){
         if(status!="Borrowing" && status!="Maintaining")
             return true;
         else
             return false;
     }
-
 
     public static String[] getAllClassifications(){
 
