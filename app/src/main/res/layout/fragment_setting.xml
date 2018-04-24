@@ -12,11 +12,11 @@
 
         <ImageView
             android:id="@+id/my_image"
-            android:layout_width="141dp"
+            android:layout_width="168dp"
             android:layout_height="168dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
-            android:src="@android:drawable/sym_def_app_icon" />
+            android:background="@drawable/ic_addperson" />
 
         <LinearLayout
             android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
                 android:id="@+id/second_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorBlueDark"
+                android:textColor="@color/colorPrimaryDark"
                 android:text="Contact email:" />
 
             <EditText
@@ -38,8 +38,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:textColor="@color/colorBlueDark"
-                android:textColorLink="@color/colorBlueDark"
+                android:textColor="@color/colorPrimaryDark"
+                android:textColorLink="@color/colorPrimaryDark"
+                android:theme="@style/MyEditText"
+                android:layout_marginStart="10dp"
                 android:inputType="textPersonName"
                 android:text="......@......." />
 
@@ -58,7 +60,7 @@
                 android:id="@+id/textView6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorBlueDark"
+                android:textColor="@color/colorPrimaryDark"
                 android:text="Return reminder:" />
 
             <LinearLayout
@@ -72,20 +74,32 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:checked="true"
-                    android:textColorHighlight="@color/colorBlueDark"
-                    android:textColor="@color/colorBlueDark"
+                    android:textColorHighlight="@color/colorPrimaryDark"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:button="@drawable/custom_checkbox"
+                    android:layout_marginStart="10dp"
                     android:text="One week before" />
 
                 <CheckBox
                     android:id="@+id/threedays"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColorHighlight="@color/colorPrimaryDark"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:button="@drawable/custom_checkbox"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
                     android:text="Three days before" />
 
                 <CheckBox
                     android:id="@+id/twoweeks"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColorHighlight="@color/colorPrimaryDark"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:button="@drawable/custom_checkbox"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
                     android:text="Two weeks before" />
 
 
