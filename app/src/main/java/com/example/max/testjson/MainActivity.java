@@ -162,7 +162,7 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                 user.setUserType(userType);
                 TestJson.setUser(user);
 
-                wv.addJavascriptInterface(user, "Person");
+
                 fragment = mFragments[6];
                 if(fragment!=null) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.home_container_main,fragment).commit();
@@ -177,7 +177,7 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                 user.setCardID(cardid);
                 user.setUserType(userType);
                 TestJson.setUser(user);
-                wv.addJavascriptInterface(user, "Person");
+
                 fragment = mFragments[5];
                 if(fragment!=null) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.home_container_main,fragment).commit();

@@ -40,6 +40,7 @@ public class Worker extends Person{
 
 
     public void setDashboard() {
+        dashboard = new ArrayList<News>();
         try {
             getExpiredItemPersonDatabase();
         } catch (IOException e) {
@@ -81,59 +82,16 @@ public class Worker extends Person{
             item.setBorrowedTimeStamp(json.getString("borrowTimestamp").substring(0,10));
             item.setBorrowedLocation(json.getString("borrowLocation"));
             item.setClassification(json.getString("itemClassification"));
-            item.setBorrowPersonEmail(json.getString("Email"));
+            item.setBorrowPersonEmail(json.getString("email"));
             item.setBorrowPersonID(json.getString("userID"));
-            item.setBorrowPersonName(json.getString("person name"));
+            item.setBorrowPersonName(json.getString("userName"));
             expiredItems.add(item);
         }
-        setDashboardExpiredPerson();
     }
 
-//    public void getExpiredItemPersonDatabase() {
-//        JSONObject postdata = new JSONObject();
-//        try {
-//            BackgroundTask.getInstance().postAsyncJsonn(BackgroundTask.getExpiredItemURL, postdata.toString(), new BackgroundTask.MyCallback() {
-//                @Override
-//                public void onSuccess(String result) {
-//                    Log.i("Success", "result----" + result);
-//                    try {
-//                        expiredItems = new ArrayList<ExpiredItem>();
-//                        JSONObject jsonObject = new JSONObject(result);
-//                        JSONArray jsonArray = jsonObject.getJSONArray("list");
-//                        for (int i = 0; i < jsonArray.length(); i++) {
-//                            JSONObject json = jsonArray.getJSONObject(i);
-//                            ExpiredItem item = new ExpiredItem(json.getString("itemTag"));
-//                            item.setBorrowedTimeStamp(json.getString("borrowTimestamp").substring(0,10));
-//                            item.setBorrowedLocation(json.getString("borrowLocation"));
-//                            item.setClassification(json.getString("itemClassification"));
-//                            item.setBorrowPersonEmail(json.getString("Email"));
-//                            item.setBorrowPersonID(json.getString("userID"));
-//                            item.setBorrowPersonName(json.getString("person name"));
-//                            expiredItems.add(item);
-//                        }
-//                        setDashboardExpiredPerson();
-//
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                }
-//
-//                @Override
-//                public void onFailture() {
-//
-//                }
-//            });
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
     public boolean inMaintainList(Item item) {
-        for(Item i:availableItems){
-            if(i.getStatus() == "maintaining"){
-                return true;
-            }
+        if(item.getStatus().equals("maintaining")){
+            return true;
         }
         return false;
     }

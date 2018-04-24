@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import java.io.IOException;
 
+import static com.example.max.testjson.TestJson.wv;
+
 
 public class AdminFragment_T extends Fragment {
     private BottomNavigationView mBottomNavigationView;
@@ -72,6 +74,7 @@ public class AdminFragment_T extends Fragment {
         android.support.v4.app.Fragment fragment = null;
         switch (id){
             case R.id.tab_adminMenu_dashboard:
+                wv.addJavascriptInterface(TestJson.getUser(), "Person");
                 TestJson.getUser().setDashboard();
                 fragment = mFragments[0];
                 break;
@@ -81,11 +84,12 @@ public class AdminFragment_T extends Fragment {
                 break;
 
             case R.id.tab_adminMenu_overview:
+                wv.addJavascriptInterface(TestJson.getUser(), "Person");
+                TestJson.getUser().getAllAvailableItems();
                 fragment = mFragments[2];
                 break;
 
             case R.id.tab_adminMenu_maintain:
-                TestJson.getUser().getAllAvailableItems();
                 fragment = mFragments[3];
                 break;
 

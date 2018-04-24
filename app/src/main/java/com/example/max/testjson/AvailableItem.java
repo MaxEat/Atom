@@ -49,48 +49,6 @@ public class AvailableItem extends Item {
         return id;
     }
 
-
-
-
-//
-//    public static void getAllAvailableItems() {
-//        JSONObject postdata = new JSONObject();
-//
-//        try {
-//            BackgroundTask.getInstance().postAsyncJsonn(BackgroundTask.getAllAvailableItemsURL, postdata.toString(), new BackgroundTask.MyCallback() {
-//                @Override
-//                public void onSuccess(String result) {
-//                    Log.i("Success get available", "result----" + result);
-//                    try {
-//                        availableItems = new ArrayList<AvailableItem>();
-//                        availableItemMap = new HashMap<String, AvailableItem>();
-//                        JSONObject jsonObject = new JSONObject(result);
-//                        JSONArray jsonArray = jsonObject.getJSONArray("list");
-//                        for (int i = 0; i < jsonArray.length(); i++) {
-//                            JSONObject json = jsonArray.getJSONObject(i);
-//                            AvailableItem item = new AvailableItem(json.getString("itemTag"), json.getString("itemLocation"));
-//                            item.setClassification(json.getString("itemClassification"));
-//                            item.setId(i);
-//                            availableItems.add(item);
-//                            availableItemMap.put(Integer.toString(item.getId()), item);
-//                        }
-//
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                }
-//
-//                @Override
-//                public void onFailture() {
-//
-//                }
-//            });
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
     @Override
     public String toString() {
         return "Item{" +
