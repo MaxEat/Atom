@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.app.FragmentManager;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 
 public class BorrowedFragment extends Fragment {
 
@@ -61,7 +62,8 @@ public class BorrowedFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            adapter = new BorrowedItemRecyclerViewAdapter(TestJson.getUser().getBorrowedItems(), mListener);
+            ArrayList<BorrowedItem> items = ((Student)TestJson.getUser()).getBorrowedItems();
+            adapter = new BorrowedItemRecyclerViewAdapter(items, mListener);
             adapter.setContext(getContext());
             recyclerView.setAdapter(adapter);
             recyclerView.addItemDecoration(new DividerItemDecoration(

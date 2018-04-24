@@ -139,7 +139,7 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
             user.setUserType(userType);
             user.setCardID(id);
             wv.addJavascriptInterface(user, "Person");
-            user.getAllItem();
+
             TestJson.setUser(user);
             wv.hide();
             fragment = mFragments[5];
@@ -163,11 +163,6 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                 TestJson.setUser(user);
 
                 wv.addJavascriptInterface(user, "Person");
-                try {
-                    user.getAllItem();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
                 fragment = mFragments[6];
                 if(fragment!=null) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.home_container_main,fragment).commit();
@@ -183,12 +178,6 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                 user.setUserType(userType);
                 TestJson.setUser(user);
                 wv.addJavascriptInterface(user, "Person");
-                try {
-                    user.getAllItem();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
                 fragment = mFragments[5];
                 if(fragment!=null) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.home_container_main,fragment).commit();

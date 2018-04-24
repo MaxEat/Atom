@@ -3,6 +3,7 @@ package com.example.max.testjson;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 
+import com.example.max.testjson.dashboard.Item_Expiring_News;
 import com.example.max.testjson.dashboard.Wish_Item_Available_News;
 
 import org.apache.http.entity.StringEntity;
@@ -13,6 +14,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.example.max.testjson.TestJson.wv;
 
@@ -22,25 +25,83 @@ import static com.example.max.testjson.TestJson.wv;
 
 public class Student extends Person {
     public ArrayList<Item> wishItems;
+    public ArrayList<BorrowedItem> borrowedItems;
+    public Map<String, BorrowedItem> borrowedItemMAP = new HashMap<String, BorrowedItem>();
 
     Student(String CardID) {
         super(CardID);
+        borrowedItems = new ArrayList<BorrowedItem>();
     }
 
     Student(String aUserName, String aKuleuvenID, String Email){
         super(aUserName, aKuleuvenID, Email);
         wishItems = new ArrayList<Item>();
+        borrowedItems = new ArrayList<BorrowedItem>();
+    }
+
+    public void setBorrowedItems(ArrayList<BorrowedItem> aBorrowedItems) {
+        borrowedItems = aBorrowedItems;
+    }
+
+    public ArrayList<BorrowedItem> getBorrowedItems() {
+
+        return borrowedItems;
     }
 
     @Override
+    public void setDashboard() {
+        try {
+            getAllItem();
+            getWishListFromDatabase();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        setDashboardWishItems();
+        setDashboardAlertItems();
+        setDashboardExpiredItems();
+    }
+
+    public void setDashboardAlertItems() {
+        for (BorrowedItem borrowedItem : borrowedItems) {
+            int leftDays = Integer.parseInt(borrowedItem.getLeftDays());
+            if ( leftDays <= TestJson.alertDay && leftDays >=0) {
+                Item_Expiring_News news = new Item_Expiring_News(borrowedItem);
+                dashboard.add(news);
+            }
+        }
+    }
+
+    public void setDashboardExpiredItems() {
+        for (BorrowedItem borrowedItem : borrowedItems) {
+            int leftDays = Integer.parseInt(borrowedItem.getLeftDays());
+            if (leftDays<0) {
+                Item_Expiring_News news = new Item_Expiring_News(borrowedItem);
+                dashboard.add(news);
+            }
+        }
+
+    }
+
+    //internet request
     public void getAllItem() throws IOException {
-        super.getAllItem();
-        getWishListFromDatabase();
+        byte[] array = getAllItem_createJson();
+        wv.postUrl(CustomedWebview.getAllBorrowedItemsURL,array);
     }
 
     public void getWishListFromDatabase() throws IOException {
         byte[] array = getWishListFromDatabase_createJson();
         wv.postUrl(CustomedWebview.getAllWishListItemsURL, array);
+    }
+
+    public void addItemToWish(final Item item) throws IOException {
+        byte[] array = addItemToWish_createJson(item);
+        wv.postUrl(CustomedWebview.addItemToWishListURL, array);
+    }
+
+    public void removeItemFromWish(final Item item) throws IOException {
+        byte[] array = removeItemFromWish_createJson(item);
+        wv.postUrl(CustomedWebview.removeItemFromWishListURL, array);
     }
 
     public byte[] getWishListFromDatabase_createJson() throws IOException {
@@ -86,14 +147,40 @@ public class Student extends Person {
         return array;
     }
 
-    public void addItemToWish(final Item item) throws IOException {
-        byte[] array = addItemToWish_createJson(item);
-        wv.postUrl(CustomedWebview.addItemToWishListURL, array);
+    protected byte[] getAllItem_createJson() throws IOException {
+
+        JSONObject postdata = new JSONObject();
+        try {
+            postdata.put("kuleuvenID", getKuleuvenID());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return createJson(postdata);
     }
 
-    public void removeItemFromWish(final Item item) throws IOException {
-        byte[] array = removeItemFromWish_createJson(item);
-        wv.postUrl(CustomedWebview.removeItemFromWishListURL, array);
+    @JavascriptInterface
+    public void getAllItem_Interface(String htmlSource) {
+        Log.i("get all items", htmlSource);
+        try {
+            borrowedItems = new ArrayList<BorrowedItem>();
+            borrowedItemMAP = new HashMap<String, BorrowedItem>();
+
+            JSONObject jsonObject = new JSONObject(htmlSource);
+            JSONArray jsonArray = jsonObject.getJSONArray("list");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject json = jsonArray.getJSONObject(i);
+                BorrowedItem item = new BorrowedItem(json.getString("itemTag"));
+                item.setBorrowedTimeStamp(json.getString("borrowTimestamp").substring(0,10));
+                item.setBorrowedLocation(json.getString("borrowLocation"));
+                item.setImageURL(json.getString("borrowLocation"));
+                item.setClassification(json.getString("itemClassification"));
+                borrowedItems.add(item);
+                borrowedItemMAP.put(Integer.toString(i),item);
+                Log.i(Integer.toString(i),item.toString());
+            }
+        } catch (Throwable t) {
+            Log.e("My info", "Could not parse malformed JSON for get all item: \"" + htmlSource + "\"");
+        }
     }
 
     @JavascriptInterface

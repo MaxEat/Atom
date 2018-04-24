@@ -38,9 +38,22 @@ public class Worker extends Person{
         administorType = "all";
     }
 
-    @Override
-    public void getAllItem() throws IOException {
-        super.getAllItem();
+
+    public void setDashboard() {
+        try {
+            getExpiredItemPersonDatabase();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        setDashboardExpiredPerson();
+    }
+
+
+    public void setDashboardExpiredPerson() {
+        for(ExpiredItem expiredItem:expiredItems){
+            Remind_Expired_Student_News news = new Remind_Expired_Student_News(expiredItem);
+            dashboard.add(news);
+        }
     }
 
 
@@ -48,8 +61,6 @@ public class Worker extends Person{
         byte[] array = getExpiredItemPersonDatabase_createJson();
         wv.postUrl(CustomedWebview.getExpiredItemURL,array);
     }
-
-
 
     private byte[] getExpiredItemPersonDatabase_createJson() throws IOException {
         JSONObject postdata = new JSONObject();
@@ -127,21 +138,6 @@ public class Worker extends Person{
         return false;
     }
 
-    @Override
-    public ArrayList<News> getDashboard(){
-        try {
-            getExpiredItemPersonDatabase();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return dashboard;
-    }
 
-    public void setDashboardExpiredPerson() {
-        for(ExpiredItem expiredItem:expiredItems){
-            Remind_Expired_Student_News news = new Remind_Expired_Student_News(expiredItem);
-            dashboard.add(news);
-        }
-    }
 
 }

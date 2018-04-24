@@ -47,34 +47,32 @@ public class AdminFragment_T extends Fragment {
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                onTabItemSelected(item.getItemId());
+                try {
+                    onTabItemSelected(item.getItemId());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 return true;
             }
         });
         // 由于第一次进来没有回调onNavigationItemSelected，因此需要手动调用一下切换状态的方法
-        onTabItemSelected(R.id.tab_adminMenu_dashboard);
-
         try {
-            TestJson.getUser().getAllAvailableItems();
+            onTabItemSelected(R.id.tab_adminMenu_dashboard);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        try {
-            ((Worker)TestJson.getUser()).getExpiredItemPersonDatabase();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         return view;
     }
 
 
 
-    private void onTabItemSelected(int id){
+    private void onTabItemSelected(int id) throws IOException {
         android.support.v4.app.Fragment fragment = null;
         switch (id){
             case R.id.tab_adminMenu_dashboard:
+                TestJson.getUser().setDashboard();
                 fragment = mFragments[0];
                 break;
 
@@ -87,6 +85,7 @@ public class AdminFragment_T extends Fragment {
                 break;
 
             case R.id.tab_adminMenu_maintain:
+                TestJson.getUser().getAllAvailableItems();
                 fragment = mFragments[3];
                 break;
 

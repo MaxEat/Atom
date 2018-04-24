@@ -85,15 +85,7 @@ public class HomeFragment extends Fragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        try{
-            ((Student)TestJson.getUser()).getWishListFromDatabase();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        ((Student)TestJson.getUser()).setDashboardAlertItems();
-        ((Student)TestJson.getUser()).setDashboardExpiredItems();
+        TestJson.getUser().setDashboard();
 
         return view;
     }

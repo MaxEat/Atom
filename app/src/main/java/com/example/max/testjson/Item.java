@@ -197,34 +197,6 @@ public class Item implements Serializable {
         return itemClassifications;
     }
 
-
-    public void setInfoSyn() {
-        final JSONObject postdata = new JSONObject();
-        try {
-            postdata.put("itemTag", getItemTag());
-        } catch(JSONException e){
-            e.printStackTrace();
-        }
-        new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        Response response = BackgroundTask.getInstance().postSyncJson(BackgroundTask.getInfoByItemTagURL, postdata.toString());
-                        if (response.isSuccessful()) {
-                            String responseStr = response.body().string();
-                            Log.i("Get item info", responseStr);
-                        } else {
-                            Log.i("Get item info", "error");
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-        }.start();
-    }
-
-
-
     public void setBitmap() {
         try {
             InputStream in = new java.net.URL(imageURL).openStream();

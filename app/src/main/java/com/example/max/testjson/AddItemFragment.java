@@ -187,10 +187,10 @@ public class AddItemFragment extends Fragment {
 
     public void setItemTag(String tag) throws IOException {
         itemTag = tag;
-        Item item = new Item(tag);
-        wv.addJavascriptInterface(item,"Item");
-        item.setInfos();
-        ScanResult.setText(item.getClassification());
+      //  Item item = new Item(tag);
+      //  wv.addJavascriptInterface(item,"Item");
+       // item.setInfos();
+     //   ScanResult.setText(item.getClassification());
        // ScanResult.setText(item.getClassification()+" at " + item.getItemLocation());
     }
 

@@ -5,7 +5,6 @@ import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.widget.Toast;
 
-import com.example.max.testjson.dashboard.Item_Expiring_News;
 import com.example.max.testjson.dashboard.News;
 
 import org.apache.http.entity.StringEntity;
@@ -25,7 +24,7 @@ import static com.example.max.testjson.TestJson.wv;
  * Created by max on 2018/4/5.
  */
 
-public class Person {
+public abstract class Person {
     protected int error;
     protected String kuleuvenID;
     protected String cardID;
@@ -33,8 +32,6 @@ public class Person {
     protected String userType;
     protected String userName;
     protected String alertEmail;
-    protected ArrayList<BorrowedItem> borrowedItems;
-    protected Map<String, BorrowedItem> borrowedItemMAP = new HashMap<String, BorrowedItem>();
     protected ArrayList<News> dashboard;
     public List<AvailableItem> availableItems = new ArrayList<AvailableItem>();
     public Map<String, AvailableItem> availableItemMap = new HashMap<String, AvailableItem>();
@@ -49,7 +46,6 @@ public class Person {
         userName = aUserName;
         email = Email;
         alertEmail = Email;
-        borrowedItems = new ArrayList<BorrowedItem>();
         dashboard = new ArrayList<News>();
     }
 
@@ -78,10 +74,6 @@ public class Person {
         cardID = CardID;
     }
 
-    public void setBorrowedItems(ArrayList<BorrowedItem> aBorrowedItems) {
-        borrowedItems = aBorrowedItems;
-    }
-
     public String getKuleuvenID() {
         return kuleuvenID;
     }
@@ -106,41 +98,12 @@ public class Person {
         return userName;
     }
 
-    public ArrayList<BorrowedItem> getBorrowedItems() {
-
-        return borrowedItems;
-    }
-
     public ArrayList<News> getDashboard(){
         return dashboard;
     }
 
-    public void setDashboardAlertItems() {
-        for (BorrowedItem borrowedItem : borrowedItems) {
-            int leftDays = Integer.parseInt(borrowedItem.getLeftDays());
-            if ( leftDays <= TestJson.alertDay && leftDays >=0) {
-                Item_Expiring_News news = new Item_Expiring_News(borrowedItem);
-                dashboard.add(news);
-            }
-        }
-    }
+    public abstract void setDashboard();
 
-    public void setDashboardExpiredItems() {
-        for (BorrowedItem borrowedItem : borrowedItems) {
-            int leftDays = Integer.parseInt(borrowedItem.getLeftDays());
-            if (leftDays<0) {
-                Item_Expiring_News news = new Item_Expiring_News(borrowedItem);
-                dashboard.add(news);
-            }
-        }
-
-    }
-
-    //internet request
-    public void getAllItem() throws IOException {
-        byte[] array = getAllItem_createJson();
-        wv.postUrl(CustomedWebview.getAllBorrowedItemsURL,array);
-    }
 
     public void updateItemState(String itemTag) throws IOException {
         byte[] array = updateItemState_createJson(itemTag);
@@ -187,17 +150,6 @@ public class Person {
         se.setContentType("application/json");
         byte[] array = EntityUtils.toByteArray(se);
         return array;
-    }
-
-    protected byte[] getAllItem_createJson() throws IOException {
-
-        JSONObject postdata = new JSONObject();
-        try {
-            postdata.put("kuleuvenID", getKuleuvenID());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return createJson(postdata);
     }
 
     protected byte[] updateItemState_createJson(String itemTag) throws IOException {
@@ -299,31 +251,6 @@ public class Person {
     }
 
     @JavascriptInterface
-    public void getAllItem_Interface(String htmlSource) {
-        Log.i("get all items", htmlSource);
-        try {
-            borrowedItems = new ArrayList<BorrowedItem>();
-            borrowedItemMAP = new HashMap<String, BorrowedItem>();
-
-            JSONObject jsonObject = new JSONObject(htmlSource);
-            JSONArray jsonArray = jsonObject.getJSONArray("list");
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject json = jsonArray.getJSONObject(i);
-                BorrowedItem item = new BorrowedItem(json.getString("itemTag"));
-                item.setBorrowedTimeStamp(json.getString("borrowTimestamp").substring(0,10));
-                item.setBorrowedLocation(json.getString("borrowLocation"));
-                item.setImageURL(json.getString("borrowLocation"));
-                item.setClassification(json.getString("itemClassification"));
-                borrowedItems.add(item);
-                borrowedItemMAP.put(Integer.toString(i),item);
-                Log.i(Integer.toString(i),item.toString());
-            }
-        } catch (Throwable t) {
-            Log.e("My info", "Could not parse malformed JSON: \"" + htmlSource + "\"");
-        }
-    }
-
-    @JavascriptInterface
     public void borrowItem_Interface(String htmlSource) {
         Log.i("borrow item", htmlSource);
         try {
@@ -333,7 +260,6 @@ public class Person {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 
     @JavascriptInterface
@@ -347,7 +273,6 @@ public class Person {
             e.printStackTrace();
         }
     }
-
 
     @JavascriptInterface
     public void updateItemStatus_Interface(String htmlSource) {
@@ -387,7 +312,7 @@ public class Person {
                 JSONObject json = jsonArray.getJSONObject(i);
                 AvailableItem item = new AvailableItem(json.getString("itemTag"), json.getString("itemLocation"));
                 item.setClassification(json.getString("itemClassification"));
-                item.setStatus(json.getString("status"));
+                item.setStatus(json.getString("itemStatus"));
                 item.setId(i);
                 availableItems.add(item);
                 availableItemMap.put(Integer.toString(item.getId()), item);
@@ -408,6 +333,7 @@ public class Person {
                 ", userType=" + userType +
                 '}';
     }
+
 //    public void getAllItem() {
 //
 //        JSONObject postdata = new JSONObject();

@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.io.IOException;
+
 
 public class PersonalFragment_T extends Fragment {
 
@@ -50,12 +52,20 @@ public class PersonalFragment_T extends Fragment {
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                onTabItemSelected(item.getItemId());
+                try {
+                    onTabItemSelected(item.getItemId());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 return true;
             }
         });
         // 由于第一次进来没有回调onNavigationItemSelected，因此需要手动调用一下切换状态的方法
-        onTabItemSelected(R.id.tab_menu_home);
+        try {
+            onTabItemSelected(R.id.tab_menu_home);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
         return view;
@@ -83,10 +93,11 @@ public class PersonalFragment_T extends Fragment {
 //        super.onViewCreated(view, savedInstanceState);
 //    }
 
-    private void onTabItemSelected(int id){
+    private void onTabItemSelected(int id) throws IOException {
         android.support.v4.app.Fragment fragment = null;
         switch (id){
             case R.id.tab_menu_home:
+                TestJson.getUser().setDashboard();
                 fragment = mFragments[0];
                 break;
 
@@ -95,10 +106,12 @@ public class PersonalFragment_T extends Fragment {
                 break;
 
             case R.id.tab_menu_discovery:
+                ((Student)TestJson.getUser()).getAllItem();
                 fragment = mFragments[2];
                 break;
 
             case R.id.tab_menu_available:
+                TestJson.getUser().getAllAvailableItems();
                 fragment = mFragments[3];
                 break;
 
