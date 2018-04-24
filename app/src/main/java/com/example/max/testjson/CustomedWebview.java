@@ -80,6 +80,9 @@ public class CustomedWebview extends WebView {
                 if(url.equals(baseIndexURL) || url.equals(baseURL))
                     view.loadUrl("javascript:window.local.getRegisterInfo(document.body.innerHTML)");
 
+                if(url.equals(duplicatePersonURL))
+                    view.loadUrl("javascript:window.local.checkPersonInfo(document.body.innerHTML)");
+
                 if(url.equals(getAllBorrowedItemsURL ))
                     view.loadUrl("javascript:window.Person.getAllItem_Interface(document.body.innerHTML)");
 
@@ -90,7 +93,7 @@ public class CustomedWebview extends WebView {
                     view.loadUrl("javascript:window.Person.returnItem_Interface(document.body.innerHTML)");
 
                 if(url.equals(registerPersonURL))
-                    view.loadUrl("javascript:window.Person.registerPerson_interface(document.body.innerHTML)");
+                    view.loadUrl("javascript:window.registerPerson.registerPerson_interface(document.body.innerHTML)");
 
                 if(url.equals(updateItemStateUrl))
                     view.loadUrl("javascript:window.Person.updateItemStatus_Interface(document.body.innerHTML)");

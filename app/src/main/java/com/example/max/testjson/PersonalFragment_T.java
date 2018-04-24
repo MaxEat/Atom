@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import java.io.IOException;
 
+import static com.example.max.testjson.TestJson.wv;
+
 
 public class PersonalFragment_T extends Fragment {
 
@@ -97,6 +99,7 @@ public class PersonalFragment_T extends Fragment {
         android.support.v4.app.Fragment fragment = null;
         switch (id){
             case R.id.tab_menu_home:
+                wv.addJavascriptInterface(TestJson.getUser(), "Person");
                 TestJson.getUser().setDashboard();
                 fragment = mFragments[0];
                 break;
@@ -106,11 +109,13 @@ public class PersonalFragment_T extends Fragment {
                 break;
 
             case R.id.tab_menu_discovery:
+                wv.addJavascriptInterface(TestJson.getUser(), "Person");
                 ((Student)TestJson.getUser()).getAllItem();
                 fragment = mFragments[2];
                 break;
 
             case R.id.tab_menu_available:
+                wv.addJavascriptInterface(TestJson.getUser(), "Person");
                 TestJson.getUser().getAllAvailableItems();
                 fragment = mFragments[3];
                 break;
