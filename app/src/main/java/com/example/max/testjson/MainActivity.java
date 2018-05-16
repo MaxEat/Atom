@@ -16,12 +16,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.widget.Toast;
-import com.nxp.nfclib.CardType;
-import com.nxp.nfclib.NxpNfcLib;
-import com.nxp.nfclib.exceptions.NxpNfcLibException;
-import com.nxp.nfclib.plus.IPlus;
-import com.nxp.nfclib.plus.IPlusSL3;
-import com.nxp.nfclib.plus.PlusFactory;
 
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
@@ -39,14 +33,6 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
     private android.support.v4.app.Fragment[]mFragments;
     private static final int CAMERA= 115;
 
-//    private static final int STORAGE= 114;
-//    private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
-//    private static final int STORAGE_PERMISSION_WRITE = 113;
-//    private static String packageKey = "27a687a3baf16019e54c1f622d814a06";
-//
-//    private IPlusSL3 plusSL3 = null;
-//    private NxpNfcLib libInstance = null;
-//    private CardType mCardType = CardType.UnknownCard; //不能删
 
     Fragment fragment = null;
     private String cardID;
@@ -54,6 +40,7 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
     private String userName = "None";
     private String email = "None";
     private String userType = "";
+    private String blacklist;
 
 
     @Override
@@ -183,30 +170,37 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
     }
 
     @SuppressLint("JavascriptInterface")
-    public void checkUserType(String kuleuvenID, String userName, String email, String userType, String id) throws IOException {
+    public void checkUserType(final String kuleuvenID, final String userName, final String email, final String userType, final String id, final String blacklist) throws IOException {
 
-        if (userType.equals("Administrator"))
-        {
-          showDialog(kuleuvenID, userName, email, userType, id);
-        }
-        else
-        {
-            Person user = new Student(userName, kuleuvenID, email);
-            user.setUserType(userType);
-            user.setCardID(id);
-            wv.addJavascriptInterface(user, "Person");
-            TestJson.setUser(user);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run(){
+                if(userType.equals("Administrator"))
 
-            fragment = mFragments[5];
+                {
+                    showDialog(kuleuvenID, userName, email, userType, id);
+                }
+                else
 
-            if(fragment!=null) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.home_container_main,fragment).commit();
+                {
+                    Person user = new Student(userName, kuleuvenID, email, blacklist);
+                    user.setUserType(userType);
+                    user.setCardID(id);
+                    wv.addJavascriptInterface(user, "Person");
+                    TestJson.setUser(user);
+
+                    fragment = mFragments[5];
+
+                    if (fragment != null) {
+                        getSupportFragmentManager().beginTransaction().replace(R.id.home_container_main, fragment).commit();
+                    }
+                }
             }
-        }
-
+            });
 
     }
     public void showDialog(final String kuleuvenID, final String userName, final String email, final String userType, final String cardid) {
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setPositiveButton(R.string.administrator, new DialogInterface.OnClickListener() {
             @SuppressLint("JavascriptInterface")
@@ -299,7 +293,6 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
 //    }
 
     public void check() throws IOException {
-
         runOnUiThread(new Runnable(){
             @Override
             public void run() {
@@ -430,12 +423,12 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
 //                            }
 //                        }
 //                    });
-
-
                 }
                 if(error == 0){
                     userType = obj.getString("userType");
-                    checkUserType(kuleuvenID, userName, email, userType,cardID);
+                    blacklist = obj.getString("state");
+
+                    checkUserType(kuleuvenID, userName, email, userType,cardID, blacklist);
                 }
             } catch (Throwable t) {
                 Log.e("My info", "Could not parse malformed JSON: \"" + htmlSource + "\"");

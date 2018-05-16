@@ -2,16 +2,25 @@ package com.example.max.testjson;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+
+import static com.example.max.testjson.TestJson.wv;
 
 
 public class SettingFragment extends Fragment {
@@ -20,6 +29,7 @@ public class SettingFragment extends Fragment {
     private CheckBox threedays;
     private EditText preferEmail;
     private Button submit;
+    private ImageButton logout;
 
 
     private OnFragmentInteractionListener mListener;
@@ -52,6 +62,7 @@ public class SettingFragment extends Fragment {
         oneWeek = (CheckBox)view.findViewById(R.id.oneweek);
         threedays = (CheckBox)view.findViewById(R.id.threedays);
         submit = (Button)view.findViewById(R.id.submit_setting);
+        logout = (ImageButton)view.findViewById(R.id.logout);
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +96,31 @@ public class SettingFragment extends Fragment {
                     alertBuilder.create().show();
                 }
 
+            }
+        });
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                    Log.d("clear wv", "Using clearCookies code for API >=" + String.valueOf(Build.VERSION_CODES.LOLLIPOP_MR1));
+                    CookieManager.getInstance().removeAllCookies(null);
+                    CookieManager.getInstance().flush();
+                } else
+                {
+                    Log.d("clear wv", "Using clearCookies code for API <" + String.valueOf(Build.VERSION_CODES.LOLLIPOP_MR1));
+                    CookieSyncManager cookieSyncMngr=CookieSyncManager.createInstance(view.getContext());
+                    cookieSyncMngr.startSync();
+                    CookieManager cookieManager=CookieManager.getInstance();
+                    cookieManager.removeAllCookie();
+                    cookieManager.removeSessionCookie();
+                    cookieSyncMngr.stopSync();
+                    cookieSyncMngr.sync();
+                }
+                TestJson.resetWebView();
+                TestJson.setUser(null);
+                Intent intent = new Intent(getActivity(), SplashActivity.class);
+                startActivity(intent);
             }
         });
         return view;

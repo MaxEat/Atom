@@ -2,6 +2,7 @@ package com.example.max.testjson;
 
 import android.util.Log;
 import android.webkit.JavascriptInterface;
+import android.widget.ArrayAdapter;
 
 import com.example.max.testjson.dashboard.Item_Expiring_News;
 import com.example.max.testjson.dashboard.Wish_Item_Available_News;
@@ -27,18 +28,31 @@ public class Student extends Person {
     public ArrayList<Item> wishItems;
     public ArrayList<BorrowedItem> borrowedItems;
     public Map<String, BorrowedItem> borrowedItemMAP = new HashMap<String, BorrowedItem>();
+    public ArrayList<BorrowedItem> blacklistItems;
+    public String blacklist;
+
 
     Student(String CardID) {
         super(CardID);
         borrowedItems = new ArrayList<BorrowedItem>();
+        blacklist = "normal";
     }
 
     Student(String aUserName, String aKuleuvenID, String Email){
         super(aUserName, aKuleuvenID, Email);
         wishItems = new ArrayList<Item>();
         borrowedItems = new ArrayList<BorrowedItem>();
+        blacklistItems = new ArrayList<BorrowedItem>();
+        blacklist = "normal";
     }
 
+    Student(String aUserName, String aKuleuvenID, String Email, String Blacklist){
+        super(aUserName, aKuleuvenID, Email);
+        wishItems = new ArrayList<Item>();
+        borrowedItems = new ArrayList<BorrowedItem>();
+        blacklistItems = new ArrayList<BorrowedItem>();
+        blacklist = Blacklist;
+    }
     public void setBorrowedItems(ArrayList<BorrowedItem> aBorrowedItems) {
         borrowedItems = aBorrowedItems;
     }
@@ -48,11 +62,38 @@ public class Student extends Person {
         return borrowedItems;
     }
 
+    public void setBlacklist(String Blacklist){
+        blacklist = Blacklist;
+    }
+
+    public String getBlacklist(){
+        return blacklist;
+    }
+
+    public boolean checkBlacklistItem() throws IOException {
+        if(blacklistItems.isEmpty())
+        {
+            if(blacklist.equals("blacklist"))
+            {
+                blacklist = "normal";
+                changeBlacklist();
+            }
+            return false;
+
+        }
+        else
+        {
+            blacklist = "blacklist";
+            return true;
+        }
+
+    }
+
     @Override
     public void setDashboard() {
         try {
             getAllItem();
-            getWishListFromDatabase();
+          //  getWishListFromDatabase();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -75,12 +116,26 @@ public class Student extends Person {
     public void setDashboardExpiredItems() {
         for (BorrowedItem borrowedItem : borrowedItems) {
             int leftDays = Integer.parseInt(borrowedItem.getLeftDays());
-            if (leftDays<0) {
+            if (leftDays<=0) {
                 Item_Expiring_News news = new Item_Expiring_News(borrowedItem);
+                blacklistItems.add(borrowedItem);
+
+                if(blacklist.equals("normal")){
+                    blacklist = "blacklist";
+                    try {
+                        changeBlacklist();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
                 dashboard.add(news);
+
             }
         }
-
+        for(BorrowedItem borrowedItem:blacklistItems) {
+            Log.i("expired item", borrowedItem.toString());
+        }
     }
 
     //internet request
@@ -103,6 +158,27 @@ public class Student extends Person {
         byte[] array = removeItemFromWish_createJson(item);
         wv.postUrl(CustomedWebview.removeItemFromWishListURL, array);
     }
+
+    public void changeBlacklist() throws IOException {
+        byte[] array = changeBlacklist_createJson();
+        wv.postUrl(CustomedWebview.changeBlackListStateURL, array);
+    }
+
+
+    private byte[] changeBlacklist_createJson() throws IOException {
+        JSONObject postdata = new JSONObject();
+        try {
+            postdata.put("cardID", getCardID());
+            postdata.put("state", blacklist);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        StringEntity se = new StringEntity(postdata.toString(),"UTF-8");
+        se.setContentType("application/json");
+        byte[] array = EntityUtils.toByteArray(se);
+        return array;
+    }
+
 
     public byte[] getWishListFromDatabase_createJson() throws IOException {
         JSONObject postdata = new JSONObject();
@@ -152,6 +228,7 @@ public class Student extends Person {
         JSONObject postdata = new JSONObject();
         try {
             postdata.put("kuleuvenID", getKuleuvenID());
+            postdata.put("cardID", getCardID());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -164,6 +241,7 @@ public class Student extends Person {
         try {
             borrowedItems = new ArrayList<BorrowedItem>();
             borrowedItemMAP = new HashMap<String, BorrowedItem>();
+            wishItems = new ArrayList<Item>();
 
             JSONObject jsonObject = new JSONObject(htmlSource);
             JSONArray jsonArray = jsonObject.getJSONArray("list");
@@ -178,6 +256,16 @@ public class Student extends Person {
                 borrowedItemMAP.put(Integer.toString(i),item);
                 Log.i(Integer.toString(i),item.toString());
             }
+            JSONArray jsonArray2 = jsonObject.getJSONArray("wishlist");
+            for (int i = 0; i < jsonArray2.length(); i++) {
+                JSONObject json = jsonArray2.getJSONObject(i);
+                Item item = new Item();
+                item.setItemLocation(json.getString("itemLocation"));
+                item.setClassification(json.getString("itemClassification"));
+                wishItems.add(item);
+                Log.i(Integer.toString(i),item.toString());
+            }
+
         } catch (Throwable t) {
             Log.e("My info", "Could not parse malformed JSON for get all item: \"" + htmlSource + "\"");
         }
@@ -232,6 +320,23 @@ public class Student extends Person {
                 wishItems.add(item);
             }
             setDashboardWishItems();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @JavascriptInterface
+    public void changeBlacklist_interface(String htmlSource) {
+        Log.i("Update blacklist", htmlSource);
+        try{
+            JSONObject jsonObject = new JSONObject(htmlSource);
+            error = jsonObject.getInt("error_message");
+            if(error == 0)
+                Log.i("success", "Success remove from blacklist");
+            else if(error == 8)
+                Log.i("error", "State remains the same");
+            else
+                Log.i("error", "Error update blacklist");
         } catch (JSONException e) {
             e.printStackTrace();
         }

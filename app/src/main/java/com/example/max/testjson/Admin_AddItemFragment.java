@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.JavascriptInterface;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -38,9 +39,16 @@ import com.google.zxing.integration.android.IntentResult;
 import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.UploadNotificationConfig;
 
+import org.apache.http.entity.StringEntity;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.UUID;
+
+import static com.example.max.testjson.TestJson.wv;
 
 
 public class Admin_AddItemFragment extends Fragment implements View.OnClickListener{
@@ -102,7 +110,6 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
         // Required empty public constructor
     }
 
-    // TODO: Rename and change types and number of parameters
     public static Admin_AddItemFragment newInstance() {
         Admin_AddItemFragment fragment = new Admin_AddItemFragment();
         Bundle args = new Bundle();
@@ -177,6 +184,7 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
                 showDate(datePicker,year,month,day);
             }
         };
+
 
 
         //spinner select item classification
@@ -261,8 +269,6 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
                 }
             }
         });
-
-
 
         // Inflate the layout for this fragment
         return view;
@@ -469,6 +475,9 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
         TestJson.getUser().administratorAddItem(itemTagAdmin, currentLocation, timestamp, set,
                 permission);
     }
+
+
+
 
 //    public void administratorAddItem(String itemTag) {
 //

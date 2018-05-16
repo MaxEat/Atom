@@ -18,9 +18,7 @@ import android.widget.Filter;
 import android.widget.Spinner;
 import android.support.v7.widget.Toolbar;
 
-import java.io.IOException;
-
-import static com.example.max.testjson.TestJson.wv;
+import java.util.ArrayList;
 
 
 public class AvailableItemFragment extends Fragment implements SearchView.OnQueryTextListener {
@@ -30,6 +28,7 @@ public class AvailableItemFragment extends Fragment implements SearchView.OnQuer
     private OnListFragmentInteractionListener mListener;
     private SearchView searchView;
     private Spinner chooseLocation;
+    private Spinner chooseType;
     private AvailableItemRecyclerViewAdapter adapter;
     private Toolbar toolbar;
 
@@ -67,9 +66,15 @@ public class AvailableItemFragment extends Fragment implements SearchView.OnQuer
         }
 
         chooseLocation = (Spinner)view.findViewById(R.id.choose_location);
-        String[] items = new String[]{"1", "2", "three"};
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items);
-        chooseLocation.setAdapter(spinnerAdapter);
+        String[] locations = new String[]{"1", "2", "three"};
+        ArrayAdapter<String> spinnerLocationAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, locations);
+        chooseLocation.setAdapter(spinnerLocationAdapter);
+
+
+        chooseType = (Spinner)view.findViewById(R.id.choose_type);
+        String[] types = new String[]{"4", "5", "6"};
+        ArrayAdapter<String> spinnerTypeAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, types);
+        chooseType.setAdapter(spinnerTypeAdapter);
 
         toolbar= (Toolbar)view.findViewById(R.id.toolbar);
         searchView= (SearchView)view.findViewById(R.id.search_view);

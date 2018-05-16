@@ -1,6 +1,10 @@
 package com.example.max.testjson;
 
 import android.app.Application;
+import android.os.Build;
+import android.util.Log;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 
 import java.util.ArrayList;
@@ -49,6 +53,15 @@ public class TestJson extends Application {
             permission_days_worker.put(itemType,days);
     }
 
+    public static void resetWebView() {
+        wv.clearHistory();
+        wv.clearCache(true);
+
+        wv.loadUrl("about:blank");
+        wv.onPause();
+        wv.removeAllViews();
+        wv.destroyDrawingCache();
+    }
 
     public static TestJson getInstance() {
         return instance;

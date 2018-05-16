@@ -20,7 +20,6 @@ public class CustomedWebview extends WebView {
     static final String baseURL = "https://labtools.groept.be/inventory/secure";
     static final String baseIndexURL = "https://labtools.groept.be/inventory/secure/";
     static final String registerPersonURL = "https://labtools.groept.be/inventory/secure/php_addPerson.php";
-    static final String registerItemURL = "https://labtools.groept.be/inventory/secure/php_addItem.php";
     static final String getAllBorrowedItemsURL = "https://labtools.groept.be/inventory/secure/php_selectItemByUser.php";
     static final String borrowItemURL = "https://labtools.groept.be/inventory/secure/php_borrowItem.php";
     static final String returnItemURL = "https://labtools.groept.be/inventory/secure/php_returnItem.php";
@@ -40,7 +39,7 @@ public class CustomedWebview extends WebView {
     static final String UPLOAD_URL = "https://labtools.groept.be/inventory/secure/upload.php";
     static final String IMAGES_URL = "http://labtools.groept.be/inventory/secure/getImages.php";
     static final String getItemPictureURL = "https://labtools.groept.be/inventory/secure/getImages.php";
-
+    static final String changeBlackListStateURL = "https://labtools.groept.be/inventory/secure/removeFromBlackList.php";
 
 
     public void hide() {
@@ -83,6 +82,7 @@ public class CustomedWebview extends WebView {
                 if(url.equals(duplicatePersonURL))
                     view.loadUrl("javascript:window.local.checkPersonInfo(document.body.innerHTML)");
 
+
                 if(url.equals(getAllBorrowedItemsURL ))
                     view.loadUrl("javascript:window.Person.getAllItem_Interface(document.body.innerHTML)");
 
@@ -107,9 +107,11 @@ public class CustomedWebview extends WebView {
                 if(url.equals(getExpiredItemURL))
                     view.loadUrl("javascript:window.Person.getExpiredItemPersonDatabase_interface(document.body.innerHTML)");
 
+                if(url.equals(changeBlackListStateURL))
+                    view.loadUrl("javascript:window.Person.changeBlacklist_interface(document.body.innerHTML)");
+
                 if(url.equals(getInfoByItemTagURL))
                     view.loadUrl("javascript:window.Item.setInfos_interface(document.body.innerHTML)");
-
 
                 if(url.equals(getPictureNumberUrl))
                     view.loadUrl("javascript:window.Item.setImageFromDatabase_interface(document.body.innerHTML)");

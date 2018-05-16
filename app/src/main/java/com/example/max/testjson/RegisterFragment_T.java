@@ -91,11 +91,7 @@ public class RegisterFragment_T extends Fragment {
             TestJson.setUser(user);
             wv.addJavascriptInterface(new registerPerson(),"registerPerson");
             register();
-
-
-
         }
-
         else{
             fragment = mFragments[6];
             userPermission = "Administrator";
@@ -107,8 +103,6 @@ public class RegisterFragment_T extends Fragment {
             TestJson.setUser(user);
             wv.addJavascriptInterface(new registerPerson(),"registerPerson");
             register();
-
-
         }
 
     }

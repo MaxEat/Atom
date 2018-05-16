@@ -1,7 +1,6 @@
 package com.example.max.testjson;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +9,7 @@ import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
-
 import com.example.max.testjson.AvailableItemFragment.OnListFragmentInteractionListener;
-
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -130,7 +126,6 @@ public class AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter<Avail
                     String content = tempValue.get(i).getClassification() + " "+tempValue.get(i).getItemLocation();
                     if (content.contains(constraint)) {
                         newItemList.add(tempValue.get(i));
-
                     }
                 }
 
