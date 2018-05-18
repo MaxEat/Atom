@@ -10,11 +10,12 @@ import com.example.max.testjson.ExpiredItem;
  */
 
 public class Remind_Expired_Student_News extends News {
-    private ExpiredItem item;
 
-    public Remind_Expired_Student_News(ExpiredItem item) {
+
+    public Remind_Expired_Student_News(ExpiredItem expiredItem) {
+        item = expiredItem;
         Log.i("info","Student not returning");
         newsTitle = "Expiried item";
-        newsContent = "The item" + item.getClassification()+" borrowed by" + item.getBorrowPersonName() + "is expired";
+        newsContent = "The item" + item.getClassification()+" borrowed by" + ((ExpiredItem)item).getBorrowPersonName() + "is expired";
     }
 }

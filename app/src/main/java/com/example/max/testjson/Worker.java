@@ -38,6 +38,9 @@ public class Worker extends Person{
         administorType = "all";
     }
 
+    public ArrayList<ExpiredItem> getExpiredItems() {
+        return expiredItems;
+    }
 
     public void setDashboard() {
         dashboard = new ArrayList<News>();
