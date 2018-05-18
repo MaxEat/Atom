@@ -14,9 +14,13 @@ import java.util.ArrayList;
 public class News {
     protected String newsContent;
     protected String newsTitle;
-
+    protected Item item;
 
     News() {}
+
+    public Item getItem() {
+        return item;
+    }
 
     public String getNewsContent() {
         return newsContent;

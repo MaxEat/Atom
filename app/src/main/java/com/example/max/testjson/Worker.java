@@ -49,6 +49,34 @@ public class Worker extends Person{
         setDashboardExpiredPerson();
     }
 
+    @Override
+    public void formPage() {
+        for(Item item:itemList){
+            boolean exist = false;
+            for(AvailableItem i: availableItems){
+                if(item.getItemLocation().equals(i.getItemLocation()) &&
+                        item.getClassification().equals(i.getClassification())){
+                    i.increaseQuantity();
+                    exist = true;
+                    break;
+                }
+            }
+            if(!exist){
+                AvailableItem newItem = new AvailableItem();
+                newItem.setItemLocation(item.getItemLocation());
+                newItem.setClassification(item.getClassification());
+
+                availableItems.add(newItem);
+                availableItemMap.put(newItem.getClassification()+newItem.getItemLocation(), newItem);
+            }
+        }
+        setMaintainingMark();
+    }
+
+    private void setMaintainingMark() {
+
+    }
+
 
     public void setDashboardExpiredPerson() {
         for(ExpiredItem expiredItem:expiredItems){

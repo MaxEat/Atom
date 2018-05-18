@@ -20,6 +20,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import junit.framework.Test;
+
+import java.io.IOException;
+
 import static com.example.max.testjson.TestJson.wv;
 
 
@@ -64,6 +68,7 @@ public class SettingFragment extends Fragment {
         submit = (Button)view.findViewById(R.id.submit_setting);
         logout = (ImageButton)view.findViewById(R.id.logout);
 
+        preferEmail.setText(TestJson.getUser().getAlertEmail());
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,6 +89,11 @@ public class SettingFragment extends Fragment {
                 if(isEmail(email))
                 {
                     TestJson.getUser().setAlertEmail(email);
+                    try {
+                        TestJson.getUser().updateAlertEmail(email);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     AlertDialog.Builder alertBuilder = new AlertDialog.Builder(view.getContext());
                     alertBuilder.setTitle("Okay");
                     alertBuilder.setMessage("Personal setting updated");

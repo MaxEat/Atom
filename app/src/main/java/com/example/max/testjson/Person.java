@@ -35,6 +35,9 @@ public abstract class Person {
     protected ArrayList<News> dashboard;
     public List<AvailableItem> availableItems = new ArrayList<AvailableItem>();
     public Map<String, AvailableItem> availableItemMap = new HashMap<String, AvailableItem>();
+    //  key: getClassification()+newItem.getItemLocation()
+
+    public List<Item> itemList = new ArrayList<Item>();
 
 
     Person(String CardID) {
@@ -110,16 +113,34 @@ public abstract class Person {
         wv.postUrl(CustomedWebview.updateItemStateUrl,array);
     }
 
-
-    public void borrowItem( String itemTag, String currentLocation) throws IOException {
-        byte[] array = borrowItem_createJson(itemTag, currentLocation);
-        wv.postUrl(CustomedWebview.borrowItemURL, array);
+    public void updateAlertEmail(String email) throws IOException {
+        byte[] array = updateAlertEmail_createJson(email);
+        wv.postUrl(CustomedWebview.updateAlertEmail, array);
     }
 
-    public void returnItem( String itemTag, String currentLocation) throws IOException {
-        byte[] array = returnItem_createJson(itemTag, currentLocation);
-        wv.postUrl(CustomedWebview.returnItemURL, array);
+    public void addToAvailableList(String itemLocation, String itemClassification) {
+        boolean exist = false;
+        for(AvailableItem item:availableItems){
+            if(item.getItemLocation().equals(itemLocation) && item.getClassification().equals(itemClassification)){
+                item.increaseQuantity();
+                exist = true;
+                Log.i("item", itemClassification + " at " + itemLocation + ", quantity: " + item.getQuantity());
+                break;
+            }
+        }
+        if(!exist)
+        {
+            AvailableItem item = new AvailableItem();
+            item.setItemLocation(itemLocation);
+            item.setClassification(itemClassification);
+            availableItems.add(item);
+            availableItemMap.put(Integer.toString(item.getId()), item);
+            Log.i("id", Integer.toString(item.getId()));
+        }
+
+
     }
+
     public void getAllAvailableItems() throws IOException {
         byte[] array = getAllAvailableItems_createJson();
         wv.postUrl(CustomedWebview.getAllAvailableItemsURL, array);
@@ -158,36 +179,16 @@ public abstract class Person {
         return createJson(postdata);
     }
 
-    protected byte[] borrowItem_createJson(String itemTag, String currentLocation) throws IOException {
-
-        if (currentLocation == "") currentLocation = "GroepT";
-
+    private byte[] updateAlertEmail_createJson(String email) throws IOException {
         JSONObject postdata = new JSONObject();
-        try {
-            postdata.put("cardID", getCardID());
-            postdata.put("itemTag", itemTag);
-            postdata.put("borrowLocation", currentLocation);
+        try{
+            postdata.put("cardID", cardID);
+            postdata.put("preferedEmail", email);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return createJson(postdata);
     }
-
-    protected byte[] returnItem_createJson(String itemTag, String currentLocation) throws IOException {
-
-        if (currentLocation == "") currentLocation = "GroepT";
-
-        JSONObject postdata = new JSONObject();
-        try {
-            postdata.put("cardID", getCardID());
-            postdata.put("itemTag", itemTag);
-            postdata.put("returnLocation", currentLocation);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return createJson(postdata);
-    }
-
 
 
     protected byte[] administratorAddItem_createJson(String itemTag, String currentLocation, String timestamp, String itemClassification,
@@ -207,6 +208,9 @@ public abstract class Person {
         return createJson(postdata);
     }
 
+    public abstract void formPage();
+
+
     @JavascriptInterface
     public void login_interface(String htmlSource){
         Log.i("get register info", htmlSource);
@@ -221,29 +225,7 @@ public abstract class Person {
         }
     }
 
-    @JavascriptInterface
-    public void borrowItem_Interface(String htmlSource) {
-        Log.i("borrow item", htmlSource);
-        try {
-            JSONObject json = new JSONObject(htmlSource);
-            error = json.getInt("error_message");
-            Log.i("error", Integer.toString(error));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
-    @JavascriptInterface
-    public void returnItem_Interface(String htmlSource) {
-        Log.i("return item", htmlSource);
-        try {
-            JSONObject json = new JSONObject(htmlSource);
-            error = json.getInt("error_message");
-            Log.i("error", Integer.toString(error));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
     @JavascriptInterface
     public void updateItemStatus_Interface(String htmlSource) {
@@ -255,7 +237,6 @@ public abstract class Person {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-//
     }
 
     @JavascriptInterface
@@ -276,18 +257,18 @@ public abstract class Person {
         try {
             availableItems = new ArrayList<AvailableItem>();
             availableItemMap = new HashMap<String, AvailableItem>();
+            itemList = new ArrayList<Item>();
             JSONObject jsonObject =  new JSONObject(htmlSource);;
 
             JSONArray jsonArray = jsonObject.getJSONArray("list");
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject json = jsonArray.getJSONObject(i);
-                AvailableItem item = new AvailableItem(json.getString("itemTag"), json.getString("itemLocation"));
+                Item  item = new Item(json.getString("itemTag"), json.getString("itemLocation"));
                 item.setClassification(json.getString("itemClassification"));
                 item.setStatus(json.getString("itemStatus"));
-                item.setId(i);
-                availableItems.add(item);
-                availableItemMap.put(Integer.toString(item.getId()), item);
+                itemList.add(item);
             }
+            formPage();
         }catch (Throwable t) {
             Log.e("My info", "Could not parse malformed JSON: \"" + htmlSource + "\"");
         }

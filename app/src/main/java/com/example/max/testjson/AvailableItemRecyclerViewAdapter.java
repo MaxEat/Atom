@@ -1,6 +1,7 @@
 package com.example.max.testjson;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 import com.example.max.testjson.AvailableItemFragment.OnListFragmentInteractionListener;
+import com.example.max.testjson.dashboard.Wish_Item_Available_News;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,30 +44,38 @@ public class AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter<Avail
         holder.mItem = mValues.get(position);
         String content = holder.mItem.getClassification() + " at "+holder.mItem.getItemLocation();
         holder.mContent.setText(content);
-        if(((Student)TestJson.getUser()).inWishList(holder.mItem))
-                holder.mCheckBox.setChecked(true);
+        holder.mQuantity.setText(Integer.toString(holder.mItem.getQuantity())+" items left");
+
+        if(holder.mItem.getInWishList()){
+            holder.mCheckBox.setChecked(true);
+        }
+        else{
+            holder.mCheckBox.setChecked(false);
+        }
+//        if(((Student)TestJson.getUser()).inWishList(holder.mItem))
+//        {
+//            holder.mCheckBox.setChecked(true);
+//            Log.i("location", holder.mItem.getItemLocation());
+//            Log.i("classification", holder.mItem.getClassification());
+//        }
+        ((Student)TestJson.getUser()).printAvailable();
         holder.mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
             {
-                if ( isChecked )
-                {
-                    try {
-                        ((Student)TestJson.getUser()).addItemToWish(holder.mItem);
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                try {
+                    if ( isChecked )
+                    {
+                        ((Student)TestJson.getUser()).addToDashBoard(holder.mItem);
                     }
-                }
-                else
-                {
-                    try {
-                        ((Student)TestJson.getUser()).removeItemFromWish(holder.mItem);
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    else
+                    {
+                        ((Student)TestJson.getUser()).removeWishFromDashBoard(holder.mItem);
                     }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-
             }
         });
 
@@ -91,6 +102,7 @@ public class AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter<Avail
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mContent;
+        public final TextView mQuantity;
         public AvailableItem mItem;
         public CheckBox mCheckBox;
 
@@ -99,6 +111,7 @@ public class AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter<Avail
             mView = view;
             mContent = (TextView) view.findViewById(R.id.content);
             mCheckBox = (CheckBox)view.findViewById(R.id.add_to_wish);
+            mQuantity = (TextView) view.findViewById(R.id.item_quantity);
         }
 
         @Override

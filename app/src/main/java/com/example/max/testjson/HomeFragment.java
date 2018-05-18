@@ -36,6 +36,7 @@ public class HomeFragment extends Fragment {
         if(getArguments()!=null){
             mFrom = getArguments().getString("from");
         }
+
     }
 
     @Nullable
@@ -80,11 +81,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        try {
-            TestJson.getUser().getAllAvailableItems();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
         TestJson.getUser().setDashboard();
 
         return view;

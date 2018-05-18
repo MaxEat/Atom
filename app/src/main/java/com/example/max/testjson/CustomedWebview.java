@@ -40,6 +40,7 @@ public class CustomedWebview extends WebView {
     static final String IMAGES_URL = "http://labtools.groept.be/inventory/secure/getImages.php";
     static final String getItemPictureURL = "https://labtools.groept.be/inventory/secure/getImages.php";
     static final String changeBlackListStateURL = "https://labtools.groept.be/inventory/secure/removeFromBlackList.php";
+    static final String updateAlertEmail = "https://labtools.groept.be/inventory/secure/php_updateEmail.php";
 
 
     public void hide() {
@@ -109,6 +110,9 @@ public class CustomedWebview extends WebView {
 
                 if(url.equals(changeBlackListStateURL))
                     view.loadUrl("javascript:window.Person.changeBlacklist_interface(document.body.innerHTML)");
+
+                if(url.equals(updateAlertEmail))
+                    view.loadUrl("javascript:window.Person.updateEmail_interface(document.body.innerHTML)");
 
                 if(url.equals(getInfoByItemTagURL))
                     view.loadUrl("javascript:window.Item.setInfos_interface(document.body.innerHTML)");

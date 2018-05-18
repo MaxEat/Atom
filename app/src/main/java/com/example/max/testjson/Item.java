@@ -355,8 +355,7 @@ public class Item implements Serializable {
 
     @Override
     public String toString() {
-        return "Item{" +
-                "Tag='" + itemTag + '\'' +
+        return "Item{ Tag='" + itemTag +
                 ", Location=" + itemLocation +
                 ", BoughTime=" + boughtTime +
                 ", Classfication=" + classification +
