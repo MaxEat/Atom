@@ -34,12 +34,15 @@ public class CustomedWebview extends WebView {
     static final String updateItemStateUrl = "https://labtools.groept.be/inventory/secure/php_maintainItem.php";
     static final String getPictureNumberUrl = "https://labtools.groept.be/inventory/secure/php_getItemPictureNumber.php";
     static final String getAllClassificationsURL = "https://labtools.groept.be/inventory/secure/php_getAllClassifications.php";
+    static final String getPermissionClassificationURL = "https://labtools.groept.be/inventory/secure/php_getClassificationPermission.php";
     static final String getExpiredItemURL = "https://labtools.groept.be/inventory/secure/php_returnExpirationInfo.php";
     static final String addNewItemURL = "https://labtools.groept.be/inventory/secure/php_addItem.php";
+    static final String getAllPermissionsURL = "https://labtools.groept.be/inventory/secure/php_getAllPermissions.php";
     static final String UPLOAD_URL = "https://labtools.groept.be/inventory/secure/upload.php";
     static final String IMAGES_URL = "http://labtools.groept.be/inventory/secure/getImages.php";
     static final String getItemPictureURL = "https://labtools.groept.be/inventory/secure/getImages.php";
     static final String changeBlackListStateURL = "https://labtools.groept.be/inventory/secure/removeFromBlackList.php";
+
 
 
     public void hide() {
@@ -109,6 +112,15 @@ public class CustomedWebview extends WebView {
 
                 if(url.equals(changeBlackListStateURL))
                     view.loadUrl("javascript:window.Person.changeBlacklist_interface(document.body.innerHTML)");
+
+                if(url.equals(getAllClassificationsURL))
+                    view.loadUrl("javascript:window.local.getAllClassification_interface(document.body.innerHTML)");
+
+                if(url.equals(getAllPermissionsURL))
+                    view.loadUrl("javascript:window.local.getAllPermission_interface(document.body.innerHTML)");
+
+                if(url.equals(getPermissionClassificationURL))
+                    view.loadUrl("javascript:window.local.getPermissionClassification_interface(document.body.innerHTML)");
 
                 if(url.equals(getInfoByItemTagURL))
                     view.loadUrl("javascript:window.Item.setInfos_interface(document.body.innerHTML)");

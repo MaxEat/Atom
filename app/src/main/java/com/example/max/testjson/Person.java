@@ -191,7 +191,7 @@ public abstract class Person {
 
 
     protected byte[] administratorAddItem_createJson(String itemTag, String currentLocation, String timestamp, String itemClassification,
-                                                     String itemPermission) throws IOException {
+                                                      String itemPermission) throws IOException {
         if (currentLocation == "") currentLocation = "GroepT";
 
         JSONObject postdata = new JSONObject();

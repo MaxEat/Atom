@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -43,6 +44,7 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
     private String blacklist;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,8 +64,6 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
         wv.loadUrl(CustomedWebview.baseURL);
 
     }
-
-
 
     @Override
     protected void onStart() {
@@ -175,6 +175,25 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
         runOnUiThread(new Runnable() {
             @Override
             public void run(){
+//                try {
+//                    getAllClassifications();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                try {
+//                    getAllPermissions();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+
+                try {
+                    getPermissionClassification();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
                 if(userType.equals("Administrator"))
 
                 {
@@ -434,6 +453,116 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                 Log.e("My info", "Could not parse malformed JSON: \"" + htmlSource + "\"");
             }
         }
+
+        @JavascriptInterface
+        public void getAllClassification_interface(final String htmlSource) {
+
+            Log.i("Success get available", htmlSource);
+            try {
+                JSONObject jsonObject = new JSONObject(htmlSource);
+                JSONArray jsonArray = jsonObject.getJSONArray("list");
+
+                TestJson.classificationArray = new String[jsonArray.length()];
+
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject json = jsonArray.getJSONObject(i);
+                    TestJson.classificationArray[i] = json.getString("itemPictureClassification");
+                    Log.e("S value",  TestJson.classificationArray[i] + "\"");
+                }
+            } catch (Throwable t) {
+                Log.e("My info", "Could not parse malformed JSON: \"" + htmlSource + "\"");
+            }
+        }
+
+        @JavascriptInterface
+        public void getAllPermission_interface(final String htmlSource) {
+
+            Log.i("Success get available", htmlSource);
+            try {
+                JSONObject jsonObject = new JSONObject(htmlSource);
+                JSONArray jsonArray = jsonObject.getJSONArray("list");
+
+                TestJson.permissionArray = new String[jsonArray.length()];
+
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject json = jsonArray.getJSONObject(i);
+                    TestJson.permissionArray[i] = json.getString("permissionType");
+                    Log.e("permission value",  TestJson.permissionArray[i] + "\"");
+                }
+            } catch (Throwable t) {
+                Log.e("My info", "Could not parse malformed JSON: \"" + htmlSource + "\"");
+            }
+        }
+
+        @JavascriptInterface
+        public void getPermissionClassification_interface(final String htmlSource) {
+
+            Log.i("Success get available", htmlSource);
+            try {
+                JSONObject jsonObject = new JSONObject(htmlSource);
+                JSONArray jsonArray = jsonObject.getJSONArray("list");
+                JSONArray jsonArray2 = jsonObject.getJSONArray("list2");
+
+                TestJson.permissionArray = new String[jsonArray.length()];
+                TestJson.classificationArray = new String[jsonArray2.length()];
+
+
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject json = jsonArray.getJSONObject(i);
+                    TestJson.permissionArray[i] = json.getString("permissionType");
+                    Log.e("permission value",  TestJson.permissionArray[i] + "\"");
+                }
+
+                for (int i = 0; i < jsonArray2.length(); i++) {
+                    JSONObject json = jsonArray2.getJSONObject(i);
+                    TestJson.classificationArray[i] = json.getString("itemPictureClassification");
+                    Log.e("S value",  TestJson.classificationArray[i] + "\"");
+                }
+
+            } catch (Throwable t) {
+                Log.e("My info", "Could not parse malformed JSON: \"" + htmlSource + "\"");
+            }
+        }
+
+    }
+
+    public void getAllClassifications() throws IOException {
+        byte[] array = getAllClassification_createJson();
+        wv.postUrl(CustomedWebview.getAllClassificationsURL, array);
+    }
+
+    public void getAllPermissions() throws IOException {
+        byte[] array = getAllPermissions_createJson();
+        wv.postUrl(CustomedWebview.getAllPermissionsURL, array);
+    }
+
+    public void getPermissionClassification() throws IOException {
+        byte[] array = getPermissionClassification_createJson();
+        wv.postUrl(CustomedWebview.getPermissionClassificationURL, array);
+    }
+
+    protected byte[] getAllClassification_createJson() throws IOException {
+        JSONObject postdata = new JSONObject();
+        StringEntity se = new StringEntity(postdata.toString(),"UTF-8");
+        se.setContentType("application/json");
+        byte[] array = EntityUtils.toByteArray(se);
+        return array;
+    }
+
+    protected byte[] getAllPermissions_createJson() throws IOException {
+        JSONObject postdata = new JSONObject();
+        StringEntity se = new StringEntity(postdata.toString(),"UTF-8");
+        se.setContentType("application/json");
+        byte[] array = EntityUtils.toByteArray(se);
+        return array;
+    }
+
+    protected byte[] getPermissionClassification_createJson() throws IOException {
+        JSONObject postdata = new JSONObject();
+        StringEntity se = new StringEntity(postdata.toString(),"UTF-8");
+        se.setContentType("application/json");
+        byte[] array = EntityUtils.toByteArray(se);
+        return array;
     }
 
 

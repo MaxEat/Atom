@@ -9,7 +9,7 @@
     <!--//tools:context="com.example.max.testjson.RegisterFragment_T">-->
 
     <LinearLayout
-        android:layout_width="210dp"
+        android:layout_width="250dp"
         android:layout_height="35dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
@@ -28,6 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
+            android:layout_gravity="right"
             android:background="@drawable/rectangular_login"
             android:checked="true"
             android:text="ToggleButton"
@@ -40,7 +41,7 @@
 
     <Button
         android:id="@+id/register"
-        android:layout_width="210dp"
+        android:layout_width="250dp"
         android:layout_height="35dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="20dp"

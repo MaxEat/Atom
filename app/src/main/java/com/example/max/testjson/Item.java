@@ -19,6 +19,8 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import okhttp3.Response;
 
@@ -39,10 +41,11 @@ public class Item implements Serializable {
     private String status;
     private Bitmap bitmap;
     private int error;
-    private static String[] itemClassifications;
     private static int classificationNumber;
     private String pictureNumberString;
     private int picturNumber;
+
+    public List<String> itemClassifications = new ArrayList<String>();
 
     Item() { }
 
@@ -118,85 +121,6 @@ public class Item implements Serializable {
             return false;
     }
 
-    public static String[] getAllClassifications(){
-
-//        JSONObject postdata = new JSONObject();
-//        try {
-//            postdata.put("itemTag", getItemTag());
-//        } catch(JSONException e){
-//            e.printStackTrace();
-//        }
-//        try {
-//            BackgroundTask.getInstance().postAsyncJsonn(BackgroundTask.getPictureNumberUrl, postdata.toString(),new BackgroundTask.MyCallback() {
-//                @Override
-//                public void onSuccess(String result) {
-//                    Log.i("Success","result----"+result);
-//                    try {
-//                        JSONObject json = new JSONObject(result);
-//                        pictureNumberString = json.getString("pictureNumber");
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                }
-//                @Override
-//                public void onFailture() {
-//
-//                }
-//            });
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        picturNumber = Integer.parseInt(pictureNumberString);
-//        itemClassifications = new String[picturNumber];
-//
-
-
-
-        JSONObject postdata = new JSONObject();
-        try {
-            postdata.put("kuleuvenID",null);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            BackgroundTask.getInstance().postAsyncJsonn(BackgroundTask.getAllClassificationsURL, postdata.toString(), new BackgroundTask.MyCallback() {
-                @Override
-                public void onSuccess(String result) {
-                    Log.i("Success get items", "result----" + result);
-                    try {
-
-                        JSONObject jsonObject = new JSONObject(result);
-                        JSONArray jsonArray = jsonObject.getJSONArray("list");
-
-                        classificationNumber = jsonArray.length();
-                        itemClassifications = new String[jsonArray.length()];
-
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject json = jsonArray.getJSONObject(i);
-                            itemClassifications[i] = json.getString("itemPictureClassification");
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-
-                @Override
-                public void onFailture() {
-
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return itemClassifications;
-    }
-
     public void setBitmap() {
         try {
             InputStream in = new java.net.URL(imageURL).openStream();
@@ -207,8 +131,6 @@ public class Item implements Serializable {
             e.printStackTrace();
         }
     }
-
-
 
     public void setInfos() throws IOException {
         byte[] array = setInfos_createJson();
@@ -228,6 +150,7 @@ public class Item implements Serializable {
         byte[] array = EntityUtils.toByteArray(se);
         return array;
     }
+
 
     protected byte[] setInfos_createJson() throws IOException {
 
@@ -250,6 +173,8 @@ public class Item implements Serializable {
         }
         return createJson(postdata);
     }
+
+
 
     @JavascriptInterface
     public void setInfos_interface(String htmlSource) {
@@ -285,6 +210,10 @@ public class Item implements Serializable {
             e.printStackTrace();
         }
     }
+
+
+
+
 
 //    public void setInfos(final TextView view) {
 //        JSONObject postdata = new JSONObject();

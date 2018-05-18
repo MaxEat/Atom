@@ -19,35 +19,35 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/colorAccent"
             android:background="@drawable/rectangular"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:text="QR" />
+            android:text="QR_Code" />
 
         <Button
             android:id="@+id/Barcode_scan"
             style="?android:buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/colorAccent"
             android:background="@drawable/rectangular"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:layout_weight="1"
-            android:text="Barcode" />
+            android:text="BARCODE" />
 
         <Button
             android:id="@+id/Text_scan"
             style="?android:buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/colorAccent"
             android:background="@drawable/rectangular"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:layout_weight="1"
-            android:text="Text" />
+            android:text="TXT_REC" />
 
     </LinearLayout>
 
@@ -77,7 +77,7 @@
             style="?android:buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/colorAccent"
             android:background="@drawable/rectangular"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
@@ -89,7 +89,7 @@
             style="?android:buttonBarButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/colorAccent"
             android:background="@drawable/rectangular"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"

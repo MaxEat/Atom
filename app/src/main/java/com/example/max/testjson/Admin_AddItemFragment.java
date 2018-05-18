@@ -41,17 +41,23 @@ import net.gotev.uploadservice.UploadNotificationConfig;
 
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.UUID;
 
+import static com.example.max.testjson.TestJson.permissionArray;
 import static com.example.max.testjson.TestJson.wv;
 
 
 public class Admin_AddItemFragment extends Fragment implements View.OnClickListener{
+
+    Admin_AddItemFragment thisFragment;
 
     //Declaring views
     private Button buttonUpload;
@@ -77,10 +83,7 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
 
 
     //classification spinner variable
-    private String[] itemClassifications ;
     private String set;
-
-    private String[] s;
 
     //permission spinner variable
     private String[] permit ;
@@ -120,6 +123,7 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -188,16 +192,10 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
 
 
         //spinner select item classification
-        s = new String[3] ;
-        s[0] = "laptop";
-        s[1] = "FPGA";
-        s[2] = "ipad";
-        //itemClassifications = Item.getAllClassifications();
-
         Spinner mySpinner = (Spinner) view.findViewById(R.id.spinnerClassification);
 
         ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_list_item_1,s);
+                android.R.layout.simple_list_item_1,TestJson.classificationArray);
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mySpinner.setAdapter(myAdapter);
 
@@ -205,14 +203,9 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-               // for(int j = 0; j < Item.getClassificationNumber();j++){
-                    //for(int j = 0; j < s.length;j++){
-                        set = s[i];
-                    //}
-                //}
+                        set = TestJson.classificationArray[i];
 
                 Toast.makeText(getActivity().getApplicationContext(),set,Toast.LENGTH_SHORT ).show();
-                //Toast.makeText(getActivity().getApplicationContext(),Item.getClassificationNumber(),Toast.LENGTH_SHORT ).show();
             }
 
             @Override
@@ -225,31 +218,18 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
 
 
         //spinner select item permission
-        permit = new String[3] ;
-        permit[0] = "permission1";
-        permit[1] = "permission2";
-        permit[2] = "permission3";
-        //itemClassifications = Item.getAllClassifications();
-
         Spinner permissionSpinner = (Spinner) view.findViewById(R.id.spinnerPermission);
 
         ArrayAdapter<String> permissionAdapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_list_item_1,permit);
+                android.R.layout.simple_list_item_1,TestJson.permissionArray);
         permissionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         permissionSpinner.setAdapter(permissionAdapter);
 
         permissionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-                // for(int j = 0; j < Item.getClassificationNumber();j++){
-                //for(int j = 0; j < s.length;j++){
-                permission = permit[i];
-                //}
-                //}
-
+                permission = TestJson.permissionArray[i];
                 Toast.makeText(getActivity().getApplicationContext(),permission,Toast.LENGTH_SHORT ).show();
-                //Toast.makeText(getActivity().getApplicationContext(),Item.getClassificationNumber(),Toast.LENGTH_SHORT ).show();
             }
 
             @Override

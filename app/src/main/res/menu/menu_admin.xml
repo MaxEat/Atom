@@ -2,31 +2,31 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/tab_adminMenu_dashboard"
-        android:icon="@drawable/ic_dashboard"
+        android:icon="@drawable/ic_dashboard_black_24dp"
         android:title="HOME"
         />
 
     <item
         android:id="@+id/tab_adminMenu_addItem"
-        android:icon="@drawable/ic_dashboard"
+        android:icon="@drawable/ic_new_black_24dp"
         android:title="ADD"
         />
 
     <item
         android:id="@+id/tab_adminMenu_overview"
-        android:icon="@drawable/ic_dashboard"
+        android:icon="@drawable/ic_available_black_24dp"
         android:title="OVERVIEW"
         />
 
     <item
         android:id="@+id/tab_adminMenu_maintain"
-        android:icon="@drawable/ic_dashboard"
+        android:icon="@drawable/ic_nippers"
         android:title="MAINTAIN"
         />
 
     <item
         android:id="@+id/tab_adminMenu_setting"
-        android:icon="@drawable/ic_dashboard"
+        android:icon="@drawable/ic_settings_black_24dp"
         android:title="SETTING"
         />
 </menu>
