@@ -4,7 +4,9 @@ import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.widget.ArrayAdapter;
 
+import com.example.max.testjson.dashboard.Item_Expired_News;
 import com.example.max.testjson.dashboard.Item_Expiring_News;
+import com.example.max.testjson.dashboard.News;
 import com.example.max.testjson.dashboard.Wish_Item_Available_News;
 
 import org.apache.http.entity.StringEntity;
@@ -25,7 +27,7 @@ import static com.example.max.testjson.TestJson.wv;
  */
 
 public class Student extends Person {
-    public ArrayList<Item> wishItems;
+    public ArrayList<AvailableItem> wishItems;
     public ArrayList<BorrowedItem> borrowedItems;
     public Map<String, BorrowedItem> borrowedItemMAP = new HashMap<String, BorrowedItem>();
     public ArrayList<BorrowedItem> blacklistItems;
@@ -40,15 +42,16 @@ public class Student extends Person {
 
     Student(String aUserName, String aKuleuvenID, String Email){
         super(aUserName, aKuleuvenID, Email);
-        wishItems = new ArrayList<Item>();
+        wishItems = new ArrayList<AvailableItem>();
         borrowedItems = new ArrayList<BorrowedItem>();
         blacklistItems = new ArrayList<BorrowedItem>();
+        itemList = new ArrayList<>();
         blacklist = "normal";
     }
 
     Student(String aUserName, String aKuleuvenID, String Email, String Blacklist){
         super(aUserName, aKuleuvenID, Email);
-        wishItems = new ArrayList<Item>();
+        wishItems = new ArrayList<AvailableItem>();
         borrowedItems = new ArrayList<BorrowedItem>();
         blacklistItems = new ArrayList<BorrowedItem>();
         blacklist = Blacklist;
@@ -61,6 +64,8 @@ public class Student extends Person {
 
         return borrowedItems;
     }
+
+
 
     public void setBlacklist(String Blacklist){
         blacklist = Blacklist;
@@ -83,7 +88,10 @@ public class Student extends Person {
         }
         else
         {
-            blacklist = "blacklist";
+            if(blacklist.equals("normal")) {
+                blacklist = "blacklist";
+                changeBlacklist();
+            }
             return true;
         }
 
@@ -91,21 +99,61 @@ public class Student extends Person {
 
     @Override
     public void setDashboard() {
-        try {
-            getAllItem();
-          //  getWishListFromDatabase();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        dashboard = new ArrayList<News>();
+        blacklistItems = new ArrayList<BorrowedItem>();
         setDashboardWishItems();
         setDashboardAlertItems();
         setDashboardExpiredItems();
+
+    }
+
+    public void setDashboardWishItems() {
+        for (AvailableItem wish : availableItems) {
+            if (wish.getInWishList()) {
+                Wish_Item_Available_News news = new Wish_Item_Available_News(wish);
+                dashboard.add(news);
+            }
+        }
+//        for (AvailableItem wish : wishItems) {
+//            if (wish.checkItemAvailable()) {
+//                Wish_Item_Available_News news = new Wish_Item_Available_News(wish);
+//                dashboard.add(news);
+//            }
+//        }
+    }
+
+    public void printAvailable(){
+        for(AvailableItem item:availableItems){
+            Log.i("info", "location: "+item.getItemLocation() + ", " +
+                    "classification: "+ item.getClassification() + "in wishlist: " + item.getInWishList());
+        }
+    }
+
+    @Override
+    public void formPage()
+    {
+
+        for(Item item:itemList){
+            if(availableItemMap.containsKey(item.getClassification()+item.getItemLocation())){
+                availableItemMap.get(item.getClassification()+item.getItemLocation()).increaseQuantity();
+                continue;
+            }
+
+            AvailableItem newItem = new AvailableItem();
+            newItem.setItemLocation(item.getItemLocation());
+            newItem.setClassification(item.getClassification());
+
+            availableItems.add(newItem);
+            availableItemMap.put(newItem.getClassification()+newItem.getItemLocation(), newItem);
+        }
+        setWishMark();
+
     }
 
     public void setDashboardAlertItems() {
         for (BorrowedItem borrowedItem : borrowedItems) {
             int leftDays = Integer.parseInt(borrowedItem.getLeftDays());
+
             if ( leftDays <= TestJson.alertDay && leftDays >=0) {
                 Item_Expiring_News news = new Item_Expiring_News(borrowedItem);
                 dashboard.add(news);
@@ -117,18 +165,8 @@ public class Student extends Person {
         for (BorrowedItem borrowedItem : borrowedItems) {
             int leftDays = Integer.parseInt(borrowedItem.getLeftDays());
             if (leftDays<=0) {
-                Item_Expiring_News news = new Item_Expiring_News(borrowedItem);
+                Item_Expired_News news = new Item_Expired_News(borrowedItem);
                 blacklistItems.add(borrowedItem);
-
-                if(blacklist.equals("normal")){
-                    blacklist = "blacklist";
-                    try {
-                        changeBlacklist();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                }
                 dashboard.add(news);
 
             }
@@ -138,10 +176,90 @@ public class Student extends Person {
         }
     }
 
+    public void addToDashBoard(AvailableItem item) throws IOException {
+        if(availableItemMap.get(item.getClassification()+item.getItemLocation()).getInWishList())
+            return;
+        addItemToWish(item);
+        Wish_Item_Available_News news = new Wish_Item_Available_News(item);
+        dashboard.add(news);
+    }
+
+    public void removeWishFromDashBoard(AvailableItem item) throws IOException {
+        availableItemMap.get(item.getClassification()+item.getItemLocation()).setInWishList(false);
+        for(AvailableItem wishItem:wishItems){
+            if(wishItem.getItemLocation().equals(item.getItemLocation()) && wishItem.getClassification().equals(item.getClassification())){
+                wishItems.remove(wishItem);
+                break;
+            }
+        }
+        setDashboard();
+        removeItemFromWish(item);
+
+    }
+
     //internet request
-    public void getAllItem() throws IOException {
-        byte[] array = getAllItem_createJson();
-        wv.postUrl(CustomedWebview.getAllBorrowedItemsURL,array);
+    public void borrowItem( String itemTag, String currentLocation) throws IOException {
+
+        BorrowedItem borrowedItem = new BorrowedItem(itemTag, currentLocation);
+        borrowedItems.add(borrowedItem);
+
+        byte[] array = borrowItem_createJson(itemTag, currentLocation);
+        wv.postUrl(CustomedWebview.borrowItemURL, array);
+    }
+
+    public void returnItem( String itemTag, String currentLocation) throws IOException {
+
+        for(BorrowedItem borrowedItem:borrowedItems){
+            if(borrowedItem.getItemTag().equals(itemTag))
+            {
+                borrowedItems.remove(borrowedItem);
+                break;
+            }
+        }
+        for(BorrowedItem blacklistItem:blacklistItems){
+            if(blacklistItem.getItemTag().equals(itemTag))
+            {
+                blacklistItems.remove(blacklistItem);
+                break;
+            }
+        }
+        if(blacklistItems.isEmpty())
+            blacklist = "normal";
+        else
+            blacklist = "blacklist";
+        byte[] array = returnItem_createJson(itemTag, currentLocation);
+        wv.postUrl(CustomedWebview.returnItemURL, array);
+    }
+
+    protected byte[] borrowItem_createJson(String itemTag, String currentLocation) throws IOException {
+
+        if (currentLocation == "") currentLocation = "GroepT";
+
+        JSONObject postdata = new JSONObject();
+        try {
+            postdata.put("cardID", getCardID());
+            postdata.put("itemTag", itemTag);
+            postdata.put("borrowLocation", currentLocation);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return createJson(postdata);
+    }
+
+    protected byte[] returnItem_createJson(String itemTag, String currentLocation) throws IOException {
+
+        if (currentLocation == "") currentLocation = "GroepT";
+
+        JSONObject postdata = new JSONObject();
+        try {
+            postdata.put("cardID", getCardID());
+            postdata.put("itemTag", itemTag);
+            postdata.put("returnLocation", currentLocation);
+            postdata.put("blacklist", blacklist);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return createJson(postdata);
     }
 
     public void getWishListFromDatabase() throws IOException {
@@ -149,12 +267,18 @@ public class Student extends Person {
         wv.postUrl(CustomedWebview.getAllWishListItemsURL, array);
     }
 
-    public void addItemToWish(final Item item) throws IOException {
+    public void addItemToWish(AvailableItem item) throws IOException {
+        availableItemMap.get(item.getClassification()+item.getItemLocation()).setInWishList(true);
+       // item.setInWishList(true);
+        wishItems.add(item);
         byte[] array = addItemToWish_createJson(item);
         wv.postUrl(CustomedWebview.addItemToWishListURL, array);
     }
 
-    public void removeItemFromWish(final Item item) throws IOException {
+    public void removeItemFromWish(AvailableItem item) throws IOException {
+        item.setInWishList(false);
+
+
         byte[] array = removeItemFromWish_createJson(item);
         wv.postUrl(CustomedWebview.removeItemFromWishListURL, array);
     }
@@ -193,7 +317,10 @@ public class Student extends Person {
         return array;
     }
 
-    public byte[] addItemToWish_createJson(Item item) throws IOException {
+    public byte[] addItemToWish_createJson(AvailableItem item) throws IOException {
+
+      //  wishItems.add(item);
+
         JSONObject postdata = new JSONObject();
         try {
             postdata.put("cardID", getCardID());
@@ -209,6 +336,7 @@ public class Student extends Person {
     }
 
     public byte[] removeItemFromWish_createJson(Item item) throws IOException {
+
         JSONObject postdata = new JSONObject();
         try {
             postdata.put("cardID", getCardID());
@@ -234,6 +362,10 @@ public class Student extends Person {
         }
         return createJson(postdata);
     }
+    public void getAllItem() throws IOException {
+        byte[] array = getAllItem_createJson();
+        wv.postUrl(CustomedWebview.getAllBorrowedItemsURL,array);
+    }
 
     @JavascriptInterface
     public void getAllItem_Interface(String htmlSource) {
@@ -241,7 +373,10 @@ public class Student extends Person {
         try {
             borrowedItems = new ArrayList<BorrowedItem>();
             borrowedItemMAP = new HashMap<String, BorrowedItem>();
-            wishItems = new ArrayList<Item>();
+            wishItems = new ArrayList<AvailableItem>();
+            availableItems = new ArrayList<AvailableItem>();
+            availableItemMap = new HashMap<String, AvailableItem>();
+            itemList = new ArrayList<Item>();
 
             JSONObject jsonObject = new JSONObject(htmlSource);
             JSONArray jsonArray = jsonObject.getJSONArray("list");
@@ -252,22 +387,58 @@ public class Student extends Person {
                 item.setBorrowedLocation(json.getString("borrowLocation"));
                 item.setImageURL(json.getString("borrowLocation"));
                 item.setClassification(json.getString("itemClassification"));
+                item.setLeftDays();
                 borrowedItems.add(item);
                 borrowedItemMAP.put(Integer.toString(i),item);
-                Log.i(Integer.toString(i),item.toString());
+                Log.i("borrowed:"+Integer.toString(i),item.toString());
             }
+
             JSONArray jsonArray2 = jsonObject.getJSONArray("wishlist");
             for (int i = 0; i < jsonArray2.length(); i++) {
                 JSONObject json = jsonArray2.getJSONObject(i);
-                Item item = new Item();
+                AvailableItem item = new AvailableItem();
                 item.setItemLocation(json.getString("itemLocation"));
                 item.setClassification(json.getString("itemClassification"));
                 wishItems.add(item);
-                Log.i(Integer.toString(i),item.toString());
+                Log.i("wish:"+Integer.toString(i),item.toString());
             }
+
+            JSONArray jsonArray3 = jsonObject.getJSONArray("all_list");
+            for (int i = 0; i < jsonArray3.length(); i++) {
+                JSONObject json = jsonArray3.getJSONObject(i);
+                Item  item = new Item(json.getString("itemTag"), json.getString("itemLocation"));
+                item.setClassification(json.getString("itemClassification"));
+                item.setStatus(json.getString("itemStatus"));
+                itemList.add(item);
+            }
+
+            formPage();
+//            JSONArray jsonArray3 = jsonObject.getJSONArray("all_list");
+//            for (int i = 0; i < jsonArray3.length(); i++) {
+//                JSONObject json = jsonArray3.getJSONObject(i);
+////                AvailableItem item = new AvailableItem(json.getString("itemTag"), json.getString("itemLocation"));
+////                item.setClassification(json.getString("itemClassification"));
+////                item.setStatus(json.getString("itemStatus"));
+////                item.setId(i);
+//                addToAvailableList(json.getString("itemLocation"), json.getString("itemClassification"));
+//                //   availableItems.add(item);
+//                //  availableItemMap.put(Integer.toString(item.getId()), item);
+//                //   Log.i("available"+Integer.toString(i),item.toString());
+//            }
+
 
         } catch (Throwable t) {
             Log.e("My info", "Could not parse malformed JSON for get all item: \"" + htmlSource + "\"");
+        }
+    }
+
+    private void setWishMark() {
+        for(AvailableItem item:wishItems){
+            String string = item.getClassification()+item.getItemLocation();
+            if(availableItemMap.containsKey(string)){
+                AvailableItem wishItem = availableItemMap.get(string);
+                wishItem.setInWishList(true);
+            }
         }
     }
 
@@ -298,7 +469,7 @@ public class Student extends Person {
                 Log.i("success", "You have removed");
                 //wishItems.remove(item);
             else
-                Log.i("error", "You have already added this before");
+                Log.i("error", "You have already removed this before");
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -309,15 +480,15 @@ public class Student extends Person {
     public void getWishListFromDatabase_interface(String htmlSource) {
         Log.i("Success get wish list", htmlSource);
         try {
-            wishItems = new ArrayList<Item>();
+            //wishItems = new ArrayList<AvailableItem>();
             JSONObject jsonObject = new JSONObject(htmlSource);
             JSONArray jsonArray = jsonObject.getJSONArray("wishlist");
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject json = jsonArray.getJSONObject(i);
-                Item item = new Item();
+                AvailableItem item = new AvailableItem();
                 item.setItemLocation(json.getString("itemLocation"));
                 item.setClassification(json.getString("itemClassification"));
-                wishItems.add(item);
+             //   wishItems.add(item);
             }
             setDashboardWishItems();
         } catch (JSONException e) {
@@ -342,27 +513,30 @@ public class Student extends Person {
         }
     }
 
-    public void setDashboardWishItems() {
-        for (Item wish : wishItems) {
-            if (wish.checkItemAvailable()) {
-                Wish_Item_Available_News news = new Wish_Item_Available_News(wish);
-                dashboard.add(news);
-            }
+    @JavascriptInterface
+    public void borrowItem_Interface(String htmlSource) {
+        Log.i("borrow item", htmlSource);
+        try {
+            JSONObject json = new JSONObject(htmlSource);
+            error = json.getInt("error_message");
+            Log.i("error", Integer.toString(error));
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
-    public boolean inWishList(Item item) {
-        for(Item i:wishItems){
-            if(i.getItemLocation().equals(item.getItemLocation()) && i.getClassification().equals(item.getClassification())){
-                return true;
-            }
+    @JavascriptInterface
+    public void returnItem_Interface(String htmlSource) {
+        Log.i("return item", htmlSource);
+        try {
+            JSONObject json = new JSONObject(htmlSource);
+            error = json.getInt("error_message");
+            Log.i("error", Integer.toString(error));
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        return false;
     }
 }
-
-
-
 //    public void addItemToWish(final Item item) {
 //        JSONObject postdata = new JSONObject();
 //        try {

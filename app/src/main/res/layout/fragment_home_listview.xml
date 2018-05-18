@@ -8,7 +8,7 @@
     android:orientation="horizontal"
     android:paddingRight="10dp" >
 
-    <ImageView
+    <ImageButton
         android:id="@+id/ItemImage"
         android:layout_width="100dp"
         android:layout_height="75dp"
@@ -18,15 +18,15 @@
         android:id="@+id/ItemTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="20sp" />
+        android:textColor="@color/colorGrey"
+        android:textSize="20dp" />
 
     <TextView
         android:id="@+id/ItemText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@color/colorGrey"
         android:layout_below="@+id/ItemTitle" />
 
 </LinearLayout>

@@ -60,10 +60,11 @@ public class BorrowedItem extends Item implements Serializable{
         this.borrowedLocation = borrowedLocation;
     }
 
-    public void getAllowableDays(Person person) {
+    public void calculateAllowableDays(Person person) {
+        Log.i("user type", person.getUserType());
         if(person.getUserType().equals("Student"))
             allowableDays = TestJson.permission_days_student.get(getClassification());
-        if(person.getUserType().equals("Worker"))
+        else
             allowableDays = TestJson.permission_days_worker.get(getClassification());
 
         String dt = borrowedTimeStamp;
@@ -77,26 +78,26 @@ public class BorrowedItem extends Item implements Serializable{
         c.add(Calendar.DATE,(int)allowableDays);  // number of days to add, can also use Calendar.DAY_OF_MONTH in place of Calendar.DATE
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
         returnDate = sdf1.format(c.getTime());
+        Log.i("return Date", returnDate);
     }
 
     public void setLeftDays() {
 
+        calculateAllowableDays(TestJson.getUser());
         Date currentTime = Calendar.getInstance().getTime();
-        Date borrowDate = Calendar.getInstance().getTime();
+        Date returnTime = Calendar.getInstance().getTime();
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            Log.i("timestamp",getBorrowedTimeStamp());
-            borrowDate = format.parse(borrowedTimeStamp);
+            returnTime = format.parse(returnDate);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        long diff = currentTime.getTime() - borrowDate.getTime();
+        long diff =  returnTime.getTime() - currentTime.getTime();
         long seconds = diff / 1000;
         long minutes = seconds / 60;
         long hours = minutes / 60;
-        long days = hours / 24;
-        leftDays = allowableDays - days;
+        leftDays = hours / 24;
     }
 
     public String getReturnDate() {
@@ -107,6 +108,9 @@ public class BorrowedItem extends Item implements Serializable{
         return Long.toString(leftDays);
     }
 
+    public long getLeftDaysNr() {
+        return leftDays;
+    }
     public long getAllowableDays() {
         return allowableDays;
     }
@@ -114,8 +118,11 @@ public class BorrowedItem extends Item implements Serializable{
     @Override
     public String toString() {
         return "Item{" +
-                "Location=" + borrowedLocation +
-                ", BoughTime=" + borrowedTimeStamp +
+                "Location = " + borrowedLocation +
+                ", borrowedTimeStamp = " + borrowedTimeStamp +
+                ", should be returned at " + returnDate +
+                ", allowable Days = " + allowableDays +
+                ", leftDays = " + leftDays +
                 '}';
     }
 

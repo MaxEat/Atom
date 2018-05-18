@@ -38,6 +38,9 @@ public class Worker extends Person{
         administorType = "all";
     }
 
+    public ArrayList<ExpiredItem> getExpiredItems() {
+        return expiredItems;
+    }
 
     public void setDashboard() {
         dashboard = new ArrayList<News>();
@@ -47,6 +50,34 @@ public class Worker extends Person{
             e.printStackTrace();
         }
         setDashboardExpiredPerson();
+    }
+
+    @Override
+    public void formPage() {
+        for(Item item:itemList){
+            boolean exist = false;
+            for(AvailableItem i: availableItems){
+                if(item.getItemLocation().equals(i.getItemLocation()) &&
+                        item.getClassification().equals(i.getClassification())){
+                    i.increaseQuantity();
+                    exist = true;
+                    break;
+                }
+            }
+            if(!exist){
+                AvailableItem newItem = new AvailableItem();
+                newItem.setItemLocation(item.getItemLocation());
+                newItem.setClassification(item.getClassification());
+
+                availableItems.add(newItem);
+                availableItemMap.put(newItem.getClassification()+newItem.getItemLocation(), newItem);
+            }
+        }
+        setMaintainingMark();
+    }
+
+    private void setMaintainingMark() {
+
     }
 
 

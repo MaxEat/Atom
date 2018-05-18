@@ -202,12 +202,18 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                 else
 
                 {
-                    Person user = new Student(userName, kuleuvenID, email, blacklist);
+                    Student user = new Student(userName, kuleuvenID, email, blacklist);
                     user.setUserType(userType);
                     user.setCardID(id);
                     wv.addJavascriptInterface(user, "Person");
                     TestJson.setUser(user);
 
+                    try {
+
+                        ((Student)TestJson.getUser()).getAllItem();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     fragment = mFragments[5];
 
                     if (fragment != null) {
@@ -246,6 +252,14 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                 user.setUserType(userType);
                 TestJson.setUser(user);
 
+                wv.addJavascriptInterface(user, "Person");
+
+                try {
+
+                    ((Student)TestJson.getUser()).getAllItem();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 fragment = mFragments[5];
                 if(fragment!=null) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.home_container_main,fragment).commit();

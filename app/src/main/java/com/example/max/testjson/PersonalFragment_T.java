@@ -37,6 +37,7 @@ public class PersonalFragment_T extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
     }
 
@@ -62,6 +63,9 @@ public class PersonalFragment_T extends Fragment {
                 return true;
             }
         });
+
+
+
         // 由于第一次进来没有回调onNavigationItemSelected，因此需要手动调用一下切换状态的方法
         try {
             onTabItemSelected(R.id.tab_menu_home);
@@ -70,15 +74,13 @@ public class PersonalFragment_T extends Fragment {
         }
 
 
+
         return view;
 
     }
 
 //    @Override
 //    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-//
-//
-//
 //
 //        if (savedInstanceState == null) {
 ////            getChildFragmentManager().beginTransaction().replace(R.id.fl_chilid, new ChildFragmentOne("Child Fragment One")).commit();
@@ -96,10 +98,14 @@ public class PersonalFragment_T extends Fragment {
 //    }
 
     private void onTabItemSelected(int id) throws IOException {
+
+
+
+
         android.support.v4.app.Fragment fragment = null;
         switch (id){
             case R.id.tab_menu_home:
-                wv.addJavascriptInterface(TestJson.getUser(), "Person");
+                //wv.addJavascriptInterface(TestJson.getUser(), "Person");
                 TestJson.getUser().setDashboard();
                 fragment = mFragments[0];
                 break;
@@ -109,8 +115,6 @@ public class PersonalFragment_T extends Fragment {
                 break;
 
             case R.id.tab_menu_discovery:
-                wv.addJavascriptInterface(TestJson.getUser(), "Person");
-                ((Student)TestJson.getUser()).getAllItem();
                 fragment = mFragments[2];
                 break;
 
