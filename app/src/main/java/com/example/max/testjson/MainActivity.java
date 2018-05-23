@@ -319,7 +319,7 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                 Log.e("My info", "Could not parse malformed JSON: \"" + htmlSource + "\"");
             }
         }
-
+        
         @JavascriptInterface
         public void getPermissionClassification_interface(final String htmlSource) {
 
@@ -359,35 +359,11 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
 
     }
 
-    public void getAllClassifications() throws IOException {
-        byte[] array = getAllClassification_createJson();
-        wv.postUrl(CustomedWebview.getAllClassificationsURL, array);
-    }
 
-    public void getAllPermissions() throws IOException {
-        byte[] array = getAllPermissions_createJson();
-        wv.postUrl(CustomedWebview.getAllPermissionsURL, array);
-    }
 
     public void getPermissionClassification() throws IOException {
         byte[] array = getPermissionClassification_createJson();
         wv.postUrl(CustomedWebview.getPermissionClassificationURL, array);
-    }
-
-    protected byte[] getAllClassification_createJson() throws IOException {
-        JSONObject postdata = new JSONObject();
-        StringEntity se = new StringEntity(postdata.toString(),"UTF-8");
-        se.setContentType("application/json");
-        byte[] array = EntityUtils.toByteArray(se);
-        return array;
-    }
-
-    protected byte[] getAllPermissions_createJson() throws IOException {
-        JSONObject postdata = new JSONObject();
-        StringEntity se = new StringEntity(postdata.toString(),"UTF-8");
-        se.setContentType("application/json");
-        byte[] array = EntityUtils.toByteArray(se);
-        return array;
     }
 
     protected byte[] getPermissionClassification_createJson() throws IOException {
