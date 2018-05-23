@@ -63,7 +63,7 @@ public class AddItemFragment extends Fragment implements LocationListener{
         View view = inflater.inflate(R.layout.fragment_add_item, container, false);
         QR = (Button)view.findViewById(R.id.QR_scan);
         BarCode = (Button)view.findViewById(R.id.Barcode_scan);
-        TextRecognize = (Button) view.findViewById(R.id.Text_scan);
+//        TextRecognize = (Button) view.findViewById(R.id.Text_scan);
         Return_UnMaintain = (Button) view.findViewById(R.id.return_item);
         Borrow_Maintain = (Button) view.findViewById(R.id.borrow_item);
         ScanResult = (TextView) view.findViewById(R.id.scan_result);
@@ -90,12 +90,12 @@ public class AddItemFragment extends Fragment implements LocationListener{
                 scanBar(v);
             }
         });
-        TextRecognize.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                scanText(v);
-            }
-        });
+//        TextRecognize.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                scanText(v);
+//            }
+//        });
         Return_UnMaintain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

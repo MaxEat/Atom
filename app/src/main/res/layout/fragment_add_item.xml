@@ -37,18 +37,6 @@
             android:layout_weight="1"
             android:text="BARCODE" />
 
-        <Button
-            android:id="@+id/Text_scan"
-            style="?android:buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
-            android:background="@drawable/rectangular"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_weight="1"
-            android:text="TXT_REC" />
-
     </LinearLayout>
 
     <ImageView
