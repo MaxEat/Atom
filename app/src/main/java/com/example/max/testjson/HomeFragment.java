@@ -66,14 +66,22 @@ public class HomeFragment extends Fragment {
         }
 
         ImageButton imageButton = (ImageButton) view.findViewById(R.id.sendEmail);
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.i("here", "clicked");
-                sendAlertEmail();
+        Log.i("type", TestJson.getUser().getUserType());
+        if(TestJson.getUser().getUserType().equals("Student"))
+        {
+            imageButton.setVisibility(View.GONE);
+        }
+        else {
+            imageButton.setVisibility(View.VISIBLE);
+            imageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.i("here", "clicked");
+                    sendAlertEmail();
 
-            }
-        });
+                }
+            });
+        }
 
         SimpleAdapter listItemAdapter = new SimpleAdapter(getActivity().getApplicationContext(),
                                                     listItem,

@@ -65,30 +65,34 @@ public class Admin_AddClassificationFragment extends Fragment implements View.On
 
         Log.i("UPLOAD", "UPLOAD MESSAGE");
 
-        //getting name for the image
-        String name = add_editText.getText().toString().trim();
-
-        //getting the actual path of the image
-        String path = getPath(filePath);
-
-        Toast.makeText(getActivity().getApplicationContext(),path,Toast.LENGTH_SHORT).show();
-
-        //Uploading code
-        try {
-            String uploadId = UUID.randomUUID().toString();
-
-            //Creating a multi part request
-            new MultipartUploadRequest(getActivity().getApplicationContext(), uploadId, BackgroundTask.UPLOAD_URL)
-                    .addFileToUpload(path, "image") //Adding file
-                    .addParameter("name", name) //Adding text parameter to the request
-                    .setNotificationConfig(new UploadNotificationConfig())
-                    .setMaxRetries(2)
-                    .startUpload(); //Starting the upload
-
-        } catch (Exception exc) {
-            Toast.makeText(getActivity().getApplicationContext(), exc.getMessage(), Toast.LENGTH_SHORT).show();
-        }
+//        //getting name for the image
+//        String name = add_editText.getText().toString().trim();
+//
+//        //getting the actual path of the image
+//        String path = getPath(filePath);
+//
+//        Toast.makeText(getActivity().getApplicationContext(),path,Toast.LENGTH_SHORT).show();
+//
+//        //Uploading code
+//        try {
+//            String uploadId = UUID.randomUUID().toString();
+//
+//            //Creating a multi part request
+//            new MultipartUploadRequest(getActivity().getApplicationContext(), uploadId, BackgroundTask.UPLOAD_URL)
+//                    .addFileToUpload(path, "image") //Adding file
+//                    .addParameter("name", name) //Adding text parameter to the request
+//                    .setNotificationConfig(new UploadNotificationConfig())
+//                    .setMaxRetries(2)
+//                    .startUpload(); //Starting the upload
+//
+//        } catch (Exception exc) {
+//            Toast.makeText(getActivity().getApplicationContext(), exc.getMessage(), Toast.LENGTH_SHORT).show();
+//        }
     }
 
 
+    @Override
+    public void onClick(View view) {
+
+    }
 }

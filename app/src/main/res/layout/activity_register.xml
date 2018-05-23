@@ -19,7 +19,7 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Are you student?"
+            android:text="Are you an administrator?"
             android:textColor="@color/colorBlueDark" />
 
 
@@ -27,14 +27,14 @@
             android:id="@+id/userType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
             android:layout_gravity="right"
+            android:layout_marginStart="20dp"
             android:background="@drawable/rectangular_login"
             android:checked="true"
             android:text="ToggleButton"
             android:textColor="@color/colorAccent"
-            android:textOff="Administrator"
-            android:textOn="Student" />
+            android:textOff="Yes"
+            android:textOn="No" />
 
 
     </LinearLayout>

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
@@ -21,6 +22,7 @@ public class RegisterFragment_T extends Fragment {
 
     private android.support.v4.app.Fragment[]mFragments;
 
+    private TextView textView;
     private String cardID;
     private ToggleButton userType;
     private Button register;
@@ -29,6 +31,7 @@ public class RegisterFragment_T extends Fragment {
     private String userName;
     private String email = "None";
     private String userPermission = "Student";
+    private String type;
     private Fragment fragment;
 
     public RegisterFragment_T() {
@@ -59,21 +62,46 @@ public class RegisterFragment_T extends Fragment {
         cardID = getArguments().getString("cardID");
         userName = getArguments().getString("userName");
         email = getArguments().getString("email");
+        type = getArguments().getString("role");
 
         userType = (ToggleButton) view.findViewById(R.id.userType);
         register = (Button) view.findViewById(R.id.register);
+        textView = (TextView)view.findViewById(R.id.textView);
 
+        if(type.contains("student")){
+            userPermission = "Student";
+            register.setVisibility(View.GONE);
+            userType.setVisibility(View.GONE);
+            textView.setVisibility(View.GONE);
+            try {
+                fragment = mFragments[5];
+                userPermission = "Student";
 
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    register(v);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                Person user = new Student(userName, kuleuvenID, email);
+                Log.i("Register as student", user.getUserName());
+                user.setCardID(cardID);
+                user.setUserType(userPermission);
+
+                TestJson.setUser(user);
+                wv.addJavascriptInterface(new registerPerson(),"registerPerson");
+                register();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        });
+        }
+        else {
+            register.setVisibility(View.VISIBLE);
+            register.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        register(v);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
 
         return view;
     }
