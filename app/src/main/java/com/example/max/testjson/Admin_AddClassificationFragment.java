@@ -24,38 +24,38 @@ import java.util.UUID;
  * Use the {@link Admin_AddClassificationFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Admin_AddClassificationFragment extends Fragment implements View.OnClickListener{
-
-    private EditText add_editText;
-
-
-
-    public Admin_AddClassificationFragment() {
-        // Required empty public constructor
-    }
-
-    public static Admin_AddClassificationFragment newInstance(String param1, String param2) {
-        Admin_AddClassificationFragment fragment = new Admin_AddClassificationFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_admin_add_classification, container, false);
-
-        add_editText = (EditText) view.findViewById(R.id.add_editTextName);
-
-        return view;
-    }
+//public class Admin_AddClassificationFragment extends Fragment implements View.OnClickListener{
+//
+//    private EditText add_editText;
+//
+//
+//
+//    public Admin_AddClassificationFragment() {
+//        // Required empty public constructor
+//    }
+//
+//    public static Admin_AddClassificationFragment newInstance(String param1, String param2) {
+//        Admin_AddClassificationFragment fragment = new Admin_AddClassificationFragment();
+//        Bundle args = new Bundle();
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
+//
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//    }
+//
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//                             Bundle savedInstanceState) {
+//        // Inflate the layout for this fragment
+//        View view = inflater.inflate(R.layout.fragment_admin_add_classification, container, false);
+//
+//        add_editText = (EditText) view.findViewById(R.id.add_editTextName);
+//
+//        return view;
+//    }
 
     /*
    * This is the method responsible for image upload
@@ -90,10 +90,29 @@ public class Admin_AddClassificationFragment extends Fragment implements View.On
 //        }
 //    }
 
-    @Override
-    public void onClick(View v) {
+//        //getting name for the image
+//        String name = add_editText.getText().toString().trim();
+//
+//        //getting the actual path of the image
+//        String path = getPath(filePath);
+//
+//        Toast.makeText(getActivity().getApplicationContext(),path,Toast.LENGTH_SHORT).show();
+//
+//        //Uploading code
+//        try {
+//            String uploadId = UUID.randomUUID().toString();
+//
+//            //Creating a multi part request
+//            new MultipartUploadRequest(getActivity().getApplicationContext(), uploadId, BackgroundTask.UPLOAD_URL)
+//                    .addFileToUpload(path, "image") //Adding file
+//                    .addParameter("name", name) //Adding text parameter to the request
+//                    .setNotificationConfig(new UploadNotificationConfig())
+//                    .setMaxRetries(2)
+//                    .startUpload(); //Starting the upload
+//
+//        } catch (Exception exc) {
+//            Toast.makeText(getActivity().getApplicationContext(), exc.getMessage(), Toast.LENGTH_SHORT).show();
+//        }
+ //   }
 
-    }
-
-
-}
+//}

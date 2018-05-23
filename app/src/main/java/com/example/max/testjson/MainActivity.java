@@ -42,6 +42,7 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
     private String email = "None";
     private String userType = "";
     private String blacklist;
+    private String role;
 
 
 
@@ -69,85 +70,6 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
     protected void onStart() {
         super.onStart();
     }
-//
-//    @TargetApi(19)
-//    private void initializeLibrary() {
-//        libInstance = NxpNfcLib.getInstance();
-//        try {
-//            libInstance.registerActivity(this, packageKey);
-//
-//        } catch (NxpNfcLibException ex) {
-//            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
-//        }
-//
-//    }
-//    public static String bytesToHex(byte[] bytes) {
-//        char[] hexChars = new char[bytes.length * 2];
-//        for ( int j = 0; j < bytes.length; j++ ) {
-//            int v = bytes[j] & 0xFF;
-//            hexChars[j * 2] = hexArray[v >>> 4];
-//            hexChars[j * 2 + 1] = hexArray[v & 0x0F];
-//        }
-//        return new String(hexChars);
-//
-//    }
-//
-//    private void cardLogic(final Intent intent) {
-//        CardType type = CardType.UnknownCard;
-//        try {
-//            type = libInstance.getCardType(intent);
-//        } catch (NxpNfcLibException ex) {
-//            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
-//        }
-//        mCardType = CardType.PlusSL3;
-//        plusSL3 = PlusFactory.getInstance().getPlusSL3(libInstance.getCustomModules());
-//
-//        try {
-//            plusSL3.getReader().connect();
-//            IPlus.CardDetails details = plusSL3.getCardDetails();
-//            String id = bytesToHex(details.uid);
-//            checkId(id);
-//        } catch (Throwable t) {
-//            t.printStackTrace();
-//        }
-//
-//    }
-//
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        switch (requestCode) {
-//            case STORAGE_PERMISSION_WRITE: {
-//                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    Toast.makeText(MainActivity.this, "Requested permission granted", Toast.LENGTH_LONG).show();
-//
-//                } else {
-//                    Toast.makeText(MainActivity.this, "The app was not allowed to write to your storage. Hence, it cannot function properly. Please consider granting it this permission", Toast.LENGTH_LONG).show();
-//                }
-//                break;
-//            }
-//        }
-//
-//    }
-//
-//    @Override
-//    public void onNewIntent(final Intent intent) {
-//        cardLogic(intent);
-//        super.onNewIntent(intent);
-//
-//    }
-
-//    public void getPermission() {
-//        boolean readPermission = (ContextCompat.checkSelfPermission(MainActivity.this,
-//                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
-//
-//        if (!readPermission) {
-//            ActivityCompat.requestPermissions(MainActivity.this,
-//                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_WRITE
-//            );
-//        }
-//
-//    }
 
     public void getPermission() {
 
@@ -159,14 +81,6 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                     new String[]{Manifest.permission.CAMERA}, CAMERA
             );
         }
-//        boolean storagePermission = (ContextCompat.checkSelfPermission(MainActivity.this,
-//                Manifest.permission_group.STORAGE) == PackageManager.PERMISSION_GRANTED);
-//
-//        if (!storagePermission) {
-//            ActivityCompat.requestPermissions(MainActivity.this,
-//                    new String[]{Manifest.permission_group.STORAGE}, STORAGE
-//            );
-//        }
     }
 
     @SuppressLint("JavascriptInterface")
@@ -181,7 +95,6 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
 
                 if(userType.equals("Administrator"))
 
@@ -261,59 +174,6 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
         dialog.show();
     }
 
-//    public void checkId(final String id) {
-//        JSONObject postdata = new JSONObject();
-//        try {
-//            postdata.put("cardID", id);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//        try {
-//            BackgroundTask.getInstance().postAsyncJsonn(BackgroundTask.getInfoByCardURL, postdata.toString(), new BackgroundTask.MyCallback() {
-//                @Override
-//                public void onSuccess(String result) {
-//                    Log.i("Success", "result----" + result);
-//                    try {
-//                        JSONObject json = new JSONObject(result);
-//                        if (json.getInt("error_message") == 4) {
-//                            Toast.makeText(getApplicationContext(), "This person does not exist", Toast.LENGTH_SHORT).show();
-//
-//
-//                            fragment = mFragments[7];
-//
-//                            Bundle bundle = new Bundle();
-//                            bundle.putString("cardID",id);
-//                            fragment.setArguments(bundle);
-//
-//                            if(fragment!=null) {
-//                                getSupportFragmentManager().beginTransaction().replace(R.id.home_container_main,fragment).commit();
-//                            }
-//                        } else {
-//                            String kuleuvenID = json.getString("kuleuvenID");
-//                            String userName = json.getString("userName");
-//                            String email = json.getString("email");
-//                            String userType = json.getString("userType");
-//                         //   checkUserType(kuleuvenID, userName, email, userType, id);
-//                        }
-//                    }
-//                     catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-////                    catch (IOException e) {
-////                        e.printStackTrace();
-////                    }
-//                }
-//                @Override
-//                public void onFailture() {
-//
-//                }
-//            });
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//    }
-
     public void check() throws IOException {
         runOnUiThread(new Runnable(){
             @Override
@@ -392,8 +252,7 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
 
     }
 
-    private final class getFormData
-    {
+    private final class getFormData {
         @JavascriptInterface
         public void getRegisterInfo(String htmlSource) {
 
@@ -403,6 +262,9 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                 userName = obj.getString("email").split("@")[0].replace(".", " ");
                 kuleuvenID = obj.getString("user").split("@")[0];
                 email = obj.getString("email");
+                role = obj.getString("role");
+
+
                 check();
             } catch (Throwable t) {
                 Log.e("My info", "Could not parse malformed JSON: \"" + htmlSource + "\"");
@@ -424,6 +286,7 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                     bundle.putString("userName",userName);
                     bundle.putString("email",email);
                     bundle.putString("kuleuvenID", kuleuvenID);
+                    bundle.putString("role", role);
                     fragment.setArguments(bundle);
 
                     if(fragment!=null) {
@@ -456,31 +319,37 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                 Log.e("My info", "Could not parse malformed JSON: \"" + htmlSource + "\"");
             }
         }
-
-
+        
         @JavascriptInterface
         public void getPermissionClassification_interface(final String htmlSource) {
 
-            Log.i("Success get available", htmlSource);
+            Log.i("Get classifications", htmlSource);
             try {
                 JSONObject jsonObject = new JSONObject(htmlSource);
                 JSONArray jsonArray = jsonObject.getJSONArray("list");
                 JSONArray jsonArray2 = jsonObject.getJSONArray("list2");
+                JSONArray jsonArray3 = jsonObject.getJSONArray("list3");
 
                 TestJson.permissionArray = new String[jsonArray.length()];
                 TestJson.classificationArray = new String[jsonArray2.length()];
-
+                TestJson.locationArray = new String[jsonArray3.length()];
 
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject json = jsonArray.getJSONObject(i);
                     TestJson.permissionArray[i] = json.getString("permissionType");
-                    Log.e("permission value",  TestJson.permissionArray[i] + "\"");
+                    Log.i("permission value",  TestJson.permissionArray[i] + "\"");
                 }
 
                 for (int i = 0; i < jsonArray2.length(); i++) {
                     JSONObject json = jsonArray2.getJSONObject(i);
                     TestJson.classificationArray[i] = json.getString("itemPictureClassification");
-                    Log.e("S value",  TestJson.classificationArray[i] + "\"");
+                    Log.i("classification "+i,  TestJson.classificationArray[i] + "\"");
+                }
+
+                for (int i = 0; i<jsonArray3.length(); i++) {
+                    JSONObject json = jsonArray3.getJSONObject(i);
+                    TestJson.locationArray[i] = json.getString("itemLocation");
+                    Log.i("location "+i,  TestJson.classificationArray[i] + "\"");
                 }
 
             } catch (Throwable t) {

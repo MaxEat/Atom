@@ -30,7 +30,7 @@ public class AvailableItemFragment extends Fragment implements SearchView.OnQuer
     private Spinner chooseLocation;
     private Spinner chooseType;
     private AvailableItemRecyclerViewAdapter adapter;
-    private Toolbar toolbar;
+
 
     public AvailableItemFragment() {
     }
@@ -76,7 +76,6 @@ public class AvailableItemFragment extends Fragment implements SearchView.OnQuer
         ArrayAdapter<String> spinnerTypeAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, types);
         chooseType.setAdapter(spinnerTypeAdapter);
 
-        toolbar= (Toolbar)view.findViewById(R.id.toolbar);
         searchView= (SearchView)view.findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(this);
 

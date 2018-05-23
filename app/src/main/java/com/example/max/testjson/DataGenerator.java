@@ -12,10 +12,6 @@ import android.widget.TextView;
 
 public class DataGenerator {
 
-    public static final int []mTabRes = new int[]{R.drawable.ic_dashboard,R.drawable.ic_dashboard,R.drawable.ic_dashboard,R.drawable.ic_dashboard};
-    public static final int []mTabResPressed = new int[]{R.drawable.ic_dashboard,R.drawable.ic_dashboard,R.drawable.ic_dashboard,R.drawable.ic_dashboard};
-    public static final String []mTabTitle = new String[]{"首页","发现","关注","我的"};
-
     public static Fragment[] getFragments(String from){
         Fragment fragments[] = new Fragment[8];
         fragments[0] = HomeFragment.newInstance(from);

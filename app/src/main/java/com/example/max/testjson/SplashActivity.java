@@ -68,7 +68,6 @@ public class SplashActivity extends AppCompatActivity {
         } catch (NxpNfcLibException ex) {
             Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
-
     }
 
     public void getPermission() {
