@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.support.v4.app.Fragment;
 import android.widget.TextView;
 
+import com.squareup.leakcanary.RefWatcher;
+
 import java.io.IOException;
 
 import static com.example.max.testjson.TestJson.wv;
@@ -100,6 +102,13 @@ public class AdminFragment_T extends Fragment {
         if(fragment!=null) {
             getChildFragmentManager().beginTransaction().replace(R.id.adminHome_container,fragment).commit();
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = TestJson.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 
 }

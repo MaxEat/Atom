@@ -7,19 +7,12 @@
     android:fitsSystemWindows="true"
     tools:context="com.example.max.testjson.AvailableItemFragment">
 
-    <Spinner
-        android:id="@+id/admin_choose_location"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/admin_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/admin_choose_location"
         android:background="#bc4a4a">
 
         <android.support.v7.widget.SearchView

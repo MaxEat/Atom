@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.squareup.leakcanary.RefWatcher;
+
 import java.io.IOException;
 
 import static com.example.max.testjson.TestJson.wv;
@@ -133,5 +135,11 @@ public class PersonalFragment_T extends Fragment {
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = TestJson.getRefWatcher(getActivity());
+        refWatcher.watch(this);
+    }
 
 }

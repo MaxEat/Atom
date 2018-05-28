@@ -25,6 +25,7 @@ import com.nxp.nfclib.exceptions.NxpNfcLibException;
 import com.nxp.nfclib.plus.IPlus;
 import com.nxp.nfclib.plus.IPlusSL3;
 import com.nxp.nfclib.plus.PlusFactory;
+import com.squareup.leakcanary.RefWatcher;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -126,7 +127,7 @@ public class SplashActivity extends AppCompatActivity {
             plusSL3.getReader().connect();
             IPlus.CardDetails details = plusSL3.getCardDetails();
             String id = bytesToHex(details.uid);
-            Log.i("Scaned card ID", id);
+            Log.i("Scanned card ID", id);
             Intent i = new Intent(getApplicationContext(), MainActivity.class);
             i.putExtra("cardID", id);
             startActivity(i);
@@ -169,7 +170,10 @@ public class SplashActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
+
+       super.onDestroy();
+       RefWatcher refWatcher = TestJson.getRefWatcher(this);
+       refWatcher.watch(this);
     }
 
 }

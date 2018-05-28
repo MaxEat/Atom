@@ -20,6 +20,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.squareup.leakcanary.RefWatcher;
+
 import junit.framework.Test;
 
 import java.io.IOException;
@@ -171,5 +173,12 @@ public class SettingFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = TestJson.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 }

@@ -20,6 +20,8 @@ import android.widget.Filter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.squareup.leakcanary.RefWatcher;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,10 +68,6 @@ public class Admin_AvailableItemFragment extends Fragment implements SearchView.
             recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
 
-        chooseLocation = (Spinner)view.findViewById(R.id.admin_choose_location);
-        String[] items = new String[]{"1", "2", "three"};
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items);
-        chooseLocation.setAdapter(spinnerAdapter);
 
         toolbar= (Toolbar)view.findViewById(R.id.admin_toolbar);
         searchView= (SearchView)view.findViewById(R.id.admin_search_view);
@@ -117,4 +115,10 @@ public class Admin_AvailableItemFragment extends Fragment implements SearchView.
         void onListFragmentInteraction(AvailableItem item);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = TestJson.getRefWatcher(getActivity());
+        refWatcher.watch(this);
+    }
 }

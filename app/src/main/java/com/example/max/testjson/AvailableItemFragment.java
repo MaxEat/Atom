@@ -7,6 +7,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,9 +17,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Spinner;
-import android.support.v7.widget.Toolbar;
-
-import java.util.ArrayList;
 
 
 public class AvailableItemFragment extends Fragment implements SearchView.OnQueryTextListener {
@@ -30,6 +28,7 @@ public class AvailableItemFragment extends Fragment implements SearchView.OnQuer
     private Spinner chooseLocation;
     private Spinner chooseType;
     private AvailableItemRecyclerViewAdapter adapter;
+    private Toolbar toolbar;
 
 
     public AvailableItemFragment() {
@@ -65,17 +64,7 @@ public class AvailableItemFragment extends Fragment implements SearchView.OnQuer
             recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
 
-        chooseLocation = (Spinner)view.findViewById(R.id.choose_location);
-        String[] locations = new String[]{"1", "2", "three"};
-        ArrayAdapter<String> spinnerLocationAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, locations);
-        chooseLocation.setAdapter(spinnerLocationAdapter);
-
-
-        chooseType = (Spinner)view.findViewById(R.id.choose_type);
-        String[] types = new String[]{"4", "5", "6"};
-        ArrayAdapter<String> spinnerTypeAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, types);
-        chooseType.setAdapter(spinnerTypeAdapter);
-
+        toolbar= (Toolbar)view.findViewById(R.id.toolbar);
         searchView= (SearchView)view.findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(this);
 
@@ -83,6 +72,8 @@ public class AvailableItemFragment extends Fragment implements SearchView.OnQuer
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(
                     getContext(), DividerItemDecoration.VERTICAL));
+
+
 
         return view;
     }

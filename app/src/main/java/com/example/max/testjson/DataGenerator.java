@@ -22,7 +22,6 @@ public class DataGenerator {
         fragments[5] = PersonalFragment_T.newInstance();
         fragments[6] = AdminFragment_T.newInstance();
         fragments[7] = RegisterFragment_T.newInstance();
-
         return fragments;
     }
 

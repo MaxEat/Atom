@@ -9,6 +9,9 @@ import android.webkit.JavascriptInterface;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
+import com.squareup.leakcanary.RefWatcher;
+
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
@@ -178,6 +181,11 @@ public class RegisterFragment_T extends Fragment {
         }
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = TestJson.getRefWatcher(getActivity());
+        refWatcher.watch(this);
+    }
 
 }

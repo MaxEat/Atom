@@ -1,11 +1,15 @@
 package com.example.max.testjson;
 
 import android.app.Application;
+import android.content.Context;
 import android.os.Build;
 import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
+
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,28 +31,40 @@ import okhttp3.OkHttpClient;
 
 public class TestJson extends Application {
 
-    private static TestJson instance;
+   // private static TestJson instance;
     private static Person user;
     public static int alertDay = 14;
     public static CustomedWebview wv;
     public static HashMap<String, Integer> permission_days_student = new HashMap<String, Integer>();
     public static HashMap<String, Integer> permission_days_worker = new HashMap<String, Integer>();
-    public static String classificationArray[];
+    public static String classificationPictureArray[];
     public static String permissionArray[];
     public static String locationArray[];
+    public static String classificationArray[];
 
-
+    private RefWatcher refWatcher;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        this.instance = this;
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        refWatcher = LeakCanary.install(this);
+
         permission_days_student.put("laptop", 14);
         permission_days_student.put("FPGA", 14);
         permission_days_student.put("ipad", 14);
         permission_days_worker.put("laptop",28);
         permission_days_worker.put("FPGA", 28);
         permission_days_worker.put("ipad", 28);
+    }
+
+    public static RefWatcher getRefWatcher(Context context) {
+        TestJson application = (TestJson) context.getApplicationContext();
+        return application.refWatcher;
     }
 
     public void addPermission_days(String userType, String itemType, int days) {
@@ -68,9 +84,9 @@ public class TestJson extends Application {
         wv.destroyDrawingCache();
     }
 
-    public static TestJson getInstance() {
-        return instance;
-    }
+   // public static TestJson getInstance() {
+//        return instance;
+//    }
 
     public static Person getUser() {
         return user;

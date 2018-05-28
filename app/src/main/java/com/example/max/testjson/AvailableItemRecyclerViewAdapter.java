@@ -1,5 +1,7 @@
 package com.example.max.testjson;
 
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -129,6 +131,7 @@ public class AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter<Avail
         return myFilter;
     }
 
+
     class TestFilter extends Filter {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
@@ -136,6 +139,7 @@ public class AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter<Avail
             List<AvailableItem> newItemList = new ArrayList<AvailableItem>();
             if (constraint != null && constraint.toString().trim().length() > 0) {
                 for (int i = 0; i < tempValue.size(); i++) {
+                    Log.i("constrain", constraint.toString());
                     String content = tempValue.get(i).getClassification() + " "+tempValue.get(i).getItemLocation();
                     if (content.contains(constraint)) {
                         newItemList.add(tempValue.get(i));

@@ -22,9 +22,13 @@ import android.widget.TextView;
 import android.support.v4.app.Fragment;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.squareup.leakcanary.RefWatcher;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+
+import static com.example.max.testjson.TestJson.wv;
 
 public class AddItemFragment extends Fragment implements LocationListener{
 
@@ -69,6 +73,7 @@ public class AddItemFragment extends Fragment implements LocationListener{
         ScanResult = (TextView) view.findViewById(R.id.scan_result);
         ItemImage = (ImageView)view.findViewById(R.id.itemImage);
 
+        ItemImage.setVisibility(View.INVISIBLE);
         if(dataGenerator == 1){
             Return_UnMaintain.setText("RETURN");
             Borrow_Maintain.setText("BORROW");
@@ -243,6 +248,7 @@ public class AddItemFragment extends Fragment implements LocationListener{
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         //retrieve scan result
+        ItemImage.setVisibility(View.VISIBLE);
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         ScanResultReceiver parentActivity = (ScanResultReceiver) this.getActivity();
 
@@ -252,6 +258,7 @@ public class AddItemFragment extends Fragment implements LocationListener{
             parentActivity.scanResultData(codeFormat,codeContent);
             try {
                 setItemTag(codeContent);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -262,9 +269,10 @@ public class AddItemFragment extends Fragment implements LocationListener{
 
     public void setItemTag(String tag) throws IOException {
         itemTag = tag;
-      //  Item item = new Item(tag);
-      //  wv.addJavascriptInterface(item,"Item");
-       // item.setInfos();
+
+        Item item = new Item(tag);
+        wv.addJavascriptInterface(item,"Item");
+        item.getImageURL();
      //   ScanResult.setText(item.getClassification());
        // ScanResult.setText(item.getClassification()+" at " + item.getItemLocation());
     }
@@ -292,5 +300,12 @@ public class AddItemFragment extends Fragment implements LocationListener{
     @Override
     public void onProviderDisabled(String s) {
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = TestJson.getRefWatcher(getActivity());
+        refWatcher.watch(this);
     }
 }

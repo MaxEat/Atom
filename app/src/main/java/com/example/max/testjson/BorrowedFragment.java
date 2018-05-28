@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.app.FragmentManager;
 
+import com.squareup.leakcanary.RefWatcher;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 
@@ -95,4 +97,11 @@ public class BorrowedFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         void onListFragmentInteraction(BorrowedItem borrowedItem);
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = TestJson.getRefWatcher(getActivity());
+        refWatcher.watch(this);
+    }
+
 }

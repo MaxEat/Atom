@@ -35,6 +35,7 @@ import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.squareup.leakcanary.RefWatcher;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.UploadNotificationConfig;
@@ -456,7 +457,12 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
                 permission);
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher refWatcher = TestJson.getRefWatcher(getActivity());
+        refWatcher.watch(this);
+    }
 
 
 //    public void administratorAddItem(String itemTag) {
