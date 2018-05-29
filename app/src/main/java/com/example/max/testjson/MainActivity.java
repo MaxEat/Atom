@@ -71,6 +71,8 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
     @Override
     protected void onStart() {
         super.onStart();
+
+
     }
 
     public void getPermission() {
@@ -203,7 +205,6 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
     @Override
     protected void onPause() {
         super.onPause();
-      //  libInstance.stopForeGroundDispatch();
     }
 
 

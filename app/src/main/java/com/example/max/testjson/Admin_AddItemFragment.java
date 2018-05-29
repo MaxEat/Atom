@@ -71,6 +71,9 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
 
     private Button confirmBtn;
 
+    private EditText ScannedCode_admin;
+    private Button ConfirmScan_admin;
+
     private EditText locationText;
 
     //private EditText boughtTime;
@@ -149,6 +152,9 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
         confirmBtn = (Button)view.findViewById(R.id.confirmButton);
 
         locationText = (EditText)view.findViewById(R.id.itemLocationText);
+
+        ScannedCode_admin = (EditText)view.findViewById(R.id.scannedCode_admin) ;
+        ConfirmScan_admin = (Button)view.findViewById(R.id.confirm_admin);
 
 
         //Setting clicklistener
@@ -251,6 +257,13 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
             }
         });
 
+        ConfirmScan_admin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmScan(v);
+            }
+        });
+
         // Inflate the layout for this fragment
         return view;
     }
@@ -277,7 +290,13 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
     }
 
     public void scanText(View view) {
+        Intent scan = new Intent(getActivity().getApplicationContext(), CaptureActivity.class);
+        startActivityForResult(scan,1);
+    }
 
+    public void confirmScan(View v){
+
+        itemTagAdmin = ScannedCode_admin.getText().toString();
     }
 
 
@@ -343,20 +362,30 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
 
         //get tag info
         //retrieve scan result
-        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        ScanResultReceiver parentActivity = (ScanResultReceiver) this.getActivity();
 
-        if (scanningResult != null) {
-            codeContent = scanningResult.getContents();
-            Toast.makeText(getActivity(),codeContent,Toast.LENGTH_SHORT).show();
-            codeFormat = scanningResult.getFormatName();
-            itemTagAdmin = codeContent;
-            // send received data
-            parentActivity.scanResultData(codeFormat,codeContent);
+        if(resultCode == getActivity().RESULT_FIRST_USER)
+        {
+            String answer = data.getStringExtra("result");
+            ScannedCode_admin.setText(answer);
+
+            Log.i("scan text", answer);
+        }
+        else {
+            IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+            ScanResultReceiver parentActivity = (ScanResultReceiver) this.getActivity();
+
+            if (scanningResult != null) {
+                codeContent = scanningResult.getContents();
+                Toast.makeText(getActivity(), codeContent, Toast.LENGTH_SHORT).show();
+                codeFormat = scanningResult.getFormatName();
+                ScannedCode_admin.setText(codeContent);
+                // send received data
+                parentActivity.scanResultData(codeFormat, codeContent);
 
 
-        }else{
-            parentActivity.scanResultData(new NoScanResultException(noResultErrorMsg));
+            } else {
+                parentActivity.scanResultData(new NoScanResultException(noResultErrorMsg));
+            }
         }
 
 

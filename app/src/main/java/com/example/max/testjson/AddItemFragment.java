@@ -1,6 +1,7 @@
 package com.example.max.testjson;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -17,17 +18,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.support.v4.app.Fragment;
+import android.widget.Toast;
+
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.squareup.leakcanary.RefWatcher;
+
+import junit.framework.Test;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import static android.app.Activity.RESULT_OK;
 import static com.example.max.testjson.TestJson.wv;
 
 public class AddItemFragment extends Fragment implements LocationListener{
@@ -40,9 +47,12 @@ public class AddItemFragment extends Fragment implements LocationListener{
     private Button Borrow_Maintain;
     private TextView ScanResult;
     private ImageView ItemImage;
+    private EditText ScannedCode;
+    private Button ConfirmScan;
 
     private String itemTag;
-    private String codeFormat,codeContent;
+    private String codeFormat;
+    private String codeContent;
     private final String noResultErrorMsg = "No scan data received!";
     private static int dataGenerator;
 
@@ -67,11 +77,13 @@ public class AddItemFragment extends Fragment implements LocationListener{
         View view = inflater.inflate(R.layout.fragment_add_item, container, false);
         QR = (Button)view.findViewById(R.id.QR_scan);
         BarCode = (Button)view.findViewById(R.id.Barcode_scan);
-//        TextRecognize = (Button) view.findViewById(R.id.Text_scan);
+        TextRecognize = (Button) view.findViewById(R.id.Text_scan);
         Return_UnMaintain = (Button) view.findViewById(R.id.return_item);
         Borrow_Maintain = (Button) view.findViewById(R.id.borrow_item);
         ScanResult = (TextView) view.findViewById(R.id.scan_result);
         ItemImage = (ImageView)view.findViewById(R.id.itemImage);
+        ScannedCode = (EditText)view.findViewById(R.id.scannedCode) ;
+        ConfirmScan = (Button)view.findViewById(R.id.confirm);
 
         ItemImage.setVisibility(View.INVISIBLE);
         if(dataGenerator == 1){
@@ -95,12 +107,12 @@ public class AddItemFragment extends Fragment implements LocationListener{
                 scanBar(v);
             }
         });
-//        TextRecognize.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                scanText(v);
-//            }
-//        });
+        TextRecognize.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scanText(v);
+            }
+        });
         Return_UnMaintain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -128,6 +140,12 @@ public class AddItemFragment extends Fragment implements LocationListener{
                     e.printStackTrace();
                 }
 
+            }
+        });
+        ConfirmScan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmScan(v);
             }
         });
         return view;
@@ -242,29 +260,56 @@ public class AddItemFragment extends Fragment implements LocationListener{
     }
 
     public void scanText(View view) {
+        Intent scan = new Intent(getActivity().getApplicationContext(), CaptureActivity.class);
+        startActivityForResult(scan,1);
+    }
 
+    public void confirmScan(View v){
+
+        try {
+            setItemTag(ScannedCode.getText().toString());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        //retrieve scan result
         ItemImage.setVisibility(View.VISIBLE);
-        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-        ScanResultReceiver parentActivity = (ScanResultReceiver) this.getActivity();
 
-        if (scanningResult != null) {
-            codeContent = scanningResult.getContents();
-            codeFormat = scanningResult.getFormatName();
-            parentActivity.scanResultData(codeFormat,codeContent);
-            try {
-                setItemTag(codeContent);
+        if(resultCode == getActivity().RESULT_FIRST_USER)
+        {
+            String answer = intent.getStringExtra("result");
+            ScannedCode.setText(answer);
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }else{
-            parentActivity.scanResultData(new NoScanResultException(noResultErrorMsg));
+            Log.i("scan text", answer);
         }
+        else{
+            //retrieve scan result
+
+            IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+            ScanResultReceiver parentActivity = (ScanResultReceiver) this.getActivity();
+
+            if (scanningResult != null) {
+                codeContent = scanningResult.getContents();
+                codeFormat = scanningResult.getFormatName();
+                parentActivity.scanResultData(codeFormat,codeContent);
+                ScannedCode.setText(codeContent);
+//            try {
+//                setItemTag(codeContent);
+//
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+            }else{
+                parentActivity.scanResultData(new NoScanResultException(noResultErrorMsg));
+            }
+
+        }
+
+
+
     }
 
     public void setItemTag(String tag) throws IOException {

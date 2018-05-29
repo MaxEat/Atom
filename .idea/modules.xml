@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Atom.iml" filepath="$PROJECT_DIR$/Atom.iml" />
-      <module fileurl="file://$PROJECT_DIR$/TestJson.iml" filepath="$PROJECT_DIR$/TestJson.iml" />
+      <module fileurl="file://C:\Users\ASUS\Desktop\Thesis\workingParts\0528\Atom\TestJson.iml" filepath="C:\Users\ASUS\Desktop\Thesis\workingParts\0528\Atom\TestJson.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
