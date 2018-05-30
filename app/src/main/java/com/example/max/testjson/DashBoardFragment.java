@@ -1,48 +1,43 @@
 package com.example.max.testjson;
 
-
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.app.FragmentManager;
-import android.widget.Toast;
 
-import com.squareup.leakcanary.RefWatcher;
+import com.example.max.testjson.dashboard.News;
 
-import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class BorrowedFragment extends Fragment {
 
+public class DashBoardFragment extends Fragment {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private RecyclerView recyclerView;
-    private BorrowedItemRecyclerViewAdapter adapter;
+    private DashBoardRecyclerViewAdapter adapter;
 
-    public BorrowedFragment() { }
+    /**
+     * Mandatory empty constructor for the fragment manager to instantiate the
+     * fragment (e.g. upon screen orientation changes).
+     */
+    public DashBoardFragment() {
+    }
 
-    public static BorrowedFragment newInstance(int columnCount) {
-        BorrowedFragment fragment = new BorrowedFragment();
+    public static DashBoardFragment newInstance(int columnCount) {
+        DashBoardFragment fragment = new DashBoardFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
         return fragment;
-
     }
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,31 +48,25 @@ public class BorrowedFragment extends Fragment {
         }
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_item_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_news_list, container, false);
 
+        // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            recyclerView = (RecyclerView) view;
+            RecyclerView recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
 
-            ArrayList<BorrowedItem> items = ((Student)TestJson.getUser()).getBorrowedItems();
-            Log.i("borrowed items", Integer.toString(items.size()));
-
-            adapter = new BorrowedItemRecyclerViewAdapter(items, mListener);
+            ArrayList<News> personalNews = TestJson.getUser().getDashboard();
+            adapter = new DashBoardRecyclerViewAdapter(personalNews, mListener);
             adapter.setContext(getContext());
             recyclerView.setAdapter(adapter);
-            recyclerView.addItemDecoration(new DividerItemDecoration(
-                    getContext(), DividerItemDecoration.VERTICAL));
-            recyclerView.addItemDecoration(new DividerItemDecoration(
-                    getContext(), DividerItemDecoration.HORIZONTAL));
         }
         return view;
     }
@@ -101,13 +90,6 @@ public class BorrowedFragment extends Fragment {
     }
 
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(BorrowedItem borrowedItem);
+        void onListFragmentInteraction(News item);
     }
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        RefWatcher refWatcher = TestJson.getRefWatcher(getActivity());
-        refWatcher.watch(this);
-    }
-
 }

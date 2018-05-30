@@ -15,7 +15,11 @@
     <string name="write_ops_title">"Overwrite warning!!"</string>
     <string name="write_ops_message">Please note by selecting this option application writes sample data to the tapped card if the card key is factory default</string>
 
-    <string name="scan_bar_code">Scan a Bar Code</string>
+    <string name="scan_bar_code">Please scan a Bar Code</string>
+    <string name="scan_qr_code">Please scan a QR Code</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_location_permission">Location permission</string>
+    <string name="text_location_permission">Do you allow us to have location permission?</string>
+    <string name="ok">OK</string>
 </resources>

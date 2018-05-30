@@ -25,10 +25,8 @@ public class AvailableItemFragment extends Fragment implements SearchView.OnQuer
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private SearchView searchView;
-    private Spinner chooseLocation;
-    private Spinner chooseType;
     private AvailableItemRecyclerViewAdapter adapter;
-    private Toolbar toolbar;
+    private Toolbar toolbar; 
 
 
     public AvailableItemFragment() {

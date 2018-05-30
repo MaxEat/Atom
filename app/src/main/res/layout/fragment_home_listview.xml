@@ -8,7 +8,7 @@
     android:orientation="horizontal"
     android:paddingRight="10dp" >
 
-    <ImageButton
+    <ImageView
         android:id="@+id/ItemImage"
         android:layout_width="100dp"
         android:layout_height="75dp"

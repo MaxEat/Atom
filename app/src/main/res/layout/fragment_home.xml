@@ -12,10 +12,17 @@
         android:layout_height="wrap_content"
         android:src="@android:drawable/ic_dialog_email" />
 
+    <TextView
+        android:id="@+id/emptyDash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your dashboard is empty."
+        android:textColor="@color/colorGrey"/>
     <ListView
         android:id="@+id/list_view_home"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
 
     </ListView>
 

@@ -55,10 +55,13 @@ public class BorrowedItemRecyclerViewAdapter extends RecyclerView.Adapter<Borrow
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        Picasso.with(this.context).load(mValues.get(position).getImageURL());
-        holder.mClassification.setText(mValues.get(position).getClassification());
-        holder.mContentView.setText(mValues.get(position).getBorrowedLocation() + " "+ mValues.get(position).getBorrowedTimeStamp());
-
+     //   Picasso.with(this.context).load(mValues.get(position).getImageURL());
+        holder.mClassification.setText(holder.mItem.getClassification());
+        holder.mContentView.setText(holder.mItem.getBorrowedLocation() + " "+ holder.mItem.getBorrowedTimeStamp());
+        String pictureUrl = TestJson.pictureMap.get(holder.mItem.getClassification());
+        Log.i("location", holder.mItem.getBorrowedLocation());
+        Log.i("classification", holder.mItem.getClassification());
+        Picasso.with(context).load(pictureUrl).resize(120, 60).into(holder.mImage);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,39 +71,6 @@ public class BorrowedItemRecyclerViewAdapter extends RecyclerView.Adapter<Borrow
                 }
             }
         });
-        JSONObject postdata = new JSONObject();
-        try {
-            postdata.put("itemClassfication", holder.mItem.getClassification());
-        } catch(JSONException e){
-            e.printStackTrace();
-        }
-
-        try {
-            BackgroundTask.getInstance().postAsyncJsonn(BackgroundTask.getItemPictureURL, postdata.toString(),new BackgroundTask.MyCallback() {
-                @Override
-                public void onSuccess(String result) {
-                    Log.i("Success","result----"+result);
-                    try {
-                        JSONObject json = new JSONObject(result);
-                        String url = json.getString("pictureUrl");
-                        holder.mItem.setImageURL(url);
-                        Log.i("url",url);
-                        Picasso.with(context).load(url).resize(120, 60).into(holder.mImage);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-                @Override
-                public void onFailture() {
-
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
 
     }
 

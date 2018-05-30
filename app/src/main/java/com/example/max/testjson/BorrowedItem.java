@@ -41,6 +41,11 @@ public class BorrowedItem extends Item implements Serializable{
 
     BorrowedItem(String aitemTag, String aitemLocation) {
         super(aitemTag, aitemLocation);
+        borrowedLocation = aitemLocation;
+        Date currentTime = Calendar.getInstance().getTime();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        borrowedTimeStamp = format.format(currentTime.getTime());
+
     }
 
     public int getId() {

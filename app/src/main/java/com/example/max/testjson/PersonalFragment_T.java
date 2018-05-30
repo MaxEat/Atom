@@ -27,7 +27,6 @@ public class PersonalFragment_T extends Fragment {
     private android.support.v4.app.Fragment[]mFragments;
 
     public PersonalFragment_T() {
-        // Required empty public constructor
     }
 
     public static PersonalFragment_T newInstance() {
@@ -41,6 +40,7 @@ public class PersonalFragment_T extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+       
     }
 
 
@@ -66,8 +66,6 @@ public class PersonalFragment_T extends Fragment {
             }
         });
 
-
-
         // 由于第一次进来没有回调onNavigationItemSelected，因此需要手动调用一下切换状态的方法
         try {
             onTabItemSelected(R.id.tab_menu_home);
@@ -81,28 +79,9 @@ public class PersonalFragment_T extends Fragment {
 
     }
 
-//    @Override
-//    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-//
-//        if (savedInstanceState == null) {
-////            getChildFragmentManager().beginTransaction().replace(R.id.fl_chilid, new ChildFragmentOne("Child Fragment One")).commit();
-////            mCurrentlyShowingFragment = 0;
-//
-//
-//        } else {
-// //           mCurrentlyShowingFragment = savedInstanceState.getInt("currently_showing_fragment");
-//
-//
-//        }
-// //       adjustButtonText();
-//
-//        super.onViewCreated(view, savedInstanceState);
-//    }
+
 
     private void onTabItemSelected(int id) throws IOException {
-
-
-
 
         android.support.v4.app.Fragment fragment = null;
         switch (id){

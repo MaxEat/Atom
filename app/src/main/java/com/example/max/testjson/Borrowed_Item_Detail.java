@@ -19,6 +19,7 @@ public class Borrowed_Item_Detail extends AppCompatActivity {
     private EditText returnDate;
     private EditText daysLeft;
     private ImageView imageView;
+    private TextView location;
     private BorrowedItem currentItem;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,7 @@ public class Borrowed_Item_Detail extends AppCompatActivity {
 
         type = findViewById(R.id.editText_Type);
         borrowDate = findViewById(R.id.editText_date);
+
         returnDate = findViewById(R.id.editText_return);
         daysLeft = findViewById(R.id.editText_leftdays);
         imageView = findViewById(R.id.item_detail_image);
@@ -50,9 +52,7 @@ public class Borrowed_Item_Detail extends AppCompatActivity {
         returnDate.setEnabled(false);
         daysLeft.setEnabled(false);
 
-        Log.i("url__",currentItem.getImageURL());
-        Picasso.with(getApplicationContext()).load(currentItem.getImageURL()).resize(100, 60).into(imageView);
-
-
+        String pictureUrl = TestJson.pictureMap.get(currentItem.getClassification());
+        Picasso.with(getApplicationContext()).load(pictureUrl).resize(120, 60).into(imageView);
     }
 }

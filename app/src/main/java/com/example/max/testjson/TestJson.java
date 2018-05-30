@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Build;
 import android.util.Log;
+import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
@@ -38,6 +39,7 @@ public class TestJson extends Application {
     public static HashMap<String, Integer> permission_days_student = new HashMap<String, Integer>();
     public static HashMap<String, Integer> permission_days_worker = new HashMap<String, Integer>();
     public static String classificationPictureArray[];
+    public static HashMap<String, String> pictureMap = new HashMap<>();
     public static String permissionArray[];
     public static String locationArray[];
     public static String classificationArray[];
@@ -75,18 +77,17 @@ public class TestJson extends Application {
     }
 
     public static void resetWebView() {
+
         wv.clearHistory();
         wv.clearCache(true);
 
-        wv.loadUrl("about:blank");
-        wv.onPause();
-        wv.removeAllViews();
-        wv.destroyDrawingCache();
+    //    wv.loadUrl("about:blank");
+    //    wv.onPause();
+    //    wv.removeAllViews();
+    //    wv.destroyDrawingCache();
     }
 
-   // public static TestJson getInstance() {
-//        return instance;
-//    }
+
 
     public static Person getUser() {
         return user;

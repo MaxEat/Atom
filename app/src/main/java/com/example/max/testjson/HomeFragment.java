@@ -2,12 +2,16 @@ package com.example.max.testjson;
 
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.ArrayList;
 
@@ -25,6 +29,7 @@ import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.example.max.testjson.dashboard.News;
+import com.squareup.picasso.Picasso;
 
 
 public class HomeFragment extends Fragment {
@@ -51,6 +56,9 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home,null);
+        final LayoutInflater factory = getLayoutInflater();
+        View listView = factory.inflate(R.layout.fragment_home_listview, null);
+
         ListView list = (ListView)view.findViewById(R.id.list_view_home);
         ArrayList<HashMap<String, Object>> listItem = new ArrayList<HashMap<String, Object>>();
 
@@ -59,10 +67,37 @@ public class HomeFragment extends Fragment {
         {
             HashMap<String, Object> map = new HashMap<String, Object>();
 
-            map.put("ItemImage", R.drawable.ic_dashboard);// 图像资源的ID
+
+
+            //加显示图片
+            Log.i("item classification", news.getItem().getClassification());
+            String pictureUrl = TestJson.pictureMap.get(news.getItem().getClassification());
+
+            Log.i("url", pictureUrl);
+            if(pictureUrl==null)
+            {
+                map.put("ItemImage", R.drawable.ic_dashboard);// 图像资源的ID
+
+            }
+            else
+            {
+                ImageView mImage = (ImageView)listView.findViewById(R.id.ItemImage);
+                Log.i("mimage", mImage.toString());
+                Picasso.with(getContext()).load(pictureUrl).resize(120, 60).into((ImageView) mImage);
+                map.put("ItemImage", mImage);// 图像资源的ID
+            }
+            //
             map.put("ItemTitle", news.getNewsTitle());
             map.put("ItemText", news.getNewsContent());
             listItem.add(map);
+        }
+
+        TextView emptyDash = (TextView) view.findViewById(R.id.emptyDash);
+        if(personalNews.isEmpty()){
+            emptyDash.setVisibility(View.VISIBLE);
+        }
+        else {
+            emptyDash.setVisibility(View.GONE);
         }
 
         ImageButton imageButton = (ImageButton) view.findViewById(R.id.sendEmail);
@@ -141,9 +176,6 @@ public class HomeFragment extends Fragment {
         } catch (android.content.ActivityNotFoundException ex) {
             Toast.makeText(getActivity(), "There is no email client installed.", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private void startActivityForResult(Intent chooser) {
     }
 
 }

@@ -8,15 +8,22 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.JavascriptInterface;
 import android.widget.Toast;
 
+import com.example.max.testjson.dashboard.News;
 import com.squareup.leakcanary.RefWatcher;
 
 import org.apache.http.entity.StringEntity;
@@ -28,15 +35,14 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
+import static com.example.max.testjson.CustomedWebview.baseURL;
 import static com.example.max.testjson.CustomedWebview.duplicatePersonURL;
 import static com.example.max.testjson.TestJson.wv;
 
-public class MainActivity extends  AppCompatActivity implements BorrowedFragment.OnListFragmentInteractionListener, AvailableItemFragment.OnListFragmentInteractionListener,Admin_AvailableItemFragment.OnListFragmentInteractionListener,SettingFragment.OnFragmentInteractionListener,ScanResultReceiver{
+public class MainActivity extends  AppCompatActivity implements BorrowedFragment.OnListFragmentInteractionListener, AvailableItemFragment.OnListFragmentInteractionListener,Admin_AvailableItemFragment.OnListFragmentInteractionListener,SettingFragment.OnFragmentInteractionListener, DashBoardFragment.OnListFragmentInteractionListener,ScanResultReceiver{
 
     private android.support.v4.app.Fragment[]mFragments;
     private static final int CAMERA= 115;
-
-
     Fragment fragment = null;
     private String cardID;
     private String kuleuvenID = "None";
@@ -72,6 +78,9 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
     protected void onStart() {
         super.onStart();
     }
+
+
+
 
     public void getPermission() {
 
@@ -131,7 +140,7 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
 
                 Person user = new Worker(userName, kuleuvenID, email);
                 user.setCardID(cardid);
-                user.setUserType(userType);
+                user.setUserType("Administrator");
                 TestJson.setUser(user);
 
 
@@ -147,7 +156,7 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
 
                 Person user = new Student(userName, kuleuvenID, email);
                 user.setCardID(cardid);
-                user.setUserType(userType);
+                user.setUserType("Student");
                 TestJson.setUser(user);
 
                 wv.addJavascriptInterface(user, "Person");
@@ -200,6 +209,25 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
         });
     }
 
+    public void cleanSession() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            Log.d("clear wv", "Using clearCookies code for API >=" + String.valueOf(Build.VERSION_CODES.LOLLIPOP_MR1));
+            CookieManager.getInstance().removeAllCookies(null);
+            CookieManager.getInstance().flush();
+        } else
+        {
+            Log.d("clear wv", "Using clearCookies code for API <" + String.valueOf(Build.VERSION_CODES.LOLLIPOP_MR1));
+            CookieSyncManager cookieSyncMngr=CookieSyncManager.createInstance(this);
+            cookieSyncMngr.startSync();
+            CookieManager cookieManager=CookieManager.getInstance();
+            cookieManager.removeAllCookie();
+            cookieManager.removeSessionCookie();
+            cookieSyncMngr.stopSync();
+            cookieSyncMngr.sync();
+        }
+        TestJson.resetWebView();
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -218,6 +246,9 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
         super.onDestroy();
         RefWatcher refWatcher = TestJson.getRefWatcher(this);
         refWatcher.watch(this);
+
+        //自动logout
+
     }
 
     @Override
@@ -250,6 +281,10 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
 
     }
 
+    @Override
+    public void onListFragmentInteraction(News item) {
+
+    }
 
 
     private final class getFormData {
@@ -283,41 +318,50 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                 JSONObject jsonUser = jsonObject.getJSONObject("user");
                 int error = jsonUser.getInt("error_message");
 
-                JSONArray permissionTypeArray = jsonObject.getJSONArray("permissionTypeList");
-                JSONArray pictureArray = jsonObject.getJSONArray("pictureList");
-                JSONArray locationArray = jsonObject.getJSONArray("locationList");
-                JSONArray classificationArray = jsonObject.getJSONArray("classificationList");
+                if(error == 0) {
+                    userType = jsonUser.getString("userType");
+                    blacklist = jsonUser.getString("state");
 
-                TestJson.permissionArray = new String[permissionTypeArray.length()];
-                TestJson.classificationArray = new String[classificationArray.length()];
-                TestJson.locationArray = new String[locationArray.length()];
-                TestJson.classificationPictureArray = new String[pictureArray.length()];
 
-                for (int i = 0; i < permissionTypeArray.length(); i++) {
-                    JSONObject json = permissionTypeArray.getJSONObject(i);
-                    TestJson.permissionArray[i] = json.getString("permissionType");
-                    Log.i("permission value "+i,  TestJson.permissionArray[i] + "\"");
+                    JSONArray permissionTypeArray = jsonObject.getJSONArray("permissionTypeList");
+                    JSONArray pictureArray = jsonObject.getJSONArray("pictureList");
+                    JSONArray locationArray = jsonObject.getJSONArray("locationList");
+                    JSONArray classificationArray = jsonObject.getJSONArray("classificationList");
+
+                    TestJson.permissionArray = new String[permissionTypeArray.length()];
+                    TestJson.classificationArray = new String[classificationArray.length()];
+                    TestJson.locationArray = new String[locationArray.length()];
+                    TestJson.classificationPictureArray = new String[pictureArray.length()];
+
+                    for (int i = 0; i < permissionTypeArray.length(); i++) {
+                        JSONObject json = permissionTypeArray.getJSONObject(i);
+                        TestJson.permissionArray[i] = json.getString("permissionType");
+                        Log.i("permission value " + i, TestJson.permissionArray[i] + "\"");
+                    }
+
+                    for (int i = 0; i < pictureArray.length(); i++) {
+                        JSONObject json = pictureArray.getJSONObject(i);
+                        TestJson.classificationPictureArray[i] = json.getString("itemPictureClassification");
+                        TestJson.pictureMap.put(json.getString("itemPictureClassification"), json.getString("pictureUrl"));
+                        Log.i("picture classification " + i, TestJson.classificationPictureArray[i] + "\"" + json.getString("pictureUrl"));
+                    }
+
+                    for (int i = 0; i < locationArray.length(); i++) {
+                        JSONObject json = locationArray.getJSONObject(i);
+                        TestJson.locationArray[i] = json.getString("itemLocation");
+                        Log.i("location " + i, TestJson.locationArray[i] + "\"");
+                    }
+
+                    for (int i = 0; i < classificationArray.length(); i++) {
+                        JSONObject json = classificationArray.getJSONObject(i);
+                        TestJson.classificationArray[i] = json.getString("itemClassification");
+                        Log.i("classification " + i, TestJson.classificationArray[i] + "\"");
+                    }
+
+                    checkUserType(kuleuvenID, userName, email, userType, cardID, blacklist);
                 }
-
-                for (int i = 0; i < pictureArray.length(); i++) {
-                    JSONObject json = pictureArray.getJSONObject(i);
-                    TestJson.classificationPictureArray[i] = json.getString("itemPictureClassification");
-                    Log.i("picture classification "+i,  TestJson.classificationPictureArray[i] + "\"");
-                }
-
-                for (int i = 0; i<locationArray.length(); i++) {
-                    JSONObject json = locationArray.getJSONObject(i);
-                    TestJson.locationArray[i] = json.getString("itemLocation");
-                    Log.i("location "+i,  TestJson.locationArray[i] + "\"");
-                }
-
-                for (int i = 0; i<classificationArray.length(); i++) {
-                    JSONObject json = classificationArray.getJSONObject(i);
-                    TestJson.classificationArray[i] = json.getString("itemClassification");
-                    Log.i("classification "+i, TestJson.classificationArray[i] + "\"");
-                }
-
                 if(error == 4){
+
                     fragment = mFragments[7];
                     Bundle bundle = new Bundle();
                     bundle.putString("cardID",cardID);
@@ -330,29 +374,24 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                     if(fragment!=null) {
                         getSupportFragmentManager().beginTransaction().replace(R.id.home_container_main,fragment).commit();
                     }
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            //Toast.makeText(getApplicationContext(), "This person does not exist", Toast.LENGTH_SHORT).show();
-//                            fragment = mFragments[7];
-//                            Bundle bundle = new Bundle();
-//                            bundle.putString("cardID",cardID);
-//                            bundle.putString("userName",userName);
-//                            bundle.putString("email",email);
-//                            fragment.setArguments(bundle);
-//
-//                            if(fragment!=null) {
-//                                getSupportFragmentManager().beginTransaction().replace(R.id.home_container_main,fragment).commit();
-//                            }
-//                        }
-//                    });
                 }
-                if(error == 0){
-                    userType = jsonUser.getString("userType");
-                    blacklist = jsonUser.getString("state");
+                if(error == 11){
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            wv.hide();
+                            cleanSession();
 
+                            wv = (CustomedWebview) findViewById(R.id.webview);
+                            wv.getSettings().setJavaScriptEnabled(true);
+                            wv.getSettings().setDomStorageEnabled(true);
 
-                    checkUserType(kuleuvenID, userName, email, userType,cardID, blacklist);
+                            wv.addJavascriptInterface(new MainActivity.getFormData(),"local");
+                            wv.show();
+                            wv.loadUrl(CustomedWebview.baseURL);
+                            Toast.makeText(getApplication(), "Please log in the correct username and password", Toast.LENGTH_SHORT);
+                        }
+                    });
+
                 }
             } catch (Throwable t) {
                 Log.e("My info", "Could not parse malformed JSON: \"" + htmlSource + "\"");
@@ -365,9 +404,9 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
             Log.i("Get classifications", htmlSource);
             try {
                 JSONObject jsonObject = new JSONObject(htmlSource);
-                JSONArray jsonArray = jsonObject.getJSONArray("list");
-                JSONArray jsonArray2 = jsonObject.getJSONArray("list2");
-                JSONArray jsonArray3 = jsonObject.getJSONArray("list3");
+                JSONArray jsonArray = jsonObject.getJSONArray("permissionTypeList");
+                JSONArray jsonArray2 = jsonObject.getJSONArray("classificationList");
+                JSONArray jsonArray3 = jsonObject.getJSONArray("locationList");
 
                 TestJson.permissionArray = new String[jsonArray.length()];
                 TestJson.classificationArray = new String[jsonArray2.length()];

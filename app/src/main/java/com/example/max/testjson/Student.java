@@ -1,8 +1,11 @@
 package com.example.max.testjson;
 
+import android.os.Bundle;
+import android.os.Message;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import com.example.max.testjson.dashboard.Item_Expired_News;
 import com.example.max.testjson.dashboard.Item_Expiring_News;
@@ -200,8 +203,6 @@ public class Student extends Person {
     //internet request
     public void borrowItem( String itemTag, String currentLocation) throws IOException {
 
-        BorrowedItem borrowedItem = new BorrowedItem(itemTag, currentLocation);
-        borrowedItems.add(borrowedItem);
 
         byte[] array = borrowItem_createJson(itemTag, currentLocation);
         wv.postUrl(CustomedWebview.borrowItemURL, array);
@@ -227,6 +228,7 @@ public class Student extends Person {
             blacklist = "normal";
         else
             blacklist = "blacklist";
+        Log.i("here", "return item");
         byte[] array = returnItem_createJson(itemTag, currentLocation);
         wv.postUrl(CustomedWebview.returnItemURL, array);
     }
@@ -519,7 +521,35 @@ public class Student extends Person {
         try {
             JSONObject json = new JSONObject(htmlSource);
             error = json.getInt("error_message");
-            Log.i("error", Integer.toString(error));
+
+            if(error == 0)
+            {
+                String itemTag = json.getString("itemTag");
+                String itemLocation = json.getString("itemLocation");
+                String itemClassification = json.getString("itemClassification");
+
+                AddItemFragment.ScanResult.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        AddItemFragment.ScanResult.setText("Successfully borrowed");
+                    }
+                });
+                BorrowedItem borrowedItem = new BorrowedItem(itemTag, itemLocation);
+                borrowedItem.setClassification(itemClassification);
+                borrowedItems.add(borrowedItem);
+
+                Log.i("new borrowing item", itemTag + " " + itemLocation);
+
+            }
+            else
+            {
+                AddItemFragment.ScanResult.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        AddItemFragment.ScanResult.setText("You cannot borrow this item");
+                    }
+                });
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -532,6 +562,26 @@ public class Student extends Person {
             JSONObject json = new JSONObject(htmlSource);
             error = json.getInt("error_message");
             Log.i("error", Integer.toString(error));
+
+            if(error == 0)
+            {
+                AddItemFragment.ScanResult.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        AddItemFragment.ScanResult.setText("Successfully returned");
+                    }
+                });
+            }
+            else
+            {
+                AddItemFragment.ScanResult.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        AddItemFragment.ScanResult.setText("You cannot return this item");
+                    }
+                });
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

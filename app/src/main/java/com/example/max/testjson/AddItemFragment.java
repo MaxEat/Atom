@@ -3,6 +3,7 @@ package com.example.max.testjson;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -11,7 +12,12 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +26,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.support.v4.app.Fragment;
+import android.widget.Toast;
+
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.squareup.leakcanary.RefWatcher;
@@ -32,15 +40,22 @@ import static com.example.max.testjson.TestJson.wv;
 
 public class AddItemFragment extends Fragment implements LocationListener{
 
+    private final int REQUEST_PERMISSION_COARSE_LOCATION = 1;
+    private final int REQUEST_PERMISSION_FINE_LOCATION = 2;
+    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private LocationManager locationManager;
     private Button QR;
     private Button BarCode;
     private Button TextRecognize;
     private Button Return_UnMaintain;
     private Button Borrow_Maintain;
-    private TextView ScanResult;
+    public static TextView ScanResult;
     private ImageView ItemImage;
-
+    String provider;
+    String cityName;
+    String fullAddress;
+    private String latitude;
+    private String longitude;
     private String itemTag;
     private String codeFormat,codeContent;
     private final String noResultErrorMsg = "No scan data received!";
@@ -59,6 +74,30 @@ public class AddItemFragment extends Fragment implements LocationListener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        checkLocationPermission();
+
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        longitude = "Longitude: " + locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLongitude();
+
+        latitude = "Latitude: " + locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLatitude();
+        Log.i("coordinate", longitude + ", " + latitude);
+
+        Geocoder gcd = new Geocoder(getContext(), Locale.ENGLISH);
+        List<Address> addresses;
+        cityName = null;
+        fullAddress = null;
+
+        try {
+            addresses = gcd.getFromLocation(locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLatitude(),
+                    locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLongitude(), 1);
+            if (addresses.size() > 0) {
+                System.out.println(addresses.get(0).getLocality());
+                cityName = addresses.get(0).getLocality();
+                fullAddress = addresses.get(0).getAddressLine(0);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -82,6 +121,7 @@ public class AddItemFragment extends Fragment implements LocationListener{
             Return_UnMaintain.setText("UnMaintain");
             Borrow_Maintain.setText("Maintain");
         }
+
 
         QR.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,43 +173,88 @@ public class AddItemFragment extends Fragment implements LocationListener{
         return view;
     }
 
+
+
+    public boolean checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(getContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+                new AlertDialog.Builder(getActivity())
+                        .setTitle(R.string.title_location_permission)
+                        .setMessage(R.string.text_location_permission)
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //Prompt the user once explanation has been shown
+                                ActivityCompat.requestPermissions(getActivity(),
+                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                        MY_PERMISSIONS_REQUEST_LOCATION);
+                            }
+                        })
+                        .create()
+                        .show();
+
+
+            } else {
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_LOCATION);
+            }
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // location-related task you need to do.
+                    if (ContextCompat.checkSelfPermission(getActivity(),
+                            Manifest.permission.ACCESS_FINE_LOCATION)
+                            == PackageManager.PERMISSION_GRANTED) {
+
+                        //Request location updates:
+
+
+                        locationManager.requestLocationUpdates(provider, 400, 1, this);
+
+                    }
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+
+                }
+                return;
+            }
+
+        }
+    }
+
+
+
     private void returnItem() throws IOException {
         Log.i("state", "returning");
-        locationManager = (LocationManager) (getContext().getSystemService(Context.LOCATION_SERVICE));
 
-            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                    ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                Log.i("error", "permission not granted");
-                return;
-                /*------- To get city name from coordinates -------- */
-
-            }
-        String longitude = "Longitude: " + locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude();
-        Log.i("longitude", longitude);
-        String latitude = "Latitude: " + locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude();
-        Log.i("latitude", latitude);
-
-        String cityName = null;
-        String fullAddress = null;
-        Geocoder gcd = new Geocoder(getContext(), Locale.getDefault());
-        List<Address> addresses;
-        try {
-            addresses = gcd.getFromLocation(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude(),
-                    locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude(), 1);
-            if (addresses.size() > 0) {
-                System.out.println(addresses.get(0).getLocality());
-                cityName = addresses.get(0).getLocality();
-                fullAddress = addresses.get(0).getAddressLine(0);
-            }
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
         String s = longitude + "\n" + latitude + "\n\nMy Current City is: "
                         + cityName + fullAddress;
         Log.i("full address", s);
         ((Student)TestJson.getUser()).returnItem(itemTag, fullAddress);
-        ((Student)TestJson.getUser()).checkBlacklistItem();
+       // ((Student)TestJson.getUser()).checkBlacklistItem();
     }
 
     private void borrowItem() throws IOException {
@@ -177,37 +262,9 @@ public class AddItemFragment extends Fragment implements LocationListener{
         Log.i("state", "borrowing");
         if(((Student)TestJson.getUser()).getBlacklist().equals("normal"))
         {
-            locationManager = (LocationManager) (getContext().getSystemService(Context.LOCATION_SERVICE));
 
-            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                Log.i("error", "permission not granted");
-                return;
-            }
-
-            String longitude = "Longitude: " + locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude();
-            Log.v("longitude", longitude);
-            String latitude = "Latitude: " + locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude();
-            Log.v("latitude", latitude);
-
-            /*------- To get city name from coordinates -------- */
-            String cityName = null;
-            String fullAddress = null;
-            Geocoder gcd = new Geocoder(getActivity().getBaseContext(), Locale.getDefault());
-            List<Address> addresses;
-            try {
-                addresses = gcd.getFromLocation(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude(),
-                            locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude(), 1);
-                if (addresses.size() > 0) {
-                    System.out.println(addresses.get(0).getLocality());
-                    cityName = addresses.get(0).getLocality();
-                    fullAddress = addresses.get(0).getAddressLine(0);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
             String s = longitude + "\n" + latitude + "\n\nMy Current City is: "
-                        + cityName;
-            Log.i("city", s);
+                    + cityName + fullAddress;
 
             ((Student)TestJson.getUser()).borrowItem(itemTag, fullAddress);
         }
@@ -220,11 +277,13 @@ public class AddItemFragment extends Fragment implements LocationListener{
         }
     }
 
+
+
     public void scanQR(View view) {
 
         IntentIntegrator integrator = new IntentIntegrator(this.getActivity()).forSupportFragment(this);
         integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
-        integrator.setPrompt("Scan!!");
+        integrator.setPrompt(this.getString(R.string.scan_qr_code));
         integrator.setCameraId(0);
         integrator.setBeepEnabled(false);
         integrator.setBarcodeImageEnabled(false);
@@ -308,4 +367,46 @@ public class AddItemFragment extends Fragment implements LocationListener{
         RefWatcher refWatcher = TestJson.getRefWatcher(getActivity());
         refWatcher.watch(this);
     }
+
+//    static class MyHandler extends Handler{
+//        public MyHandler(){
+//
+//        }
+//
+//        public MyHandler(Looper looper){
+//            super(looper);
+//        }
+//        @Override
+//        public void handleMessage(Message msg) {
+//            // TODO Auto-generated method stub
+//            super.handleMessage(msg);
+//            switch (msg.what){
+//                case 1:
+//                    Bundle b = msg.getData();
+//                    String name = b.getString("name");
+//                    ScanResult.setText(name);
+//
+//                    break;
+//                case 2:
+//
+//                    System.out.println("handleMessage thread id " + Thread.currentThread().getId());
+//                    System.out.println("msg.arg1:" + msg.arg1);
+//                    System.out.println("msg.arg2:" + msg.arg2);
+//                    break;
+//                case 3:
+//
+//
+//                    break;
+//                case 4:
+//
+//
+//                    break;
+//            }
+//        }
+//    }
+
+
+
+
+
 }
