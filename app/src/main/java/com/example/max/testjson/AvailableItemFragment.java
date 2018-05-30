@@ -26,7 +26,7 @@ public class AvailableItemFragment extends Fragment implements SearchView.OnQuer
     private OnListFragmentInteractionListener mListener;
     private SearchView searchView;
     private AvailableItemRecyclerViewAdapter adapter;
-    private Toolbar toolbar; 
+    private Toolbar toolbar;
 
 
     public AvailableItemFragment() {
