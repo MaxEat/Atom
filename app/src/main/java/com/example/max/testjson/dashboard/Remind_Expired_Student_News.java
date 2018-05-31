@@ -14,7 +14,6 @@ public class Remind_Expired_Student_News extends News {
 
     public Remind_Expired_Student_News(ExpiredItem expiredItem) {
         item = expiredItem;
-        Log.i("info","Student not returning");
         newsTitle = "Expiried item";
         newsContent = "The item" + item.getClassification()+" borrowed by" + ((ExpiredItem)item).getBorrowPersonName() + "is expired";
     }

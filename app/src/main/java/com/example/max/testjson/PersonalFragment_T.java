@@ -101,7 +101,7 @@ public class PersonalFragment_T extends Fragment {
 
             case R.id.tab_menu_available:
                 wv.addJavascriptInterface(TestJson.getUser(), "Person");
-                TestJson.getUser().getAllAvailableItems();
+                TestJson.getUser().getItemsOfSameKind();
                 fragment = mFragments[3];
                 break;
 

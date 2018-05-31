@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_weight="8"
     android:paddingBottom="10dp"
     android:paddingLeft="10dp"
     android:paddingTop="10dp"
@@ -13,19 +14,20 @@
         android:layout_weight="3"
         android:layout_width="100dp"
         android:layout_height="75dp"
-        android:paddingTop="10dp" />
+        android:layout_gravity="center"/>
 
     <LinearLayout
-        android:layout_weight="2"
+        android:layout_weight="5"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/newsTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
+            android:textColor="@color/colorGreyDark"
+            android:padding="5dp"
             android:textSize="20dp" />
 
         <TextView
@@ -33,7 +35,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ItemTitle"
-            android:textColor="@color/black"
+            android:textColor="@color/colorGrey"
+
             android:textSize="15sp" />
     </LinearLayout>
 

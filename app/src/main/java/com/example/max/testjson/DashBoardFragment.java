@@ -1,14 +1,20 @@
 package com.example.max.testjson;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.max.testjson.dashboard.News;
 
@@ -18,6 +24,7 @@ import java.util.HashMap;
 
 public class DashBoardFragment extends Fragment {
 
+    private final  String returnMessage = "The item you borrowed is expired. Please return it as soon as possible.";
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
@@ -53,10 +60,8 @@ public class DashBoardFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_news_list, container, false);
 
-        // Set the adapter
-        if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.dashlist);
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
@@ -67,8 +72,71 @@ public class DashBoardFragment extends Fragment {
             adapter = new DashBoardRecyclerViewAdapter(personalNews, mListener);
             adapter.setContext(getContext());
             recyclerView.setAdapter(adapter);
-        }
+            TextView emptyDash = (TextView) view.findViewById(R.id.empty);
+            ImageButton imageButton = (ImageButton) view.findViewById(R.id.sendAlertEmail);
+            Log.i("frag dash size ", Integer.toString(personalNews.size()));
+
+
+            if(personalNews.isEmpty()){
+                emptyDash.setVisibility(View.VISIBLE);
+                imageButton.setVisibility(View.GONE);
+            }
+            else
+            {
+                emptyDash.setVisibility(View.GONE);
+                if(TestJson.getUser().getUserType().equals("Student"))
+                {
+                    imageButton.setVisibility(View.GONE);
+                }
+                else
+                {
+                    imageButton.setVisibility(View.VISIBLE);
+                    Log.i("type", TestJson.getUser().getUserType());
+                    imageButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Log.i("here", "clicked");
+                            sendAlertEmail();
+
+                        }
+                    });
+                }
+            }
+
+
+
+
+
+
         return view;
+    }
+
+    private void sendAlertEmail() {
+        Log.i("Send email", "");
+        String TO[] = new String[((Worker)TestJson.getUser()).getExpiredItems().size()];
+        int i = 0;
+        for(ExpiredItem item:((Worker)TestJson.getUser()).getExpiredItems()){
+            TO[i] = item.getBorrowPersonEmail();
+            i++;
+        }
+        String[] CC = {""};
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+
+        emailIntent.setData(Uri.parse("mailto:"));
+        emailIntent.setType("text/plain");
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
+        emailIntent.putExtra(Intent.EXTRA_CC, CC);
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Returning item reminder");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, returnMessage);
+
+        try {
+            startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+            // getActivity().finish();
+            Log.i("Finished sending email", "");
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(getActivity(), "There is no email client installed.", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
 

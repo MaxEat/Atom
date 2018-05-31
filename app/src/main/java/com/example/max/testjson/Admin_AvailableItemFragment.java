@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,6 @@ public class Admin_AvailableItemFragment extends Fragment implements SearchView.
     private int mColumnCount = 1;
     private Admin_AvailableItemFragment.OnListFragmentInteractionListener mListener;
     private SearchView searchView;
-    private Spinner chooseLocation;
     private Admin_AvailableItemAdapter adapter;
     private Toolbar toolbar;
 
@@ -72,7 +72,10 @@ public class Admin_AvailableItemFragment extends Fragment implements SearchView.
         toolbar= (Toolbar)view.findViewById(R.id.admin_toolbar);
         searchView= (SearchView)view.findViewById(R.id.admin_search_view);
         searchView.setOnQueryTextListener(this);
-
+        Log.i("itemlsit size in frag", Integer.toString(TestJson.getUser().availableItems.size()));
+        for(AvailableItem item:TestJson.getUser().availableItems){
+            Log.i("item", item.getClassification() + "at" + item.getItemLocation());
+        }
         adapter = new Admin_AvailableItemAdapter(TestJson.getUser().availableItems, mListener);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(

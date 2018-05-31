@@ -45,8 +45,6 @@ import static com.example.max.testjson.TestJson.wv;
 
 public class AddItemFragment extends Fragment implements LocationListener{
 
-    private final int REQUEST_PERMISSION_COARSE_LOCATION = 1;
-    private final int REQUEST_PERMISSION_FINE_LOCATION = 2;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private LocationManager locationManager;
     private Button QR;
@@ -380,7 +378,7 @@ public class AddItemFragment extends Fragment implements LocationListener{
     }
 
     public void updateItemState() throws IOException {
-        Log.i("updateState", "maintain or unmaintain");
+        Log.i("updateState", "maintain or unmaintain: "+itemTag);
         TestJson.getUser().updateItemState(itemTag);
     }
 

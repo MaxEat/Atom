@@ -1,7 +1,10 @@
 package com.example.max.testjson;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.widget.ArrayAdapter;
@@ -135,6 +138,7 @@ public class Student extends Person {
     @Override
     public void formPage()
     {
+        Log.i("formpage", "worker");
 
         for(Item item:itemList){
             if(availableItemMap.containsKey(item.getClassification()+item.getItemLocation())){
@@ -264,6 +268,11 @@ public class Student extends Person {
         return createJson(postdata);
     }
 
+    public void getPersonalItems() throws IOException {
+        byte[] array = getPersonalItems_createJson();
+        wv.postUrl(CustomedWebview.getPersonalItemsURL,array);
+    }
+
     public void getWishListFromDatabase() throws IOException {
         byte[] array = getWishListFromDatabase_createJson();
         wv.postUrl(CustomedWebview.getAllWishListItemsURL, array);
@@ -290,6 +299,20 @@ public class Student extends Person {
         wv.postUrl(CustomedWebview.changeBlackListStateURL, array);
     }
 
+
+    private byte[] getPersonalItems_createJson() throws IOException {
+        JSONObject postdata = new JSONObject();
+        try {
+            postdata.put("cardID", getCardID());
+            postdata.put("kuleuvenID", getKuleuvenID());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        StringEntity se = new StringEntity(postdata.toString(),"UTF-8");
+        se.setContentType("application/json");
+        byte[] array = EntityUtils.toByteArray(se);
+        return array;
+    }
 
     private byte[] changeBlacklist_createJson() throws IOException {
         JSONObject postdata = new JSONObject();
@@ -370,15 +393,12 @@ public class Student extends Person {
     }
 
     @JavascriptInterface
-    public void getAllItem_Interface(String htmlSource) {
-        Log.i("get all items", htmlSource);
+    public void getPersonalItems_interface(String htmlSource) {
+        Log.i("get personal items", htmlSource);
         try {
             borrowedItems = new ArrayList<BorrowedItem>();
             borrowedItemMAP = new HashMap<String, BorrowedItem>();
             wishItems = new ArrayList<AvailableItem>();
-            availableItems = new ArrayList<AvailableItem>();
-            availableItemMap = new HashMap<String, AvailableItem>();
-            itemList = new ArrayList<Item>();
 
             JSONObject jsonObject = new JSONObject(htmlSource);
             JSONArray jsonArray = jsonObject.getJSONArray("list");
@@ -404,29 +424,12 @@ public class Student extends Person {
                 wishItems.add(item);
                 Log.i("wish:"+Integer.toString(i),item.toString());
             }
-
-            JSONArray jsonArray3 = jsonObject.getJSONArray("all_list");
-            for (int i = 0; i < jsonArray3.length(); i++) {
-                JSONObject json = jsonArray3.getJSONObject(i);
-                Item  item = new Item(json.getString("itemTag"), json.getString("itemLocation"));
-                item.setClassification(json.getString("itemClassification"));
-                item.setStatus(json.getString("itemStatus"));
-                itemList.add(item);
-            }
-
             formPage();
-//            JSONArray jsonArray3 = jsonObject.getJSONArray("all_list");
-//            for (int i = 0; i < jsonArray3.length(); i++) {
-//                JSONObject json = jsonArray3.getJSONObject(i);
-////                AvailableItem item = new AvailableItem(json.getString("itemTag"), json.getString("itemLocation"));
-////                item.setClassification(json.getString("itemClassification"));
-////                item.setStatus(json.getString("itemStatus"));
-////                item.setId(i);
-//                addToAvailableList(json.getString("itemLocation"), json.getString("itemClassification"));
-//                //   availableItems.add(item);
-//                //  availableItemMap.put(Integer.toString(item.getId()), item);
-//                //   Log.i("available"+Integer.toString(i),item.toString());
-//            }
+
+            Message message = new Message();
+            message.what = 1;
+            MainActivity.uihander.sendMessage(message);
+
 
 
         } catch (Throwable t) {

@@ -46,7 +46,12 @@ public class AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter<Avail
         holder.mItem = mValues.get(position);
         String content = holder.mItem.getClassification() + " at "+holder.mItem.getItemLocation();
         holder.mContent.setText(content);
-        holder.mQuantity.setText(Integer.toString(holder.mItem.getQuantity())+" items left");
+
+
+        if(holder.mItem.getStatus().equals("available"))
+            holder.mQuantity.setText(Integer.toString(holder.mItem.getQuantity())+" items left");
+        else
+            holder.mQuantity.setText("Not available");
 
         if(holder.mItem.getInWishList()){
             holder.mCheckBox.setChecked(true);

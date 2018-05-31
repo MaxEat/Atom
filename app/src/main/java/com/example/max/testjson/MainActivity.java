@@ -34,6 +34,10 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.example.max.testjson.CustomedWebview.baseURL;
 import static com.example.max.testjson.CustomedWebview.duplicatePersonURL;
@@ -51,8 +55,9 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
     private String userType = "";
     private String blacklist;
     private String role;
-
-
+    public List<AvailableItem> availableItems = new ArrayList<AvailableItem>();
+    public Map<String, AvailableItem> availableItemMap = new HashMap<String, AvailableItem>();
+    public static Handler uihander;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +69,36 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
         getPermission();
 
         mFragments = DataGenerator.getFragments("BottomNavigationView Tab");
+
+
+
+        uihander = new Handler() {
+            @Override
+            public void handleMessage(Message inputMessage) {
+                Fragment fragment;
+                // Gets the image task from the incoming Message object.
+                switch (inputMessage.what) {
+                    case 1:
+                        Log.i("ui hander 1", "go to student's dashboard");
+                        fragment = mFragments[5];
+                        if (fragment != null) {
+                            getSupportFragmentManager().beginTransaction().replace(R.id.home_container_main, fragment).commit();
+                            break;
+                        }
+                        break;
+                    case 2:
+                        Log.i("ui hander 2", "go to administrator's dashboard");
+                        fragment = mFragments[6];
+                        if (fragment != null) {
+                            getSupportFragmentManager().beginTransaction().replace(R.id.home_container_main, fragment).commit();
+                            break;
+                        }
+                        break;
+                }
+            }
+        };
+
+
         wv = (CustomedWebview) findViewById(R.id.webview);
         wv.getSettings().setJavaScriptEnabled(true);
         wv.getSettings().setDomStorageEnabled(true);
@@ -80,7 +115,6 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
 
 
     }
-
 
 
 
@@ -135,6 +169,7 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
     }
     public void showDialog(final String kuleuvenID, final String userName, final String email, final String userType, final String cardid) {
 
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setPositiveButton(R.string.administrator, new DialogInterface.OnClickListener() {
             @SuppressLint("JavascriptInterface")
@@ -143,36 +178,42 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                 Person user = new Worker(userName, kuleuvenID, email);
                 user.setCardID(cardid);
                 user.setUserType("Administrator");
+                user.setAvailableItems(availableItems);
+                user.setAvailableItemMap(availableItemMap);
                 TestJson.setUser(user);
 
-
-                fragment = mFragments[6];
-                if(fragment!=null) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.home_container_main,fragment).commit();
+                wv.addJavascriptInterface(TestJson.getUser(), "Person");
+                try {
+                    ((Worker)TestJson.getUser()).initializeWorker();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
+
+
             }
         });
         builder.setNegativeButton(R.string.user, new DialogInterface.OnClickListener() {
             @SuppressLint("JavascriptInterface")
             public void onClick(DialogInterface dialog, int id) {
 
-                Person user = new Student(userName, kuleuvenID, email);
+                Person user = new Student(userName, kuleuvenID, email, blacklist);
+                user.setAvailableItems(availableItems);
+                user.setAvailableItemMap(availableItemMap);
                 user.setCardID(cardid);
                 user.setUserType("Student");
                 TestJson.setUser(user);
 
                 wv.addJavascriptInterface(user, "Person");
-
                 try {
 
-                    ((Student)TestJson.getUser()).getAllItem();
+                    ((Student)TestJson.getUser()).getPersonalItems();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                fragment = mFragments[5];
-                if(fragment!=null) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.home_container_main,fragment).commit();
-                }
+//                fragment = mFragments[5];
+//                if(fragment!=null) {
+//                    getSupportFragmentManager().beginTransaction().replace(R.id.home_container_main,fragment).commit();
+//                }
 
             }
         });
@@ -319,6 +360,8 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                 JSONObject jsonUser = jsonObject.getJSONObject("user");
                 int error = jsonUser.getInt("error_message");
 
+
+
                 if(error == 0) {
                     userType = jsonUser.getString("userType");
                     blacklist = jsonUser.getString("state");
@@ -329,10 +372,14 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                     JSONArray locationArray = jsonObject.getJSONArray("locationList");
                     JSONArray classificationArray = jsonObject.getJSONArray("classificationList");
 
+                    JSONArray sorting = jsonObject.getJSONArray("sorting");
+
                     TestJson.permissionArray = new String[permissionTypeArray.length()];
                     TestJson.classificationArray = new String[classificationArray.length()];
                     TestJson.locationArray = new String[locationArray.length()];
                     TestJson.classificationPictureArray = new String[pictureArray.length()];
+                    availableItems = new ArrayList<AvailableItem>();
+                    availableItemMap = new HashMap<String, AvailableItem>();
 
                     for (int i = 0; i < permissionTypeArray.length(); i++) {
                         JSONObject json = permissionTypeArray.getJSONObject(i);
@@ -358,6 +405,38 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                         TestJson.classificationArray[i] = json.getString("itemClassification");
                         Log.i("classification " + i, TestJson.classificationArray[i] + "\"");
                     }
+
+                    for (int i = 0; i < sorting.length(); i++) {
+                        JSONObject json = sorting.getJSONObject(i);
+                        String itemClassification = json.getString("itemClassification");
+                        String itemLocation = json.getString("itemLocation");
+                        String itemStatus = json.getString("itemStatus");
+                        int quantity = json.getInt("quantity");
+
+                        if(availableItemMap.containsKey(itemClassification + itemLocation)) {
+
+                            if (itemStatus.equals("available")) {
+                                AvailableItem item = availableItemMap.get(itemClassification + itemLocation);
+                                item.setQuantity(quantity);
+                                item.setStatus("available");
+                            }
+
+                        }
+                        else
+                        {
+
+                            AvailableItem item = new AvailableItem();
+                            item.setQuantity(quantity);
+                            item.setItemLocation(itemLocation);
+                            item.setClassification(itemClassification);
+                            item.setStatus(itemStatus);
+
+                            availableItems.add(item);
+                            availableItemMap.put(item.getClassification() + item.getItemLocation(), item);
+                        }
+
+                    }
+
 
                     checkUserType(kuleuvenID, userName, email, userType, cardID, blacklist);
                 }
@@ -394,43 +473,6 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                     });
 
                 }
-            } catch (Throwable t) {
-                Log.e("My info", "Could not parse malformed JSON: \"" + htmlSource + "\"");
-            }
-        }
-
-        @JavascriptInterface
-        public void getPermissionClassification_interface(final String htmlSource) {
-
-            Log.i("Get classifications", htmlSource);
-            try {
-                JSONObject jsonObject = new JSONObject(htmlSource);
-                JSONArray jsonArray = jsonObject.getJSONArray("permissionTypeList");
-                JSONArray jsonArray2 = jsonObject.getJSONArray("classificationList");
-                JSONArray jsonArray3 = jsonObject.getJSONArray("locationList");
-
-                TestJson.permissionArray = new String[jsonArray.length()];
-                TestJson.classificationArray = new String[jsonArray2.length()];
-                TestJson.locationArray = new String[jsonArray3.length()];
-
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject json = jsonArray.getJSONObject(i);
-                    TestJson.permissionArray[i] = json.getString("permissionType");
-                    Log.i("permission value",  TestJson.permissionArray[i] + "\"");
-                }
-
-                for (int i = 0; i < jsonArray2.length(); i++) {
-                    JSONObject json = jsonArray2.getJSONObject(i);
-                    TestJson.classificationArray[i] = json.getString("itemPictureClassification");
-                    Log.i("classification "+i,  TestJson.classificationArray[i] + "\"");
-                }
-
-                for (int i = 0; i<jsonArray3.length(); i++) {
-                    JSONObject json = jsonArray3.getJSONObject(i);
-                    TestJson.locationArray[i] = json.getString("itemLocation");
-                    Log.i("location "+i,  TestJson.classificationArray[i] + "\"");
-                }
-
             } catch (Throwable t) {
                 Log.e("My info", "Could not parse malformed JSON: \"" + htmlSource + "\"");
             }

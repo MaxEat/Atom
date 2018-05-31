@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,6 +36,12 @@ public class AdminFragment_T extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        wv.addJavascriptInterface(TestJson.getUser(), "Person");
+        try {
+            TestJson.getUser().getAllAvailableItems();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -78,6 +85,7 @@ public class AdminFragment_T extends Fragment {
             case R.id.tab_adminMenu_dashboard:
                 wv.addJavascriptInterface(TestJson.getUser(), "Person");
                 TestJson.getUser().setDashboard();
+                Log.i("here dash size", Integer.toString(TestJson.getUser().getDashboard().size()));
                 fragment = mFragments[0];
                 break;
 
@@ -87,7 +95,7 @@ public class AdminFragment_T extends Fragment {
 
             case R.id.tab_adminMenu_overview:
                 wv.addJavascriptInterface(TestJson.getUser(), "Person");
-                TestJson.getUser().getAllAvailableItems();
+                TestJson.getUser().getItemsOfSameKind();
                 fragment = mFragments[2];
                 break;
 

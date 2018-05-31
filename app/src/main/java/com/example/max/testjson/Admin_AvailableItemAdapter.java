@@ -50,10 +50,15 @@ public class Admin_AvailableItemAdapter extends RecyclerView.Adapter<Admin_Avail
         String content = holder.mItem.getClassification() + " at "+holder.mItem.getItemLocation();
         holder.mContent.setText(content);
 
+        if(holder.mItem.getStatus().equals("available"))
+            holder.mQuantity.setText(Integer.toString(holder.mItem.getQuantity())+" items left");
+        else
+            holder.mQuantity.setText("Not available");
+
         if(((Worker)TestJson.getUser()).inMaintainList(holder.mItem))
             holder.mImage.setVisibility(View.VISIBLE);
         else
-            holder.mImage.setVisibility(View.GONE);
+            holder.mImage.setVisibility(View.INVISIBLE);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +83,7 @@ public class Admin_AvailableItemAdapter extends RecyclerView.Adapter<Admin_Avail
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mContent;
+        public final TextView mQuantity;
         public AvailableItem mItem;
         public ImageView mImage;
 
@@ -85,6 +91,7 @@ public class Admin_AvailableItemAdapter extends RecyclerView.Adapter<Admin_Avail
             super(view);
             mView = view;
             mContent = (TextView) view.findViewById(R.id.admin_content);
+            mQuantity = (TextView)view.findViewById(R.id.admin_item_quantity);
             mImage = (ImageView) view.findViewById(R.id.maintaining);
         }
 

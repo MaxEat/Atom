@@ -33,6 +33,7 @@ public abstract class Person {
     protected String userName;
     protected String alertEmail;
     protected ArrayList<News> dashboard;
+    protected Map<String, News> dashboardMap;
     public List<AvailableItem> availableItems = new ArrayList<AvailableItem>();
     public Map<String, AvailableItem> availableItemMap = new HashMap<String, AvailableItem>();
     //  key: getClassification()+newItem.getItemLocation()
@@ -50,6 +51,7 @@ public abstract class Person {
         email = Email;
         alertEmail = Email;
         dashboard = new ArrayList<News>();
+        dashboardMap = new HashMap<>();
     }
 
 
@@ -101,6 +103,14 @@ public abstract class Person {
         return userName;
     }
 
+    public void setAvailableItems(List<AvailableItem> items) {
+        availableItems = items;
+    }
+
+    public void setAvailableItemMap(Map<String, AvailableItem> map) {
+        availableItemMap = map;
+    }
+
     public ArrayList<News> getDashboard(){
         return dashboard;
     }
@@ -146,6 +156,13 @@ public abstract class Person {
         wv.postUrl(CustomedWebview.getAllAvailableItemsURL, array);
     }
 
+    public void getItemsOfSameKind() throws IOException {
+        byte[] array = getItemsOfSameKind_createJson();
+        wv.postUrl(CustomedWebview.getItemsOfSameKindURL, array);
+    }
+
+
+
     public void administratorAddItem( String itemTag, String currentLocation, String timestamp, String itemClassification,
                                       String itemPermission) throws IOException {
         byte[] array = administratorAddItem_createJson(itemTag, currentLocation, timestamp, itemClassification,
@@ -176,6 +193,11 @@ public abstract class Person {
         } catch(JSONException e){
             e.printStackTrace();
         }
+        return createJson(postdata);
+    }
+
+    protected byte[] getItemsOfSameKind_createJson() throws IOException {
+        JSONObject postdata = new JSONObject();
         return createJson(postdata);
     }
 
@@ -225,6 +247,51 @@ public abstract class Person {
         }
     }
 
+    @JavascriptInterface
+    public void getItemsSameKind_interface(String htmlSource){
+        Log.i("get same kind info", htmlSource);
+        try {
+
+            JSONObject jsonObject = new JSONObject(htmlSource);
+            JSONArray sorting = jsonObject.getJSONArray("list");
+            availableItems = new ArrayList<AvailableItem>();
+            availableItemMap = new HashMap<String, AvailableItem>();
+
+            for (int i = 0; i < sorting.length(); i++) {
+                JSONObject json = sorting.getJSONObject(i);
+                String itemClassification = json.getString("itemClassification");
+                String itemLocation = json.getString("itemLocation");
+                String itemStatus = json.getString("itemStatus");
+                int quantity = json.getInt("quantity");
+
+                if(availableItemMap.containsKey(itemClassification + itemLocation)) {
+
+                    if (itemStatus.equals("available")) {
+                        AvailableItem item = availableItemMap.get(itemClassification + itemLocation);
+                        item.setQuantity(quantity);
+                        item.setStatus("available");
+                    }
+
+                }
+                else
+                {
+
+                    AvailableItem item = new AvailableItem();
+                    item.setQuantity(quantity);
+                    item.setItemLocation(itemLocation);
+                    item.setClassification(itemClassification);
+                    item.setStatus(itemStatus);
+
+                    availableItems.add(item);
+                    availableItemMap.put(item.getClassification() + item.getItemLocation(), item);
+                }
+
+            }
+
+        } catch (Throwable t) {
+            Log.e("My info", "Could not parse malformed JSON: \"" + htmlSource + "\"");
+        }
+    }
 
 
     @JavascriptInterface
@@ -285,6 +352,7 @@ public abstract class Person {
                 ", userType=" + userType +
                 '}';
     }
+
 
 
 }
