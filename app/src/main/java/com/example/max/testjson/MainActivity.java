@@ -82,7 +82,8 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                         Log.i("ui hander 1", "go to student's dashboard");
                         fragment = mFragments[5];
                         if (fragment != null) {
-                            getSupportFragmentManager().beginTransaction().replace(R.id.home_container_main, fragment).commit();
+                            getSupportFragmentManager().beginTransaction().replace(
+                                    R.id.home_container_main, fragment).commit();
                             break;
                         }
                         break;
@@ -90,7 +91,8 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                         Log.i("ui hander 2", "go to administrator's dashboard");
                         fragment = mFragments[6];
                         if (fragment != null) {
-                            getSupportFragmentManager().beginTransaction().replace(R.id.home_container_main, fragment).commit();
+                            getSupportFragmentManager().beginTransaction().replace(
+                                    R.id.home_container_main, fragment).commit();
                             break;
                         }
                         break;
@@ -210,10 +212,6 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-//                fragment = mFragments[5];
-//                if(fragment!=null) {
-//                    getSupportFragmentManager().beginTransaction().replace(R.id.home_container_main,fragment).commit();
-//                }
 
             }
         });
