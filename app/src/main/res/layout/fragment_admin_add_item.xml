@@ -65,6 +65,8 @@
                     android:layout_marginStart="20dp"
                     android:textSize="18sp" />
 
+
+
                 <EditText
                     android:id="@+id/scannedCode_admin"
                     android:layout_width="180dp"
@@ -75,17 +77,14 @@
                     android:textColorLink="@color/colorPrimaryDark"
                     android:theme="@style/MyEditText" />
 
-                <Button
+                    <ImageButton
                     android:id="@+id/confirm_admin"
-                    style="?android:buttonBarButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginStart="20dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/rectangular"
-                    android:text="Confirm"
-                    android:textColor="@color/colorAccent" />
+                    android:background="@drawable/ic_yes_button"
+                     />
 
 
             </LinearLayout>
@@ -193,6 +192,12 @@
                     android:layout_centerHorizontal="true" />
 
             </LinearLayout>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"/>
 
 
 

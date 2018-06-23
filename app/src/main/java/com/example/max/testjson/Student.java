@@ -544,6 +544,17 @@ public class Student extends Person {
                 Log.i("new borrowing item", itemTag + " " + itemLocation);
 
             }
+
+            else if(error == 20)
+            {
+                AddItemFragment.ScanResult.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        AddItemFragment.ScanResult.setText("Your item tag may be wrong \n  Please scan again");
+                    }
+                });
+            }
+
             else
             {
                 AddItemFragment.ScanResult.post(new Runnable() {

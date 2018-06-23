@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.support.v4.app.Fragment;
@@ -60,7 +61,7 @@ public class AddItemFragment extends Fragment implements LocationListener{
     private String latitude;
     private String longitude;
     private EditText ScannedCode;
-    private Button ConfirmScan;
+    private ImageButton ConfirmScan;
     private String itemTag;
     private String codeFormat;
     private String codeContent;
@@ -92,10 +93,12 @@ public class AddItemFragment extends Fragment implements LocationListener{
         List<Address> addresses;
         cityName = null;
         fullAddress = null;
-
         try {
-            addresses = gcd.getFromLocation(locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLatitude(),
-                    locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLongitude(), 1);
+            addresses = gcd.getFromLocation(locationManager.getLastKnownLocation
+                            (LocationManager.NETWORK_PROVIDER).getLatitude(),
+                    locationManager.getLastKnownLocation
+                            (LocationManager.NETWORK_PROVIDER).getLongitude(),
+                    1);
             if (addresses.size() > 0) {
                 System.out.println(addresses.get(0).getLocality());
                 cityName = addresses.get(0).getLocality();
@@ -118,7 +121,7 @@ public class AddItemFragment extends Fragment implements LocationListener{
         ScanResult = (TextView) view.findViewById(R.id.scan_result);
         ItemImage = (ImageView)view.findViewById(R.id.itemImage);
         ScannedCode = (EditText)view.findViewById(R.id.scannedCode) ;
-        ConfirmScan = (Button)view.findViewById(R.id.confirm);
+        ConfirmScan = (ImageButton)view.findViewById(R.id.confirm);
 
         ItemImage.setVisibility(View.INVISIBLE);
         if(dataGenerator == 1){
@@ -323,6 +326,7 @@ public class AddItemFragment extends Fragment implements LocationListener{
 
         try {
             setItemTag(ScannedCode.getText().toString());
+            Log.i("itemtag is",itemTag);
 
         } catch (IOException e) {
             e.printStackTrace();

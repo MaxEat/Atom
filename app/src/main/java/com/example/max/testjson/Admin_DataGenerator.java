@@ -15,6 +15,7 @@ public class Admin_DataGenerator {
         fragments[2] = Admin_AvailableItemFragment.newInstance(1);
         fragments[3] = AddItemFragment.newInstance(2);
         fragments[4] = SettingFragment.newInstance();
+        fragments[5] = Admin_AddItemFragment.newInstance();
 
         return fragments;
     }

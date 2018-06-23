@@ -2,9 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical|center"
+    android:orientation="vertical">
 
     <!--//tools:context="com.example.max.testjson.RegisterFragment_T">-->
 
@@ -19,6 +20,7 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:text="Are you an administrator?"
             android:textColor="@color/colorBlueDark" />
 
@@ -37,6 +39,8 @@
             android:textOn="No" />
 
 
+
+
     </LinearLayout>
 
     <Button
@@ -50,6 +54,8 @@
         android:onClick="register"
         android:text="Ok, I am done"
         android:textColor="@color/colorAccent" />
+
+
 </LinearLayout>
 
     <!--<?xml version="1.0" encoding="utf-8"?>-->

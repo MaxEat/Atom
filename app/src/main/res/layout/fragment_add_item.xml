@@ -41,7 +41,6 @@
             android:id="@+id/Text_scan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="?android:buttonBarButtonStyle"
             android:textColor="@color/colorAccent"
             android:background="@drawable/rectangular"
             android:layout_marginStart="20dp"
@@ -76,17 +75,14 @@
             android:textColorLink="@color/colorPrimaryDark"
             android:theme="@style/MyEditText" />
 
-        <Button
+        <ImageButton
             android:id="@+id/confirm"
-            style="?android:buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
-            android:layout_weight="1"
-            android:background="@drawable/rectangular"
-            android:text="Confirm"
-            android:textColor="@color/colorAccent" />
+            android:background="@drawable/ic_yes_button"
+            />
 
 
     </LinearLayout>
@@ -102,12 +98,14 @@
 
     <TextView
         android:id="@+id/scan_result"
-        android:layout_width="match_parent"
+        android:layout_width="350dp"
         android:layout_height="74dp"
         android:ems="10"
         android:textSize="20dp"
+        android:singleLine="false"
         android:textColor="@color/colorGrey"
         android:inputType="textPersonName"
+        android:layout_gravity="center_horizontal"
         android:textAlignment="center" />
 
     <LinearLayout
@@ -122,8 +120,8 @@
             android:layout_height="wrap_content"
             android:textColor="@color/colorAccent"
             android:background="@drawable/rectangular"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:layout_weight="1"
             android:text="Return" />
 
@@ -134,8 +132,8 @@
             android:layout_height="wrap_content"
             android:textColor="@color/colorAccent"
             android:background="@drawable/rectangular"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:layout_weight="1"
             android:text="BORROW" />
 

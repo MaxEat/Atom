@@ -1,44 +1,49 @@
-package com.example.max.testjson;
-
-import android.content.Context;
-import android.net.Uri;
-import android.os.Bundle;
-import android.app.Fragment;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.Toast;
-
-import net.gotev.uploadservice.MultipartUploadRequest;
-import net.gotev.uploadservice.UploadNotificationConfig;
-
-import java.util.UUID;
-
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * to handle interaction events.
- * Use the {@link Admin_AddClassificationFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+//package com.example.max.testjson;
+//
+//import android.content.Context;
+//import android.net.Uri;
+//import android.os.Bundle;
+//import android.app.Fragment;
+//import android.util.Log;
+//import android.view.LayoutInflater;
+//import android.view.View;
+//import android.view.ViewGroup;
+//import android.widget.EditText;
+//import android.widget.Toast;
+//
+//import net.gotev.uploadservice.MultipartUploadRequest;
+//import net.gotev.uploadservice.UploadNotificationConfig;
+//
+//import java.io.FileNotFoundException;
+//import java.net.MalformedURLException;
+//import java.util.UUID;
+//
+//
+///**
+// * A simple {@link Fragment} subclass.
+// * Activities that contain this fragment must implement the
+// * to handle interaction events.
+// * Use the {@link Admin_AddClassificationFragment#newInstance} factory method to
+// * create an instance of this fragment.
+// */
 //public class Admin_AddClassificationFragment extends Fragment implements View.OnClickListener{
 //
 //    private EditText add_editText;
 //
-//
-//
 //    public Admin_AddClassificationFragment() {
-//        // Required empty public constructor
+//
 //    }
 //
-//    public static Admin_AddClassificationFragment newInstance(String param1, String param2) {
+//    public static Admin_AddClassificationFragment newInstance() {
 //        Admin_AddClassificationFragment fragment = new Admin_AddClassificationFragment();
 //        Bundle args = new Bundle();
 //        fragment.setArguments(args);
 //        return fragment;
+//    }
+//
+//
+//    @Override
+//    public void onClick(View v) {
 //    }
 //
 //    @Override
@@ -56,11 +61,11 @@ import java.util.UUID;
 //
 //        return view;
 //    }
-
-    /*
-   * This is the method responsible for image upload
-   * We need the full image path and the name for the image in this method
-   * */
+//
+//    /*
+//   * This is the method responsible for image upload
+//   * We need the full image path and the name for the image in this method
+//   * */
 //    public void uploadMultipart() {
 //
 //        Log.i("UPLOAD", "UPLOAD MESSAGE");
@@ -89,7 +94,7 @@ import java.util.UUID;
 //            Toast.makeText(getActivity().getApplicationContext(), exc.getMessage(), Toast.LENGTH_SHORT).show();
 //        }
 //    }
-
+//
 //        //getting name for the image
 //        String name = add_editText.getText().toString().trim();
 //
@@ -113,6 +118,6 @@ import java.util.UUID;
 //        } catch (Exception exc) {
 //            Toast.makeText(getActivity().getApplicationContext(), exc.getMessage(), Toast.LENGTH_SHORT).show();
 //        }
- //   }
-
+//    }
+//
 //}

@@ -28,6 +28,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -72,7 +73,7 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
     private Button confirmBtn;
 
     private EditText ScannedCode_admin;
-    private Button ConfirmScan_admin;
+    private ImageButton ConfirmScan_admin;
 
     private EditText locationText;
 
@@ -154,7 +155,7 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
         locationText = (EditText)view.findViewById(R.id.itemLocationText);
 
         ScannedCode_admin = (EditText)view.findViewById(R.id.scannedCode_admin) ;
-        ConfirmScan_admin = (Button)view.findViewById(R.id.confirm_admin);
+        ConfirmScan_admin = (ImageButton) view.findViewById(R.id.confirm_admin);
 
 
         //Setting clicklistener
