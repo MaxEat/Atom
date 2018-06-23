@@ -287,7 +287,8 @@ public class AddItemFragment extends Fragment implements LocationListener{
 
             String s = longitude + "\n" + latitude + "\n\nMy Current City is: "
                     + cityName + fullAddress;
-
+            Log.i("location", s);
+            Log.i("itemtag", itemTag);
             ((Student)TestJson.getUser()).borrowItem(itemTag, fullAddress);
         }
 

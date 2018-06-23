@@ -246,6 +246,7 @@ public class Student extends Person {
             postdata.put("cardID", getCardID());
             postdata.put("itemTag", itemTag);
             postdata.put("borrowLocation", currentLocation);
+            Log.i("post", postdata.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
