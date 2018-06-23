@@ -83,10 +83,13 @@ public class AddItemFragment extends Fragment implements LocationListener{
         super.onCreate(savedInstanceState);
         checkLocationPermission();
 
-        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        longitude = "Longitude: " + locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLongitude();
+        locationManager = (LocationManager) getActivity().
+                getSystemService(Context.LOCATION_SERVICE);
 
-        latitude = "Latitude: " + locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLatitude();
+        longitude = "Longitude: " + locationManager.getLastKnownLocation(
+                LocationManager.NETWORK_PROVIDER).getLongitude();
+        latitude = "Latitude: " + locationManager.getLastKnownLocation(
+                LocationManager.NETWORK_PROVIDER).getLatitude();
         Log.i("coordinate", longitude + ", " + latitude);
 
         Geocoder gcd = new Geocoder(getContext(), Locale.ENGLISH);
@@ -94,10 +97,12 @@ public class AddItemFragment extends Fragment implements LocationListener{
         cityName = null;
         fullAddress = null;
         try {
-            addresses = gcd.getFromLocation(locationManager.getLastKnownLocation
-                            (LocationManager.NETWORK_PROVIDER).getLatitude(),
-                    locationManager.getLastKnownLocation
-                            (LocationManager.NETWORK_PROVIDER).getLongitude(),
+
+            addresses = gcd.getFromLocation(
+                    locationManager.getLastKnownLocation(
+                            LocationManager.NETWORK_PROVIDER).getLatitude(),
+                    locationManager.getLastKnownLocation(
+                            LocationManager.NETWORK_PROVIDER).getLongitude(),
                     1);
             if (addresses.size() > 0) {
                 System.out.println(addresses.get(0).getLocality());
@@ -209,7 +214,8 @@ public class AddItemFragment extends Fragment implements LocationListener{
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 //Prompt the user once explanation has been shown
                                 ActivityCompat.requestPermissions(getActivity(),
-                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                        new String[]{
+                                        Manifest.permission.ACCESS_FINE_LOCATION},
                                         MY_PERMISSIONS_REQUEST_LOCATION);
                             }
                         })
@@ -282,7 +288,8 @@ public class AddItemFragment extends Fragment implements LocationListener{
 
             String s = longitude + "\n" + latitude + "\n\nMy Current City is: "
                     + cityName + fullAddress;
-
+            Log.i("location", s);
+            Log.i("itemtag", itemTag);
             ((Student)TestJson.getUser()).borrowItem(itemTag, fullAddress);
         }
 
@@ -298,7 +305,8 @@ public class AddItemFragment extends Fragment implements LocationListener{
 
     public void scanQR(View view) {
 
-        IntentIntegrator integrator = new IntentIntegrator(this.getActivity()).forSupportFragment(this);
+        IntentIntegrator integrator =
+                new IntentIntegrator(this.getActivity()).forSupportFragment(this);
         integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
         integrator.setPrompt(this.getString(R.string.scan_qr_code));
         integrator.setCameraId(0);
@@ -309,11 +317,12 @@ public class AddItemFragment extends Fragment implements LocationListener{
     }
 
     public void scanBar(View view) {
-        IntentIntegrator integrator = new IntentIntegrator(this.getActivity()).forSupportFragment(this); // use forSupportFragment or forFragment method to use fragments instead of activity
+        IntentIntegrator integrator =
+                new IntentIntegrator(this.getActivity()).forSupportFragment(this);
         integrator.setDesiredBarcodeFormats(IntentIntegrator.ONE_D_CODE_TYPES);
         integrator.setPrompt(this.getString(R.string.scan_bar_code));
-        // integrator.setResultDisplayDuration(0); // milliseconds to display result on screen after scan
-        integrator.setCameraId(0);  // Use a specific camera of the device
+        // integrator.setResultDisplayDuration(0);
+        integrator.setCameraId(0);
         integrator.initiateScan();
     }
 
