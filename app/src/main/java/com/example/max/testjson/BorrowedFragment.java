@@ -10,6 +10,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,6 +67,10 @@ public class BorrowedFragment extends Fragment {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+//                recyclerView.setPadding(8,8,8,8);
+//
+//                recyclerView.setLayoutManager(new StaggeredGridLayoutManager(mColumnCount, StaggeredGridLayoutManager.VERTICAL));
+
             }
 
             ArrayList<BorrowedItem> items = ((Student)TestJson.getUser()).getBorrowedItems();
@@ -75,9 +80,9 @@ public class BorrowedFragment extends Fragment {
             adapter.setContext(getContext());
             recyclerView.setAdapter(adapter);
             recyclerView.addItemDecoration(new DividerItemDecoration(
-                    getContext(), DividerItemDecoration.VERTICAL));
+                    getContext(), DividerItemDecorationCustom.VERTICAL));
             recyclerView.addItemDecoration(new DividerItemDecoration(
-                    getContext(), DividerItemDecoration.HORIZONTAL));
+                    getContext(), DividerItemDecorationCustom.HORIZONTAL));
         }
         return view;
     }

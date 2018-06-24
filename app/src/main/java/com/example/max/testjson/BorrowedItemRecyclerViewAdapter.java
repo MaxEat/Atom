@@ -61,7 +61,7 @@ public class BorrowedItemRecyclerViewAdapter extends RecyclerView.Adapter<Borrow
         String pictureUrl = TestJson.pictureMap.get(holder.mItem.getClassification());
         Log.i("location", holder.mItem.getBorrowedLocation());
         Log.i("classification", holder.mItem.getClassification());
-        Picasso.with(context).load(pictureUrl).resize(120, 60).into(holder.mImage);
+        Picasso.with(context).load(pictureUrl).resize(120, 120).into(holder.mImage);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
