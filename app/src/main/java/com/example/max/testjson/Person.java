@@ -1,5 +1,7 @@
 package com.example.max.testjson;
 
+import android.os.Bundle;
+import android.os.Message;
 import android.util.ArrayMap;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
@@ -301,6 +303,25 @@ public abstract class Person {
             JSONObject json = new JSONObject(htmlSource);
             error = json.getInt("error_message");
             Log.i("error", Integer.toString(error));
+
+            Message m = new Message();
+            Bundle b = new Bundle();
+            b.putString("title", "Maintain/UnMaintain");
+
+            if(error == 21)
+            {
+                b.putString("result", "This item is being borrowed, cannot maintain/unmaintain it");
+            }
+            else
+            {
+                b.putString("result", "You have successfully update the item's status");
+            }
+
+            m.setData(b);
+            m.what = 4;
+            AddItemFragment.handler.sendMessage(m);
+
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
