@@ -139,8 +139,7 @@ public class AddItemFragment extends Fragment implements LocationListener{
         ScannedCode.setText("");
         ConfirmScan = (ImageButton)view.findViewById(R.id.confirm);
 
-        ItemImage.setVisibility(View.INVISIBLE);
-        ItemImage.setImageURI();
+
         if(dataGenerator == 1){
             Return_UnMaintain.setText("RETURN");
             Borrow_Maintain.setText("BORROW");
