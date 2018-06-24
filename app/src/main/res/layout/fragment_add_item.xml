@@ -90,23 +90,26 @@
 
     <ImageView
         android:id="@+id/itemImage"
-        android:layout_width="384dp"
-        android:layout_height="200dp"
+        android:layout_width="match_parent"
+        android:layout_height="189dp"
         android:layout_gravity="center_horizontal"
         android:layout_weight="1"
         android:src="@drawable/ic_dashboard" />
 
     <TextView
-        android:id="@+id/scan_result"
-        android:layout_width="350dp"
-        android:layout_height="74dp"
+        android:id="@+id/classification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:ems="10"
-        android:textSize="20dp"
-        android:singleLine="false"
-        android:textColor="@color/colorGrey"
-        android:inputType="textPersonName"
-        android:layout_gravity="center_horizontal"
-        android:textAlignment="center" />
+        android:gravity="center"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/scan_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName" />
 
     <LinearLayout
         android:layout_width="match_parent"

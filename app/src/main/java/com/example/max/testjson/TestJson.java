@@ -36,8 +36,9 @@ public class TestJson extends Application {
     private static Person user;
     public static int alertDay = 14;
     public static CustomedWebview wv;
-    public static HashMap<String, Integer> permission_days_student = new HashMap<String, Integer>();
-    public static HashMap<String, Integer> permission_days_worker = new HashMap<String, Integer>();
+ //   public static HashMap<String, Integer> permission_days_student = new HashMap<String, Integer>();
+  //  public static HashMap<String, Integer> permission_days_worker = new HashMap<String, Integer>();
+    public static HashMap<String, Integer> permission_days = new HashMap<>();
     public static String classificationPictureArray[];
     public static HashMap<String, String> pictureMap = new HashMap<>();
     public static String permissionArray[];
@@ -56,25 +57,26 @@ public class TestJson extends Application {
         }
         refWatcher = LeakCanary.install(this);
 
-        permission_days_student.put("laptop", 14);
-        permission_days_student.put("FPGA", 14);
-        permission_days_student.put("ipad", 14);
-        permission_days_worker.put("laptop",28);
-        permission_days_worker.put("FPGA", 28);
-        permission_days_worker.put("ipad", 28);
+//        permission_days_student.put("laptop", 14);
+//        permission_days_student.put("FPGA", 14);
+//        permission_days_student.put("ipad", 14);
+//        permission_days_worker.put("laptop",28);
+//        permission_days_worker.put("FPGA", 28);
+//        permission_days_worker.put("ipad", 28);
     }
+
 
     public static RefWatcher getRefWatcher(Context context) {
         TestJson application = (TestJson) context.getApplicationContext();
         return application.refWatcher;
     }
 
-    public void addPermission_days(String userType, String itemType, int days) {
-        if(userType.equals("Student"))
-            permission_days_student.put(itemType,days);
-        if(userType.equals("worker"))
-            permission_days_worker.put(itemType,days);
-    }
+//    public void addPermission_days(String userType, String itemType, int days) {
+//        if(userType.equals("Student"))
+//            permission_days_student.put(itemType,days);
+//        if(userType.equals("worker"))
+//            permission_days_worker.put(itemType,days);
+//    }
 
     public static void resetWebView() {
 

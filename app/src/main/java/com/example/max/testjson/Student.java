@@ -1,11 +1,13 @@
 package com.example.max.testjson;
 
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.util.Pair;
 import android.webkit.JavascriptInterface;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
@@ -22,7 +24,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -403,6 +409,14 @@ public class Student extends Person {
 
             JSONObject jsonObject = new JSONObject(htmlSource);
             JSONArray jsonArray = jsonObject.getJSONArray("list");
+
+
+
+            for (String keys : TestJson.permission_days.keySet())
+            {
+                System.out.println(keys + ":"+ TestJson.permission_days.get(keys));
+            }
+
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject json = jsonArray.getJSONObject(i);
                 BorrowedItem item = new BorrowedItem(json.getString("itemTag"));
@@ -410,6 +424,7 @@ public class Student extends Person {
                 item.setBorrowedLocation(json.getString("borrowLocation"));
                 item.setImageURL(json.getString("borrowLocation"));
                 item.setClassification(json.getString("itemClassification"));
+
                 item.setLeftDays();
                 borrowedItems.add(item);
                 borrowedItemMAP.put(Integer.toString(i),item);
@@ -434,6 +449,7 @@ public class Student extends Person {
 
 
         } catch (Throwable t) {
+            Log.i("get all item", t.getMessage());
             Log.e("My info", "Could not parse malformed JSON for get all item: \"" + htmlSource + "\"");
         }
     }
@@ -531,13 +547,27 @@ public class Student extends Person {
                 String itemTag = json.getString("itemTag");
                 String itemLocation = json.getString("itemLocation");
                 String itemClassification = json.getString("itemClassification");
+                int permissionDays = TestJson.permission_days.get(itemClassification);
 
-                AddItemFragment.ScanResult.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        AddItemFragment.ScanResult.setText("Successfully borrowed");
-                    }
-                });
+
+                Calendar c = Calendar.getInstance();
+                Date currentDate = new Date();
+                c.setTime(currentDate);
+                c.add(Calendar.DATE, permissionDays); //same with c.add(Calendar.DAY_OF_MONTH, 1);
+                Date currentDatePlusOne = c.getTime();
+                DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+                String dates = dateFormat.format(currentDatePlusOne);
+
+                Message m = new Message();
+                Bundle b = new Bundle();
+
+                b.putString("title", "Borrowing");
+                b.putString("result", "You have successfully borrowed this item, please return it before " + dates);
+                b.putInt("permissionDays", permissionDays);
+                m.setData(b);
+                m.what = 4;
+                AddItemFragment.handler.sendMessage(m);
+
                 BorrowedItem borrowedItem = new BorrowedItem(itemTag, itemLocation);
                 borrowedItem.setClassification(itemClassification);
                 borrowedItems.add(borrowedItem);
@@ -545,25 +575,15 @@ public class Student extends Person {
                 Log.i("new borrowing item", itemTag + " " + itemLocation);
 
             }
-
-            else if(error == 20)
-            {
-                AddItemFragment.ScanResult.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        AddItemFragment.ScanResult.setText("Your item tag may be wrong \n  Please scan again");
-                    }
-                });
-            }
-
             else
             {
-                AddItemFragment.ScanResult.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        AddItemFragment.ScanResult.setText("You cannot borrow this item");
-                    }
-                });
+                Message m = new Message();
+                Bundle b = new Bundle();
+                b.putString("title", "Borrowing");
+                b.putString("result", "You cannot borrow this item");
+                m.setData(b);
+                m.what = 4;
+                AddItemFragment.handler.sendMessage(m);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -580,21 +600,23 @@ public class Student extends Person {
 
             if(error == 0)
             {
-                AddItemFragment.ScanResult.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        AddItemFragment.ScanResult.setText("Successfully returned");
-                    }
-                });
+                Message m = new Message();
+                Bundle b = new Bundle();
+                b.putString("title", "Returning");
+                b.putString("result", "You have successfully returned this item");
+                m.setData(b);
+                m.what = 4;
+                AddItemFragment.handler.sendMessage(m);
             }
             else
             {
-                AddItemFragment.ScanResult.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        AddItemFragment.ScanResult.setText("You cannot return this item");
-                    }
-                });
+                Message m = new Message();
+                Bundle b = new Bundle();
+                b.putString("title", "Returning");
+                b.putString("result", "You cannot return this item");
+                m.setData(b);
+                m.what = 4;
+                AddItemFragment.handler.sendMessage(m);
             }
 
         } catch (JSONException e) {
