@@ -218,7 +218,7 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
 
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
+}
 
     public void check() throws IOException {
         runOnUiThread(new Runnable(){

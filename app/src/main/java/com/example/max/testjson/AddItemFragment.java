@@ -113,8 +113,8 @@ public class AddItemFragment extends Fragment implements LocationListener{
                 System.out.println(addresses.get(0).getLocality());
                 cityName = addresses.get(0).getLocality();
                 fullAddress = addresses.get(0).getAddressLine(0);
-//                fullAddress.split(",");
-//                fullAddress.concat("Leuven");
+                fullAddress.split(",");
+                fullAddress.concat("Leuven");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -322,21 +322,21 @@ public class AddItemFragment extends Fragment implements LocationListener{
     private void borrowItem() throws IOException {
 
         Log.i("state", "borrowing");
-        if(((Student)TestJson.getUser()).getBlacklist().equals("normal"))
+        if(!((Student)TestJson.getUser()).getBlacklist().equals("normal"))
         {
 
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setMessage("You need to return the expired item first.");
+            builder.show();
+        }
+
+        else
+        {
             String s = longitude + "\n" + latitude + "\n\nMy Current City is: "
                     + cityName + fullAddress;
             Log.i("location", s);
             Log.i("itemtag", itemTag);
             ((Student)TestJson.getUser()).borrowItem(itemTag, fullAddress);
-        }
-
-        else
-        {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            builder.setMessage("You need to return the expired item first.");
-            builder.show();
         }
     }
 
@@ -426,11 +426,7 @@ public class AddItemFragment extends Fragment implements LocationListener{
 
         Item item = new Item(tag);
         wv.addJavascriptInterface(item,"Item");
-
         item.setInfos();
-
-
-
     }
 
     public void updateItemState() throws IOException {
@@ -465,42 +461,6 @@ public class AddItemFragment extends Fragment implements LocationListener{
         refWatcher.watch(this);
     }
 
-//    static class MyHandler extends Handler{
-//        public MyHandler(){
-//
-//        }
-//
-//        public MyHandler(Looper looper){
-//            super(looper);
-//        }
-//        @Override
-//        public void handleMessage(Message msg) {
-//            // TODO Auto-generated method stub
-//            super.handleMessage(msg);
-//            switch (msg.what){
-//                case 1:
-//                    Bundle b = msg.getData();
-//                    String name = b.getString("name");
-//                    ScanResult.setText(name);
-//
-//                    break;
-//                case 2:
-//
-//                    System.out.println("handleMessage thread id " + Thread.currentThread().getId());
-//                    System.out.println("msg.arg1:" + msg.arg1);
-//                    System.out.println("msg.arg2:" + msg.arg2);
-//                    break;
-//                case 3:
-//
-//
-//                    break;
-//                case 4:
-//
-//
-//                    break;
-//            }
-//        }
-//    }
 
 
 

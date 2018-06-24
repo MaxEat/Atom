@@ -11,27 +11,27 @@
     <ImageButton
         android:id="@+id/sendAlertEmail"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:tint="@color/colorBlueDark"
-        android:src="@android:drawable/ic_dialog_email" />
+        android:layout_height="49dp"
+        android:src="@drawable/ic_002_mail"
+        android:tint="@color/colorBlue" />
+
     <TextView
         android:id="@+id/empty"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Your dashboard is empty."
-        android:textColor="@color/colorGrey"/>
+        android:textColor="@color/colorGrey" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/dashlist"
         android:name="com.example.max.testjson.DashBoardFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
         tools:context="com.example.max.testjson.DashBoardFragment"
-        tools:listitem="@layout/fragment_news" >
+        tools:listitem="@layout/fragment_news">
 
 
     </android.support.v7.widget.RecyclerView>

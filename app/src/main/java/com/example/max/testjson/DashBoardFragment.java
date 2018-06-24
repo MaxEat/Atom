@@ -1,6 +1,9 @@
 package com.example.max.testjson;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,8 +21,11 @@ import android.widget.Toast;
 
 import com.example.max.testjson.dashboard.News;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static com.example.max.testjson.TestJson.wv;
 
 
 public class DashBoardFragment extends Fragment {
@@ -91,12 +97,28 @@ public class DashBoardFragment extends Fragment {
                 else
                 {
                     imageButton.setVisibility(View.VISIBLE);
+
                     Log.i("type", TestJson.getUser().getUserType());
                     imageButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Log.i("here", "clicked");
-                            sendAlertEmail();
+//                            Log.i("here", "clicked");
+//                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+//                            builder.setMessage("Do you want to send alert email to all borrowers in the black list?");
+//                            builder.setPositiveButton("Send", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int id) {
+//                                    sendAlertEmail();
+//                                }
+//                            });
+//                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialogInterface, int i) {
+//
+//                                }
+//                            });
+//                            AlertDialog dialog = builder.create();
+//                            dialog.show();
 
                         }
                     });
