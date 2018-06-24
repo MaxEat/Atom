@@ -113,8 +113,8 @@ public class AddItemFragment extends Fragment implements LocationListener{
                 System.out.println(addresses.get(0).getLocality());
                 cityName = addresses.get(0).getLocality();
                 fullAddress = addresses.get(0).getAddressLine(0);
-                fullAddress.split(",");
-                fullAddress.concat("Leuven");
+                fullAddress = fullAddress.split(",")[0];
+                fullAddress = fullAddress.concat("Leuven");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -168,7 +168,7 @@ public class AddItemFragment extends Fragment implements LocationListener{
                         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                         builder.setTitle(inputMessage.getData().getString("title"));
                         builder.setMessage(inputMessage.getData().getString("result"));
-                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // FIRE ZE MISSILES!
                             }

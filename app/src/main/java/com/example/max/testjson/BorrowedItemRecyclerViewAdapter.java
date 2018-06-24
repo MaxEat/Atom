@@ -57,7 +57,9 @@ public class BorrowedItemRecyclerViewAdapter extends RecyclerView.Adapter<Borrow
         holder.mItem = mValues.get(position);
      //   Picasso.with(this.context).load(mValues.get(position).getImageURL());
         holder.mClassification.setText(holder.mItem.getClassification());
-        holder.mContentView.setText(holder.mItem.getBorrowedLocation() + " "+ holder.mItem.getBorrowedTimeStamp());
+      //  holder.mContentView.setText(holder.mItem.getBorrowedLocation() + " "+ holder.mItem.getBorrowedTimeStamp());
+        holder.mLocation.setText(holder.mItem.getBorrowedLocation());
+        holder.mDate.setText(holder.mItem.getBorrowedTimeStamp());
         String pictureUrl = TestJson.pictureMap.get(holder.mItem.getClassification());
         Log.i("location", holder.mItem.getBorrowedLocation());
         Log.i("classification", holder.mItem.getClassification());
@@ -82,7 +84,9 @@ public class BorrowedItemRecyclerViewAdapter extends RecyclerView.Adapter<Borrow
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final ImageView mImage;
-        public final TextView mContentView;
+     //   public final TextView mContentView;
+        public final TextView mDate;
+        public final TextView mLocation;
         public final TextView mClassification;
 
         public BorrowedItem mItem;
@@ -91,7 +95,9 @@ public class BorrowedItemRecyclerViewAdapter extends RecyclerView.Adapter<Borrow
             super(view);
             mView = view;
             mImage = (ImageView)view.findViewById(R.id.imageView);
-            mContentView = (TextView) view.findViewById(R.id.content);
+       //     mContentView = (TextView) view.findViewById(R.id.content);
+            mDate = (TextView)view.findViewById(R.id.borrow_date);
+            mLocation = (TextView)view.findViewById(R.id.borrow_location);
             mClassification = (TextView)view.findViewById(R.id.classfication);
 
         }
@@ -99,7 +105,7 @@ public class BorrowedItemRecyclerViewAdapter extends RecyclerView.Adapter<Borrow
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mClassification + " '" + mContentView.getText() + " '";
+            return super.toString() + " '" + mClassification + " '" + mDate.getText() + " '" + mLocation.getText();
         }
     }
 }

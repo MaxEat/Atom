@@ -23,8 +23,8 @@
 
         <ImageView
             android:id="@+id/my_image"
-            android:layout_width="204dp"
-            android:layout_height="214dp"
+            android:layout_width="148dp"
+            android:layout_height="151dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
             android:background="@drawable/ic_addperson" />
@@ -106,8 +106,8 @@
 
         <Button
             android:id="@+id/submit_setting"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
             android:background="@drawable/rectangular"

@@ -102,23 +102,23 @@ public class DashBoardFragment extends Fragment {
                     imageButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-//                            Log.i("here", "clicked");
-//                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-//                            builder.setMessage("Do you want to send alert email to all borrowers in the black list?");
-//                            builder.setPositiveButton("Send", new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int id) {
-//                                    sendAlertEmail();
-//                                }
-//                            });
-//                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialogInterface, int i) {
-//
-//                                }
-//                            });
-//                            AlertDialog dialog = builder.create();
-//                            dialog.show();
+                            Log.i("here", "clicked");
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            builder.setMessage("Do you want to send alert email to all borrowers in the black list?");
+                            builder.setPositiveButton("Send", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int id) {
+                                    sendAlertEmail();
+                                }
+                            });
+                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                }
+                            });
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
 
                         }
                     });
