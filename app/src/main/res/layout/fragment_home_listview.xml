@@ -18,7 +18,8 @@
         android:id="@+id/ItemTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorGrey"
+        android:layout_marginStart="10dp"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="20dp" />
 
     <TextView
@@ -26,7 +27,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:textColor="@color/colorGrey"
+        android:layout_marginStart="10dp"
+        android:textColor="@color/colorBlueDark"
         android:layout_below="@+id/ItemTitle" />
 
 </LinearLayout>
