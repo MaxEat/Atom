@@ -11,121 +11,110 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:id="@+id/logout"
-        android:src="@drawable/ic_exit"
+        android:src="@drawable/ic_001_logout"
         android:background="@color/white"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"><![CDATA[>
+
+        ]]>
 
         <ImageView
             android:id="@+id/my_image"
-            android:layout_width="168dp"
-            android:layout_height="168dp"
+            android:layout_width="204dp"
+            android:layout_height="214dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
             android:background="@drawable/ic_addperson" />
 
         <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_width="260dp"
-            android:layout_marginTop="20dp"
             android:layout_gravity="center_horizontal"
-            android:orientation="horizontal"
-            >
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/second_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimaryDark"
-                android:text="Contact email:" />
+                android:text="Contact email:"
+                android:textColor="@color/colorPrimaryDark" />
 
             <EditText
                 android:id="@+id/email_input"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:ems="10"
+                android:inputType="textPersonName"
+                android:text="......@......."
                 android:textColor="@color/colorPrimaryDark"
                 android:textColorLink="@color/colorPrimaryDark"
-                android:theme="@style/MyEditText"
-                android:layout_marginStart="10dp"
-                android:inputType="textPersonName"
-                android:text="......@......." />
+                android:theme="@style/MyEditText" />
 
         </LinearLayout>
 
-
         <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_width="260dp"
-            android:layout_marginTop="20dp"
             android:layout_gravity="center_horizontal"
-            android:orientation="horizontal"
-            >
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/textView6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimaryDark"
-                android:text="Return reminder:" />
+                android:text="Return reminder:"
+                android:textColor="@color/colorPrimaryDark" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:orientation="vertical">
+            <RadioGroup
+                android:id="@+id/reminder_days"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                <CheckBox
-                    android:id="@+id/oneweek"
-                    android:layout_width="match_parent"
+                <RadioButton
+                    android:id="@+id/oneday"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:textColorHighlight="@color/colorPrimaryDark"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:button="@drawable/custom_checkbox"
-                    android:layout_marginStart="10dp"
-                    android:text="One week before" />
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:text="One day" />
 
-                <CheckBox
+                <RadioButton
                     android:id="@+id/threedays"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:text="Three days" />
+
+                <RadioButton
+                    android:id="@+id/sevendays"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColorHighlight="@color/colorPrimaryDark"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:button="@drawable/custom_checkbox"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="10dp"
-                    android:text="Three days before" />
-
-                <CheckBox
-                    android:id="@+id/twoweeks"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColorHighlight="@color/colorPrimaryDark"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:button="@drawable/custom_checkbox"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="10dp"
-                    android:text="Two weeks before" />
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:text="Seven days" />
+            </RadioGroup>
 
 
-            </LinearLayout>
         </LinearLayout>
-
 
         <Button
             android:id="@+id/submit_setting"
-            android:layout_width="263dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:background="@drawable/rectangular"
-            android:textColor="@color/colorAccent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
-            android:text="Submit" />
+            android:layout_weight="1"
+            android:background="@drawable/rectangular"
+            android:text="Submit"
+            android:textColor="@color/colorAccent" />
 
     </LinearLayout>
+
 
 </FrameLayout>

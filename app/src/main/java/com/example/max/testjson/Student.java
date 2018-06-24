@@ -580,7 +580,7 @@ public class Student extends Person {
                 Message m = new Message();
                 Bundle b = new Bundle();
                 b.putString("title", "Borrowing");
-                b.putString("result", "You cannot borrow this item");
+                b.putString("result", "You cannot borrow this item, it is already been borrowed");
                 m.setData(b);
                 m.what = 4;
                 AddItemFragment.handler.sendMessage(m);

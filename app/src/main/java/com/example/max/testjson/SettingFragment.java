@@ -19,6 +19,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.squareup.leakcanary.RefWatcher;
 
@@ -30,10 +32,10 @@ import static com.example.max.testjson.TestJson.wv;
 
 
 public class SettingFragment extends Fragment {
-    private CheckBox twoWeeks;
-    private CheckBox oneWeek;
-    private CheckBox threedays;
     private EditText preferEmail;
+    private RadioGroup radioGroup;
+    private int reminderDaysCache = TestJson.alertDay;
+
     private Button submit;
     private ImageButton logout;
 
@@ -64,30 +66,37 @@ public class SettingFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_setting, container, false);
 
         preferEmail = (EditText)view.findViewById(R.id.email_input);
-        twoWeeks = (CheckBox)view.findViewById(R.id.twoweeks);
-        oneWeek = (CheckBox)view.findViewById(R.id.oneweek);
-        threedays = (CheckBox)view.findViewById(R.id.threedays);
+        radioGroup = (RadioGroup)view.findViewById(R.id.reminder_days);
+
         submit = (Button)view.findViewById(R.id.submit_setting);
         logout = (ImageButton)view.findViewById(R.id.logout);
 
         preferEmail.setText(TestJson.getUser().getAlertEmail());
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                switch(checkedId){
+//                    case R.id.oneday:
+//                        reminderDaysCache = 1;
+//                        break;
+//                    case R.id.threedays:
+//                        reminderDaysCache = 3;
+//                        break;
+//                    case R.id.sevendays:
+//                        reminderDaysCache = 7;
+//                        break;
+//                }
+            }
+        });
+
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(twoWeeks.isChecked())
-                {
-                    TestJson.alertDay = 14;
-                }
-                if(threedays.isChecked())
-                {
-                    TestJson.alertDay = 3;
-                }
-                if(oneWeek.isChecked())
-                {
-                    TestJson.alertDay = 7;
-                }
 
+                TestJson.alertDay = reminderDaysCache;
                 String email = preferEmail.getText().toString();
+
                 if(isEmail(email))
                 {
                     TestJson.getUser().setAlertEmail(email);
