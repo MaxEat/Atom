@@ -36,7 +36,8 @@ public class CustomedWebview extends WebView {
     static final String getAllClassificationsURL = "https://labtools.groept.be/inventory/secure/php_getAllClassifications.php";
     static final String getPermissionClassificationURL = "https://labtools.groept.be/inventory/secure/php_getClassificationPermission.php";
     static final String getExpiredItemURL = "https://labtools.groept.be/inventory/secure/php_returnExpirationInfo.php";
-    static final String addNewItemURL = "https://labtools.groept.be/inventory/secure/php_addItem.php";
+    static final String addNewItemURL1 = "https://labtools.groept.be/inventory/secure/php_addItem1.php";
+    static final String addNewItemURL2 = "https://labtools.groept.be/inventory/secure/php_addItem2.php";
     static final String getAllPermissionsURL = "https://labtools.groept.be/inventory/secure/php_getAllPermissions.php";
     static final String UPLOAD_URL = "https://labtools.groept.be/inventory/secure/upload.php";
     static final String IMAGES_URL = "http://labtools.groept.be/inventory/secure/getImages.php";
@@ -105,8 +106,11 @@ public class CustomedWebview extends WebView {
                 if(url.equals(updateItemStateUrl))
                     view.loadUrl("javascript:window.Person.updateItemStatus_Interface(document.body.innerHTML)");
 
-                if(url.equals(addNewItemURL))
+                if(url.equals(addNewItemURL1))
                     view.loadUrl("javascript:window.Person.administratorAddItem_interface(document.body.innerHTML)");
+
+                if(url.equals(addNewItemURL2))
+                    view.loadUrl("javascript:window.Person.administratorAddItemNew_interface(document.body.innerHTML)");
 
                 if(url.equals(getAllAvailableItemsURL))
                     view.loadUrl("javascript:window.Person.getAllAvailableItems_interface(document.body.innerHTML)");

@@ -163,11 +163,14 @@ public abstract class Person {
 
 
 
-    public void administratorAddItem( String itemTag, String currentLocation, String timestamp, String itemClassification,
-                                      String itemPermission) throws IOException {
-        byte[] array = administratorAddItem_createJson(itemTag, currentLocation, timestamp, itemClassification,
-                itemPermission);
-        wv.postUrl(CustomedWebview.addNewItemURL, array);
+    public void administratorAddItem( String itemTag, String currentLocation, String timestamp, String itemClassification) throws IOException {
+        byte[] array = administratorAddItem_createJson(itemTag, currentLocation, timestamp, itemClassification);
+        wv.postUrl(CustomedWebview.addNewItemURL1, array);
+    }
+
+    public void administratorAddItemNew(String itemTag, String currentLocation, String timestamp, String itemClassification, int permissionDay) throws IOException{
+        byte[] array = administratorAddItemNew_createJson(itemTag, currentLocation, timestamp, itemClassification, permissionDay);
+        wv.postUrl(CustomedWebview.addNewItemURL2, array);
     }
 
     public byte[] getAllAvailableItems_createJson() throws IOException {
@@ -213,8 +216,7 @@ public abstract class Person {
     }
 
 
-    protected byte[] administratorAddItem_createJson(String itemTag, String currentLocation, String timestamp, String itemClassification,
-                                                      String itemPermission) throws IOException {
+    protected byte[] administratorAddItem_createJson(String itemTag, String currentLocation, String timestamp, String itemClassification) throws IOException {
         if (currentLocation == "") currentLocation = "GroepT";
 
         JSONObject postdata = new JSONObject();
@@ -223,7 +225,21 @@ public abstract class Person {
             postdata.put("itemLocation", currentLocation);
             postdata.put("boughtTime", timestamp);
             postdata.put("itemClassification", itemClassification);
-            postdata.put("itemPermission", itemPermission);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return createJson(postdata);
+    }
+
+    protected byte[] administratorAddItemNew_createJson(String itemTag, String currentLocation,
+                                                        String timestamp, String itemClassification, int permissionDay) throws IOException{
+        JSONObject postdata = new JSONObject();
+        try {
+            postdata.put("itemTag", itemTag);
+            postdata.put("itemLocation", currentLocation);
+            postdata.put("boughtTime", timestamp);
+            postdata.put("itemClassification", itemClassification);
+            postdata.put("permissionDay",permissionDay);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -310,6 +326,18 @@ public abstract class Person {
     public void administratorAddItem_interface(String htmlSource) {
         Log.i("admin add item", htmlSource);
         try {
+            JSONObject json = new JSONObject(htmlSource);
+            error = json.getInt("error_message");
+            Log.i("error", Integer.toString(error));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @JavascriptInterface
+    public void administratorAddItemNew_interface(String htmlSource) {
+        Log.i("add new class item", htmlSource);
+        try{
             JSONObject json = new JSONObject(htmlSource);
             error = json.getInt("error_message");
             Log.i("error", Integer.toString(error));
