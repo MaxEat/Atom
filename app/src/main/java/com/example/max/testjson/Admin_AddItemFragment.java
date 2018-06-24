@@ -30,6 +30,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -67,6 +68,10 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
     private Button BarCode;
     private Button TextRecognize;
 
+    private Button addNewClassBtn;
+    private LinearLayout addNewClassLayout;
+    private EditText permissionDayText;
+
     private Button confirmBtn;
 
     private EditText ScannedCode_admin;
@@ -88,8 +93,9 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
     private String set;
 
     //permission spinner variable
-    private String[] permit ;
     private String permission;
+
+    private int buttonToggle = 1;
 
 
 
@@ -147,6 +153,11 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
 
         mDisplayDate = (TextView) view.findViewById(R.id.tvDate);
 
+        addNewClassBtn = (Button) view.findViewById(R.id.addNewClass_btn);
+        addNewClassLayout = (LinearLayout) view.findViewById(R.id.hiddenLayout);
+        addNewClassLayout.setVisibility(View.GONE);
+        permissionDayText = (EditText) view.findViewById(R.id.permission_day_text);
+
         confirmBtn = (Button)view.findViewById(R.id.confirmButton);
 
         locationText = (EditText)view.findViewById(R.id.itemLocationText);
@@ -178,6 +189,12 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
             }
         });
 
+        addNewClassBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setHidden(v);
+            }
+        });
 
         //select bought time
         mDisplayDate.setOnClickListener(new View.OnClickListener() {
@@ -248,7 +265,11 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 try {
-                    uploadItemInfo(v);
+                    if(buttonToggle == 1){
+                        uploadItemInfo(v);
+                    }else if(buttonToggle == 0){
+                        uploadItemInfoNew(v);
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -480,8 +501,17 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
         String currentLocation = locationText.getText().toString().trim();
         String timestamp =  mDisplayDate.getText().toString().trim();
 
-        TestJson.getUser().administratorAddItem(itemTagAdmin, currentLocation, timestamp, set,
-                permission);
+        TestJson.getUser().administratorAddItem(itemTagAdmin, currentLocation, timestamp, set);
+    }
+
+    public void uploadItemInfoNew(View view) throws IOException{
+        String classification = editText.getText().toString().trim();
+        String currentLocation = locationText.getText().toString().trim();
+        String timestamp = mDisplayDate.getText().toString().trim();
+        String permissionDay = permissionDayText.getText().toString();
+        int permission = Integer.parseInt(permissionDay);
+
+        TestJson.getUser().administratorAddItemNew(itemTagAdmin, currentLocation, timestamp, classification, permission);
     }
 
     @Override
@@ -489,6 +519,16 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
         super.onDestroy();
         RefWatcher refWatcher = TestJson.getRefWatcher(getActivity());
         refWatcher.watch(this);
+    }
+
+    public void setHidden(View v){
+        if(buttonToggle == 0){
+            buttonToggle = 1;
+            addNewClassLayout.setVisibility(View.GONE);
+        }else{
+            buttonToggle = 0;
+            addNewClassLayout.setVisibility(View.VISIBLE);
+        }
     }
 
 
