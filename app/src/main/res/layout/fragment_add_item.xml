@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textColor="@color/colorAccent"
-            android:background="@drawable/rectangular"
+            android:background="@drawable/btn_selector"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:text="QR_Code" />
@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorAccent"
-            android:background="@drawable/rectangular"
+            android:background="@drawable/btn_selector"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_weight="1"
@@ -42,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorAccent"
-            android:background="@drawable/rectangular"
+            android:background="@drawable/btn_selector"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_weight="1"
@@ -94,7 +94,7 @@
         android:layout_height="272dp"
         android:layout_gravity="center_horizontal"
         android:layout_weight="1"
-        android:src="@drawable/ic_square_button" />
+        android:src="@drawable/ic_frame" />
 
     <TextView
         android:id="@+id/classificationAdditem"
@@ -122,7 +122,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/colorAccent"
-            android:background="@drawable/rectangular"
+            android:background="@drawable/btn_selector"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_weight="1"
@@ -134,7 +134,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/colorAccent"
-            android:background="@drawable/rectangular"
+            android:background="@drawable/btn_selector"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_weight="1"
