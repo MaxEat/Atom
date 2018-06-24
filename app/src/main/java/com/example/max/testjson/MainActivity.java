@@ -172,7 +172,8 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
     public void showDialog(final String kuleuvenID, final String userName, final String email, final String userType, final String cardid) {
 
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogCustom);
+        builder.setMessage("Please choose your role:");
         builder.setPositiveButton(R.string.administrator, new DialogInterface.OnClickListener() {
             @SuppressLint("JavascriptInterface")
             public void onClick(DialogInterface dialog, int id) {

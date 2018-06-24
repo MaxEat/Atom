@@ -34,10 +34,8 @@ public class TestJson extends Application {
 
    // private static TestJson instance;
     private static Person user;
-    public static int alertDay = 14;
+    public static int alertDay = 7;
     public static CustomedWebview wv;
- //   public static HashMap<String, Integer> permission_days_student = new HashMap<String, Integer>();
-  //  public static HashMap<String, Integer> permission_days_worker = new HashMap<String, Integer>();
     public static HashMap<String, Integer> permission_days = new HashMap<>();
     public static String classificationPictureArray[];
     public static HashMap<String, String> pictureMap = new HashMap<>();
@@ -56,13 +54,6 @@ public class TestJson extends Application {
             return;
         }
         refWatcher = LeakCanary.install(this);
-
-//        permission_days_student.put("laptop", 14);
-//        permission_days_student.put("FPGA", 14);
-//        permission_days_student.put("ipad", 14);
-//        permission_days_worker.put("laptop",28);
-//        permission_days_worker.put("FPGA", 28);
-//        permission_days_worker.put("ipad", 28);
     }
 
 

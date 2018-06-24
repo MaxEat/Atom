@@ -11,7 +11,9 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:id="@+id/logout"
-        android:src="@drawable/ic_001_logout"
+        android:src="@drawable/ic_logout"
+        android:layout_margin="3dp"
+        android:tint="@color/colorBlue"
         android:background="@color/white"/>
 
     <LinearLayout

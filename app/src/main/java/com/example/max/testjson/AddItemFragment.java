@@ -114,7 +114,7 @@ public class AddItemFragment extends Fragment implements LocationListener{
                 cityName = addresses.get(0).getLocality();
                 fullAddress = addresses.get(0).getAddressLine(0);
                 fullAddress = fullAddress.split(",")[0];
-                fullAddress = fullAddress.concat("Leuven");
+                fullAddress = fullAddress.concat(", Leuven");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -132,7 +132,7 @@ public class AddItemFragment extends Fragment implements LocationListener{
         TextRecognize = (Button) view.findViewById(R.id.Text_scan);
         Return_UnMaintain = (Button) view.findViewById(R.id.return_item);
         Borrow_Maintain = (Button) view.findViewById(R.id.borrow_item);
-        Classification = (TextView) view.findViewById(R.id.classfication);
+        Classification = (TextView) view.findViewById(R.id.classificationAdditem);
 
         ItemImage = (ImageView)view.findViewById(R.id.itemImage);
         ScannedCode = (EditText)view.findViewById(R.id.scannedCode) ;
@@ -140,6 +140,7 @@ public class AddItemFragment extends Fragment implements LocationListener{
         ConfirmScan = (ImageButton)view.findViewById(R.id.confirm);
 
         ItemImage.setVisibility(View.INVISIBLE);
+        ItemImage.setImageURI();
         if(dataGenerator == 1){
             Return_UnMaintain.setText("RETURN");
             Borrow_Maintain.setText("BORROW");
@@ -158,7 +159,7 @@ public class AddItemFragment extends Fragment implements LocationListener{
 
                         String classification = inputMessage.getData().getString("classification");
                         String pictureUrl = TestJson.pictureMap.get(classification);
-                      //  Classification.setText(classification);
+                        Classification.setText(classification);
                         Log.i("classification", classification);
                         Picasso.with(getContext()).load(pictureUrl).fit().into(ItemImage);
                         break;

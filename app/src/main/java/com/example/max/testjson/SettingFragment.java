@@ -2,6 +2,7 @@ package com.example.max.testjson;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -72,21 +73,22 @@ public class SettingFragment extends Fragment {
         logout = (ImageButton)view.findViewById(R.id.logout);
 
         preferEmail.setText(TestJson.getUser().getAlertEmail());
+        radioGroup.check(R.id.sevendays);
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-//                switch(checkedId){
-//                    case R.id.oneday:
-//                        reminderDaysCache = 1;
-//                        break;
-//                    case R.id.threedays:
-//                        reminderDaysCache = 3;
-//                        break;
-//                    case R.id.sevendays:
-//                        reminderDaysCache = 7;
-//                        break;
-//                }
+                switch(checkedId){
+                    case R.id.oneday:
+                        reminderDaysCache = 1;
+                        break;
+                    case R.id.threedays:
+                        reminderDaysCache = 3;
+                        break;
+                    case R.id.sevendays:
+                        reminderDaysCache = 7;
+                        break;
+                }
             }
         });
 
@@ -123,25 +125,43 @@ public class SettingFragment extends Fragment {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                    Log.d("clear wv", "Using clearCookies code for API >=" + String.valueOf(Build.VERSION_CODES.LOLLIPOP_MR1));
-                    CookieManager.getInstance().removeAllCookies(null);
-                    CookieManager.getInstance().flush();
-                } else
-                {
-                    Log.d("clear wv", "Using clearCookies code for API <" + String.valueOf(Build.VERSION_CODES.LOLLIPOP_MR1));
-                    CookieSyncManager cookieSyncMngr=CookieSyncManager.createInstance(view.getContext());
-                    cookieSyncMngr.startSync();
-                    CookieManager cookieManager=CookieManager.getInstance();
-                    cookieManager.removeAllCookie();
-                    cookieManager.removeSessionCookie();
-                    cookieSyncMngr.stopSync();
-                    cookieSyncMngr.sync();
-                }
-                TestJson.resetWebView();
-                TestJson.setUser(null);
-                Intent intent = new Intent(getActivity(), SplashActivity.class);
-                startActivity(intent);
+
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage("Are you sure you want to logout?");
+                builder.setPositiveButton("Logout", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                            Log.d("clear wv", "Using clearCookies code for API >=" + String.valueOf(Build.VERSION_CODES.LOLLIPOP_MR1));
+                            CookieManager.getInstance().removeAllCookies(null);
+                            CookieManager.getInstance().flush();
+                        } else
+                        {
+                            Log.d("clear wv", "Using clearCookies code for API <" + String.valueOf(Build.VERSION_CODES.LOLLIPOP_MR1));
+                            CookieSyncManager cookieSyncMngr=CookieSyncManager.createInstance(getContext());
+                            cookieSyncMngr.startSync();
+                            CookieManager cookieManager=CookieManager.getInstance();
+                            cookieManager.removeAllCookie();
+                            cookieManager.removeSessionCookie();
+                            cookieSyncMngr.stopSync();
+                            cookieSyncMngr.sync();
+                        }
+                        TestJson.resetWebView();
+                        TestJson.setUser(null);
+                        Intent intent = new Intent(getActivity(), SplashActivity.class);
+                        startActivity(intent);
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // FIRE ZE MISSILES!
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+
             }
         });
         return view;
