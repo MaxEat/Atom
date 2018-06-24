@@ -53,9 +53,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
-import static com.example.max.testjson.TestJson.permissionArray;
-import static com.example.max.testjson.TestJson.wv;
-
 
 public class Admin_AddItemFragment extends Fragment implements View.OnClickListener{
 

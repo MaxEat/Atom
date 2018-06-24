@@ -372,7 +372,8 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
 
                     JSONArray sorting = jsonObject.getJSONArray("sorting");
 
-                    TestJson.permissionArray = new String[permissionTypeArray.length()];
+                   // TestJson.permissionArray = new String[permissionTypeArray.length()];
+                    TestJson.permission_days = new HashMap<>();
                     TestJson.classificationArray = new String[classificationArray.length()];
                     TestJson.locationArray = new String[locationArray.length()];
                     TestJson.classificationPictureArray = new String[pictureArray.length()];
@@ -381,8 +382,8 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
 
                     for (int i = 0; i < permissionTypeArray.length(); i++) {
                         JSONObject json = permissionTypeArray.getJSONObject(i);
-                        TestJson.permissionArray[i] = json.getString("permissionType");
-                        Log.i("permission value " + i, TestJson.permissionArray[i] + "\"");
+                        TestJson.permission_days.put(json.getString("permissionItemClassification"), json.getInt("permissionDay"));
+                        Log.i("permission value " + i, json.toString() + "\"");
                     }
 
                     for (int i = 0; i < pictureArray.length(); i++) {

@@ -2,6 +2,8 @@ package com.example.max.testjson;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.os.Message;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.widget.ImageView;
@@ -38,12 +40,11 @@ public class Item implements Serializable {
     private String classification;
     private int itemPermission;
     private String imageURL;
+    private int borrowDays;
+    private int permissionDays;
     private String status;
     private Bitmap bitmap;
     private int error;
-    private static int classificationNumber;
-    private String pictureNumberString;
-    private int picturNumber;
 
     public List<String> itemClassifications = new ArrayList<String>();
 
@@ -59,9 +60,6 @@ public class Item implements Serializable {
             itemPermission = 1;
     }
 
-    public static int getClassificationNumber(){
-        return classificationNumber;
-    }
 
     public String getItemTag() {
         return itemTag;
@@ -184,8 +182,14 @@ public class Item implements Serializable {
             itemLocation = json.getString("itemLocation");
             classification = json.getString("itemClassification");
             status = json.getString("itemStatus");
+
             error = json.getInt("error_message");
-        //    view.setText(itemLocation + " at " +classification);
+            Message m = new Message();
+            Bundle b = new Bundle();
+            b.putString("classification", classification);
+            m.setData(b);
+            m.what = 3;
+            AddItemFragment.handler.sendMessage(m);
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -1,6 +1,7 @@
 package com.example.max.testjson;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -34,6 +35,7 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.squareup.leakcanary.RefWatcher;
+import com.squareup.picasso.Picasso;
 
 import junit.framework.Test;
 
@@ -47,17 +49,20 @@ import static com.example.max.testjson.TestJson.wv;
 public class AddItemFragment extends Fragment implements LocationListener{
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+    public static Handler handler;
     private LocationManager locationManager;
     private Button QR;
     private Button BarCode;
     private Button TextRecognize;
     private Button Return_UnMaintain;
     private Button Borrow_Maintain;
-    public static TextView ScanResult;
+    private TextView Classification;
     private ImageView ItemImage;
-    String provider;
-    String cityName;
-    String fullAddress;
+
+    private String provider;
+    private String cityName;
+    private String fullAddress;
+
     private String latitude;
     private String longitude;
     private EditText ScannedCode;
@@ -108,12 +113,16 @@ public class AddItemFragment extends Fragment implements LocationListener{
                 System.out.println(addresses.get(0).getLocality());
                 cityName = addresses.get(0).getLocality();
                 fullAddress = addresses.get(0).getAddressLine(0);
+//                fullAddress.split(",");
+//                fullAddress.concat("Leuven");
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
+    @SuppressLint("HandlerLeak")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -123,9 +132,11 @@ public class AddItemFragment extends Fragment implements LocationListener{
         TextRecognize = (Button) view.findViewById(R.id.Text_scan);
         Return_UnMaintain = (Button) view.findViewById(R.id.return_item);
         Borrow_Maintain = (Button) view.findViewById(R.id.borrow_item);
-        ScanResult = (TextView) view.findViewById(R.id.scan_result);
+        Classification = (TextView) view.findViewById(R.id.classfication);
+
         ItemImage = (ImageView)view.findViewById(R.id.itemImage);
         ScannedCode = (EditText)view.findViewById(R.id.scannedCode) ;
+        ScannedCode.setText("");
         ConfirmScan = (ImageButton)view.findViewById(R.id.confirm);
 
         ItemImage.setVisibility(View.INVISIBLE);
@@ -138,7 +149,36 @@ public class AddItemFragment extends Fragment implements LocationListener{
             Borrow_Maintain.setText("Maintain");
         }
 
+        handler = new Handler() {
+            @Override
+            public void handleMessage(Message inputMessage) {
+                switch (inputMessage.what) {
+                    case 3:
+                        Log.i("ui handler", "set item info");
 
+                        String classification = inputMessage.getData().getString("classification");
+                        String pictureUrl = TestJson.pictureMap.get(classification);
+                      //  Classification.setText(classification);
+                        Log.i("classification", classification);
+                        Picasso.with(getContext()).load(pictureUrl).fit().into(ItemImage);
+                        break;
+                    case  4:
+                        Log.i("ui handler", "result " + inputMessage.getData().getString("result"));
+                       // Toast.makeText(getContext(), inputMessage.getData().getString("result"), Toast.LENGTH_SHORT).show();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                        builder.setTitle(inputMessage.getData().getString("title"));
+                        builder.setMessage(inputMessage.getData().getString("result"));
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // FIRE ZE MISSILES!
+                            }
+                        });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                        break;
+                }
+            }
+        };
         QR.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -202,7 +242,6 @@ public class AddItemFragment extends Fragment implements LocationListener{
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
-            // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                     Manifest.permission.ACCESS_FINE_LOCATION)) {
 
@@ -335,6 +374,8 @@ public class AddItemFragment extends Fragment implements LocationListener{
 
         try {
             setItemTag(ScannedCode.getText().toString());
+            Item item = new Item(itemTag);
+
             Log.i("itemtag is",itemTag);
 
         } catch (IOException e) {
@@ -385,9 +426,11 @@ public class AddItemFragment extends Fragment implements LocationListener{
 
         Item item = new Item(tag);
         wv.addJavascriptInterface(item,"Item");
-        item.getImageURL();
-     //   ScanResult.setText(item.getClassification());
-       // ScanResult.setText(item.getClassification()+" at " + item.getItemLocation());
+
+        item.setInfos();
+
+
+
     }
 
     public void updateItemState() throws IOException {

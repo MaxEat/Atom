@@ -68,9 +68,9 @@ public class BorrowedItem extends Item implements Serializable{
     public void calculateAllowableDays(Person person) {
         Log.i("user type", person.getUserType());
         if(person.getUserType().equals("Student"))
-            allowableDays = TestJson.permission_days_student.get(getClassification());
+            allowableDays = TestJson.permission_days.get(getClassification());
         else
-            allowableDays = TestJson.permission_days_worker.get(getClassification());
+            allowableDays = TestJson.permission_days.get(getClassification());
 
         String dt = borrowedTimeStamp;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -115,9 +115,6 @@ public class BorrowedItem extends Item implements Serializable{
 
     public long getLeftDaysNr() {
         return leftDays;
-    }
-    public long getAllowableDays() {
-        return allowableDays;
     }
 
     @Override
