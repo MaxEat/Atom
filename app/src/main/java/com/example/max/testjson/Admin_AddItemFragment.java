@@ -372,6 +372,7 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
             filePath = data.getData();
             try {
                 bitmap = MediaStore.Images.Media.getBitmap( getActivity().getApplicationContext().getContentResolver(), filePath);
+
                 imageView.setImageBitmap(bitmap);
 
             } catch (IOException e) {
