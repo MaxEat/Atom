@@ -223,25 +223,25 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
 
 
         //spinner select item permission
-        Spinner permissionSpinner = (Spinner) view.findViewById(R.id.spinnerPermission);
-
-        ArrayAdapter<String> permissionAdapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_list_item_1,TestJson.permissionArray);
-        permissionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        permissionSpinner.setAdapter(permissionAdapter);
-
-        permissionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                permission = TestJson.permissionArray[i];
-                Toast.makeText(getActivity().getApplicationContext(),permission,Toast.LENGTH_SHORT ).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
+//        Spinner permissionSpinner = (Spinner) view.findViewById(R.id.spinnerPermission);
+//
+//        ArrayAdapter<String> permissionAdapter = new ArrayAdapter<String>(getContext(),
+//                android.R.layout.simple_list_item_1,TestJson.permissionArray);
+//        permissionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        permissionSpinner.setAdapter(permissionAdapter);
+//
+//        permissionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                permission = TestJson.permissionArray[i];
+//                Toast.makeText(getActivity().getApplicationContext(),permission,Toast.LENGTH_SHORT ).show();
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//            }
+//        });
 
 
         confirmBtn.setOnClickListener(new View.OnClickListener() {
