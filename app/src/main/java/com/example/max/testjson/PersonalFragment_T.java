@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -101,7 +102,8 @@ public class PersonalFragment_T extends Fragment {
 
             case R.id.tab_menu_available:
                 wv.addJavascriptInterface(TestJson.getUser(), "Person");
-                TestJson.getUser().getItemsOfSameKind();
+                ((Student)TestJson.getUser()).getItemsOfSameKind_Student();
+                Log.i("size of wish!!", Integer.toString(((Student)TestJson.getUser()).getWishItems().size()));
                 fragment = mFragments[3];
                 break;
 

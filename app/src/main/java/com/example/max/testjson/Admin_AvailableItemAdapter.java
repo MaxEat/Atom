@@ -47,13 +47,13 @@ public class Admin_AvailableItemAdapter extends RecyclerView.Adapter<Admin_Avail
     @Override
     public void onBindViewHolder(final Admin_AvailableItemAdapter.ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        String content = holder.mItem.getClassification() + " at "+holder.mItem.getItemLocation();
-        holder.mContent.setText(content);
+        holder.mLocation.setText(holder.mItem.getItemLocation());
+        holder.mType.setText(holder.mItem.getClassification());
 
         if(holder.mItem.getStatus().equals("available"))
             holder.mQuantity.setText(Integer.toString(holder.mItem.getQuantity())+" items left");
         else
-            holder.mQuantity.setText("Not available");
+            holder.mQuantity.setText("0 items left");
 
         if(((Worker)TestJson.getUser()).inMaintainList(holder.mItem))
             holder.mImage.setVisibility(View.VISIBLE);
@@ -82,7 +82,8 @@ public class Admin_AvailableItemAdapter extends RecyclerView.Adapter<Admin_Avail
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mContent;
+        public final TextView mLocation;
+        public final TextView mType;
         public final TextView mQuantity;
         public AvailableItem mItem;
         public ImageView mImage;
@@ -90,14 +91,15 @@ public class Admin_AvailableItemAdapter extends RecyclerView.Adapter<Admin_Avail
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mContent = (TextView) view.findViewById(R.id.admin_content);
-            mQuantity = (TextView)view.findViewById(R.id.admin_item_quantity);
+            mLocation = (TextView) view.findViewById(R.id.admin_available_item_location);
+            mType = (TextView) view.findViewById(R.id.admin_available_item_type);
+            mQuantity = (TextView)view.findViewById(R.id.admin_available_item_quantity);
             mImage = (ImageView) view.findViewById(R.id.maintaining);
         }
 
         @Override
         public String toString() {
-            return super.toString()+mContent.getText();
+            return super.toString()+mType.getText() + mLocation.getText();
         }
     }
 

@@ -25,5 +25,11 @@
         <item name="android:textColorPrimary">@color/colorBlueDark</item>
     </style>
 
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <!-- Gets rid of the search icon -->
+        <!-- Gets rid of the "underline" in the text -->
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:tint">@color/white</item>
+    </style>
 
 </resources>

@@ -39,7 +39,7 @@ public class Borrowed_Item_Detail extends AppCompatActivity {
     }
 
     public void initDetails() {
-        currentItem.calculateAllowableDays(TestJson.getUser());
+        currentItem.calculateAllowableDays();
         currentItem.setLeftDays();
 
         type.setText(currentItem.getClassification());

@@ -14,9 +14,9 @@ public class Item_Expiring_News extends News {
     public Item_Expiring_News(BorrowedItem borrowedItem) {
         item = borrowedItem;
         Log.i("info","expiring create");
-        newsTitle = "Expiring";
+        newsTitle = "Item Expiring";
         newsContent = "The " + ((BorrowedItem)item).getClassification()+" you are borrowing is expiring in " + ((BorrowedItem)item).getLeftDays() +
-                "'\n" + "Return at " + ((BorrowedItem)item).getBorrowedLocation();
+                " days. ";
     }
 
 

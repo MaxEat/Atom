@@ -22,6 +22,7 @@
 
             <android.support.v7.widget.SearchView
                 android:id="@+id/search_view"
+                style="@style/SearchViewStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="right">
@@ -38,7 +39,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="50dp"
         tools:listitem="@layout/fragment_availableitem">
 
     </android.support.v7.widget.RecyclerView>
