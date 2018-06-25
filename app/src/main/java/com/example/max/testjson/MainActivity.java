@@ -212,7 +212,6 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
 
                 wv.addJavascriptInterface(user, "Person");
                 try {
-
                     ((Student)TestJson.getUser()).getPersonalItems();
                 } catch (IOException e) {
                     e.printStackTrace();

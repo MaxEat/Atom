@@ -58,27 +58,26 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal"
-                android:layout_marginTop="20dp">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/scanResult_admin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorPrimaryDark"
                     android:layout_marginStart="20dp"
-                    android:textSize="14sp"
                     android:text="Scan Result"
-                    />
-
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="14sp" />
 
 
                 <EditText
                     android:id="@+id/scannedCode_admin"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:ems="10"
                     android:textColor="@color/colorPrimaryDark"
                     android:textColorLink="@color/colorPrimaryDark"
@@ -90,28 +89,29 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal"
-                android:layout_marginTop="5dp">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/itemLocation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorPrimaryDark"
                     android:layout_marginStart="20dp"
-                    android:textSize="14sp"
-                    android:text="Item Location" />
+                    android:text="Item Location"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="14sp" />
 
                 <EditText
                     android:id="@+id/itemLocationText"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:ems="10"
                     android:textColor="@color/colorPrimaryDark"
                     android:textColorLink="@color/colorPrimaryDark"
-                    android:theme="@style/MyEditText"/>
+                    android:theme="@style/MyEditText" />
 
             </LinearLayout>
 
@@ -120,24 +120,24 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:orientation="horizontal"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/itemBoughtTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorPrimaryDark"
                     android:layout_marginStart="20dp"
-                    android:textSize="14sp"
-                    android:text="Bought Time" />
+                    android:text="Bought Time"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tvDate"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
                     android:layout_centerHorizontal="true"
+                    android:layout_marginStart="20dp"
                     android:hint="Select Date" />
 
             </LinearLayout>
@@ -151,25 +151,25 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:orientation="horizontal"
-                android:layout_marginTop="0dp">
+                android:layout_marginTop="0dp"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/itemClassification"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorPrimaryDark"
                     android:layout_marginStart="20dp"
-                    android:textSize="14sp"
-                    android:text="Item Classification" />
+                    android:text="Item Classification"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="14sp" />
 
                 <Spinner
                     android:id="@+id/spinnerClassification"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorPrimaryDark"
                     android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true" />
+                    android:layout_centerHorizontal="true"
+                    android:textColor="@color/colorPrimaryDark" />
 
             </LinearLayout>
 
@@ -191,71 +191,70 @@
     android:orientation="vertical"
     android:id="@+id/hiddenLayout">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal"
-                android:layout_marginTop="15dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/newClassification"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:layout_marginStart="20dp"
-                    android:textSize="14sp"
-                    android:text="New Item Classification" />
+        <TextView
+            android:id="@+id/newClassification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="New Item Classification"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="14sp" />
 
-                <EditText
-                    android:id="@+id/editTextName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:ems="10"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textColorLink="@color/colorPrimaryDark"
-                    android:theme="@style/MyEditText"
-                    />
+        <EditText
+            android:id="@+id/editTextName"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:ems="10"
+            android:textColor="@color/colorPrimaryDark"
+            android:textColorLink="@color/colorPrimaryDark"
+            android:theme="@style/MyEditText" />
 
-            </LinearLayout>
+    </LinearLayout>
 
             //item permission
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal"
-                android:layout_marginTop="5dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/itemPermission"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:layout_marginStart="20dp"
-                    android:textSize="14sp"
-                    android:text="Item Permission" />
+        <TextView
+            android:id="@+id/itemPermission"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="Item Permission"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="14sp" />
 
-                <EditText
-                    android:id="@+id/permission_day_text"
-                    android:layout_width="100dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:ems="10"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textColorLink="@color/colorPrimaryDark"
-                    android:theme="@style/MyEditText"
-                    />
+        <EditText
+            android:id="@+id/permission_day_text"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:ems="10"
+            android:textColor="@color/colorPrimaryDark"
+            android:textColorLink="@color/colorPrimaryDark"
+            android:theme="@style/MyEditText" />
 
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="14sp"
-                    android:text="Day(s)"/>
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="Day(s)"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="14sp" />
 
-            </LinearLayout>
+    </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

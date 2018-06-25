@@ -8,6 +8,7 @@ import android.webkit.JavascriptInterface;
 import android.widget.Toast;
 
 import com.example.max.testjson.dashboard.News;
+import com.jcraft.jsch.IO;
 
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
@@ -134,6 +135,11 @@ public abstract class Person {
         wv.postUrl(CustomedWebview.updateItemStateUrl,array);
     }
 
+    public void getPreferedEmailAndHeadShot() throws IOException {
+        byte[] array = getPreferedEmailAndHeadShot_createJson();
+        wv.postUrl(CustomedWebview.getPreferedEmailAndHeadShotURL, array);
+    }
+
     public void updateAlertEmail(String email) throws IOException {
         byte[] array = updateAlertEmail_createJson(email);
         wv.postUrl(CustomedWebview.updateAlertEmail, array);
@@ -207,6 +213,17 @@ public abstract class Person {
         } catch(JSONException e){
             e.printStackTrace();
         }
+        return createJson(postdata);
+    }
+
+    protected byte[] getPreferedEmailAndHeadShot_createJson() throws IOException {
+        JSONObject postdata = new JSONObject();
+        try {
+            postdata.put("cardID", cardID);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         return createJson(postdata);
     }
 
@@ -370,6 +387,29 @@ public abstract class Person {
         try{
             JSONObject json = new JSONObject(htmlSource);
             error = json.getInt("error_message");
+            Log.i("error", Integer.toString(error));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @JavascriptInterface
+    public void getPreferedEmailAndHeadShot_interface(String htmlSource) {
+        Log.i("prefered email&headshot",  htmlSource);
+        try{
+            JSONObject json = new JSONObject(htmlSource);
+            error = json.getInt("error_message");
+            setAlertEmail(json.getString("preferedEmail"));
+            setHeadshotUrl(json.getString("headshotUrl"));
+
+            Message m = new Message();
+            Bundle b = new Bundle();
+            b.putString("email", json.getString("preferedEmail"));
+            b.putString("headshotUrl", json.getString("headshotUrl"));
+            m.setData(b);
+            m.what = 6;
+            SettingFragment.handler.sendMessage(m);
+
             Log.i("error", Integer.toString(error));
         } catch (JSONException e) {
             e.printStackTrace();

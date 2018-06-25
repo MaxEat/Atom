@@ -36,6 +36,7 @@ public class CustomedWebview extends WebView {
     static final String getAllClassificationsURL = "https://labtools.groept.be/inventory/secure/php_getAllClassifications.php";
     static final String getPermissionClassificationURL = "https://labtools.groept.be/inventory/secure/php_getClassificationPermission.php";
     static final String getExpiredItemURL = "https://labtools.groept.be/inventory/secure/php_returnExpirationInfo.php";
+    static final String getPreferedEmailAndHeadShotURL = "https://labtools.groept.be/inventory/secure/php_getPersonEmailHead.php";
     static final String addNewItemURL1 = "https://labtools.groept.be/inventory/secure/php_addItem1.php";
     static final String addNewItemURL2 = "https://labtools.groept.be/inventory/secure/php_addItem2.php";
     static final String getAllPermissionsURL = "https://labtools.groept.be/inventory/secure/php_getAllPermissions.php";

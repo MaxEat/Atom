@@ -233,6 +233,7 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 itemTagAdmin = ScannedCode_admin.getText().toString();
+//                Log.i("itemTag", ScannedCode_admin.);
                 try {
                     if(buttonToggle == 1){
                         uploadItemInfo(v);
@@ -343,6 +344,8 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
         if(resultCode == getActivity().RESULT_FIRST_USER)
         {
             String answer = data.getStringExtra("result");
+            answer = answer.replace("\n\n","\n");
+            answer = answer.replace("\n",", ");
             ScannedCode_admin.setText(answer);
 
             Log.i("scan text", answer);

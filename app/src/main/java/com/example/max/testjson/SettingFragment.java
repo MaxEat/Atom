@@ -9,6 +9,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -45,6 +47,8 @@ import static com.example.max.testjson.TestJson.wv;
 
 
 public class SettingFragment extends Fragment implements View.OnClickListener{
+
+    public static Handler handler;
     private EditText preferEmail;
     private RadioGroup radioGroup;
     private int reminderDaysCache = TestJson.alertDay;
@@ -98,6 +102,21 @@ public class SettingFragment extends Fragment implements View.OnClickListener{
         headshot = (ImageView) view.findViewById(R.id.my_image);
         String imageURI = TestJson.getUser().getHeadshotUrl();
         Log.i("imageUri is------------",imageURI);
+
+        handler = new Handler() {
+            @Override
+            public void handleMessage(Message inputMessage) {
+                switch (inputMessage.what) {
+                    case 6:
+                        Log.i("ui handler", "set prefered email and headshot");
+                        String email = inputMessage.getData().getString("preferedEmail");
+                        String pictureUrl = inputMessage.getData().getString("headshotUrl");
+                        preferEmail.setText(email);
+                        Picasso.with(getActivity().getApplicationContext()).load(pictureUrl).fit().into(headshot);
+                        break;
+                }
+            }
+        };
         Picasso.with(getActivity().getApplicationContext()).load(imageURI).fit().into(headshot);
 
 

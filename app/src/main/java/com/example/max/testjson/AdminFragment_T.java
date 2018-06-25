@@ -104,6 +104,9 @@ public class AdminFragment_T extends Fragment {
                 break;
 
             case R.id.tab_adminMenu_setting:
+                wv.addJavascriptInterface(TestJson.getUser(), "Person");
+                TestJson.getUser().getPreferedEmailAndHeadShot();
+                Log.i("here dash size", Integer.toString(TestJson.getUser().getDashboard().size()));
                 fragment = mFragments[4];
                 break;
         }
