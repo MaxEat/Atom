@@ -32,7 +32,7 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/admin_toolbar"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="13dp"
+        android:layout_marginTop="18dp"
         tools:listitem="@layout/fragment_admin_available_item">
 
     </android.support.v7.widget.RecyclerView>

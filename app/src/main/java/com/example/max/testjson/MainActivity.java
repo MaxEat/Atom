@@ -207,9 +207,11 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                 user.setAvailableItemMap(availableItemMap);
                 user.setCardID(cardid);
                 user.setHeadshotUrl(headshot);
-                Log.i("panjiahao",TestJson.getUser().getHeadshotUrl());
+
                 user.setUserType("Student");
                 TestJson.setUser(user);
+
+                Log.i("panjiahao",TestJson.getUser().getHeadshotUrl());
 
                 wv.addJavascriptInterface(user, "Person");
                 try {

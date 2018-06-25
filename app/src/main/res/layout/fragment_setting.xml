@@ -5,6 +5,9 @@
     android:padding="10dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.max.testjson.SettingFragment">
+    <ScrollView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
 
 
 
@@ -23,9 +26,9 @@
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="50dp"
+    android:layout_marginStart="30dp"
     android:layout_marginTop="20dp"
-    android:layout_marginEnd="50dp"
+    android:layout_marginEnd="30dp"
     android:orientation="vertical"
     >
 
@@ -40,7 +43,7 @@
                 android:id="@+id/second_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:text="Contact email:"
                 android:textColor="@color/colorPrimaryDark" />
 
@@ -49,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:text="......@......."
@@ -70,7 +73,7 @@
                 android:id="@+id/textView6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:text="Return reminder:"
                 android:textColor="@color/colorPrimaryDark" />
 
@@ -85,7 +88,11 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
-                    android:text="One day" />
+                    android:textSize="16sp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:button="@drawable/ic_radio_custom"
+                    android:layout_marginStart="5dp"
+                    android:text="One day before" />
 
                 <RadioButton
                     android:id="@+id/threedays"
@@ -93,7 +100,11 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
-                    android:text="Three days" />
+                    android:textColor = "@color/colorPrimaryDark"
+                    android:textSize="16sp"
+                    android:button="@drawable/ic_radio_custom"
+                    android:layout_marginStart="5dp"
+                    android:text="Three days before" />
 
                 <RadioButton
                     android:id="@+id/sevendays"
@@ -101,7 +112,11 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
-                    android:text="Seven days" />
+                    android:textSize="16sp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:button="@drawable/ic_radio_custom"
+                    android:layout_marginStart="5dp"
+                    android:text="Seven days before" />
             </RadioGroup>
 
 
@@ -130,6 +145,7 @@
             android:textColor="@color/colorAccent"/>
 
     </LinearLayout>
+    </ScrollView>
 
 
 </FrameLayout>

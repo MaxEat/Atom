@@ -9,9 +9,11 @@
 
     <ImageButton
         android:id="@+id/sendEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_dialog_email" />
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="left"
+        android:layout_marginStart="20dp"
+        android:background="@drawable/ic_mailbox" />
 
     <TextView
         android:id="@+id/emptyDash"
