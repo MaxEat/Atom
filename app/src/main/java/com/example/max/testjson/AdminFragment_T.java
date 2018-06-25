@@ -95,7 +95,7 @@ public class AdminFragment_T extends Fragment {
 
             case R.id.tab_adminMenu_overview:
                 wv.addJavascriptInterface(TestJson.getUser(), "Person");
-                TestJson.getUser().getItemsOfSameKind();
+                ((Worker)TestJson.getUser()).getItemsOfSameKind_Worker();
                 fragment = mFragments[2];
                 break;
 

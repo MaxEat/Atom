@@ -313,10 +313,6 @@ public abstract class Person {
                     availableItemMap.put(item.getClassification() + item.getItemLocation(), item);
                 }
 
-
-                //刚加的
-                //formPage();
-
             }
 
         } catch (Throwable t) {

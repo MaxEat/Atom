@@ -207,11 +207,8 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                 user.setAvailableItemMap(availableItemMap);
                 user.setCardID(cardid);
                 user.setHeadshotUrl(headshot);
-
                 user.setUserType("Student");
                 TestJson.setUser(user);
-
-                Log.i("panjiahao",TestJson.getUser().getHeadshotUrl());
 
                 wv.addJavascriptInterface(user, "Person");
                 try {
@@ -307,7 +304,7 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
     }
 
     @Override
-    public void onListFragmentInteraction(AvailableItem item) {
+    public void onListFragmentInteraction(ManageItem item) {
 
     }
 
@@ -331,6 +328,11 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
 
     @Override
     public void onListFragmentInteraction(News item) {
+
+    }
+
+    @Override
+    public void onListFragmentInteraction(AvailableItem item) {
 
     }
 
@@ -372,22 +374,19 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
 
                 if(error == 0) {
                     headshot = jsonUser.getString("headshotUrl");
-                    Log.i("headshotUrl in jsonuser",headshot);
                     userType = jsonUser.getString("userType");
                     blacklist = jsonUser.getString("state");
 
 
                     JSONArray permissionTypeArray = jsonObject.getJSONArray("permissionTypeList");
                     JSONArray pictureArray = jsonObject.getJSONArray("pictureList");
-                    JSONArray locationArray = jsonObject.getJSONArray("locationList");
+//                    JSONArray locationArray = jsonObject.getJSONArray("locationList");
                     JSONArray classificationArray = jsonObject.getJSONArray("classificationList");
-
                     JSONArray sorting = jsonObject.getJSONArray("sorting");
 
-                   // TestJson.permissionArray = new String[permissionTypeArray.length()];
                     TestJson.permission_days = new HashMap<>();
                     TestJson.classificationArray = new String[classificationArray.length()];
-                    TestJson.locationArray = new String[locationArray.length()];
+//                    TestJson.locationArray = new String[locationArray.length()];
                     TestJson.classificationPictureArray = new String[pictureArray.length()];
                     availableItems = new ArrayList<AvailableItem>();
                     availableItemMap = new HashMap<String, AvailableItem>();
@@ -405,11 +404,11 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                         Log.i("picture classification " + i, TestJson.classificationPictureArray[i] + "\"" + json.getString("pictureUrl"));
                     }
 
-                    for (int i = 0; i < locationArray.length(); i++) {
-                        JSONObject json = locationArray.getJSONObject(i);
-                        TestJson.locationArray[i] = json.getString("itemLocation");
-                        Log.i("location " + i, TestJson.locationArray[i] + "\"");
-                    }
+//                    for (int i = 0; i < locationArray.length(); i++) {
+//                        JSONObject json = locationArray.getJSONObject(i);
+//                        TestJson.locationArray[i] = json.getString("itemLocation");
+//                        Log.i("location " + i, TestJson.locationArray[i] + "\"");
+//                    }
 
                     for (int i = 0; i < classificationArray.length(); i++) {
                         JSONObject json = classificationArray.getJSONObject(i);
@@ -431,7 +430,6 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                                 item.setQuantity(quantity);
                                 item.setStatus("available");
                             }
-
                         }
                         else
                         {
@@ -445,8 +443,8 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                             availableItems.add(item);
                             availableItemMap.put(item.getClassification() + item.getItemLocation(), item);
                         }
-
                     }
+
 
 
                     checkUserType(kuleuvenID, userName, email, userType, cardID, blacklist);

@@ -26,17 +26,34 @@ import static com.example.max.testjson.TestJson.wv;
 
 public class Worker extends Person{
 
-    private String administorLocation;
-    private String administorType;
     private ArrayList<ExpiredItem> expiredItems;
+    private ArrayList<ManageItem> manageItems;
+    private HashMap<String, ManageItem> manageItemHashMap;
 
     Worker(String CardID) {super(CardID);}
 
     Worker(String aUserName, String aKuleuvenID, String Email){
         super(aUserName, aKuleuvenID, Email);
         expiredItems = new ArrayList<ExpiredItem>();
-        administorLocation = "all";
-        administorType = "all";
+        manageItems = new ArrayList<ManageItem>();
+        manageItemHashMap = new HashMap<>();
+
+    }
+
+    public ArrayList<ManageItem> getManageItems() {
+        return manageItems;
+    }
+
+    public void setManageItems(ArrayList<ManageItem> manageItems) {
+        this.manageItems = manageItems;
+    }
+
+    public HashMap<String, ManageItem> getManageItemHashMap() {
+        return manageItemHashMap;
+    }
+
+    public void setManageItemHashMap(HashMap<String, ManageItem> manageItemHashMap) {
+        this.manageItemHashMap = manageItemHashMap;
     }
 
     public ArrayList<ExpiredItem> getExpiredItems() {
@@ -68,29 +85,55 @@ public class Worker extends Person{
 
     @Override
     public void formPage() {
-        Log.i("itemlsit size", Integer.toString(itemList.size()));
+        Log.i("itemlist size", Integer.toString(itemList.size()));
 
         for(Item item:itemList){
-            boolean exist = false;
-            for(AvailableItem i: availableItems){
-                if(item.getItemLocation().equals(i.getItemLocation()) &&
-                        item.getClassification().equals(i.getClassification())){
-                    i.increaseQuantity();
-                    exist = true;
-                    break;
+
+            if(!item.getStatus().equals("available")) {
+                if (manageItemHashMap.containsKey(item.getClassification() + item.getItemLocation())) {
+                    ManageItem manageItem = manageItemHashMap.get(item.getClassification() + item.getItemLocation());
+                    if (item.getStatus().equals("maintaining"))
+                        manageItem.increaseMaintainNr();
+                    if (item.getStatus().equals("borrowing"))
+                        manageItem.increaseBorrwoNr();
+                }
+                else{
+                    ManageItem newItem = new ManageItem();
+                    newItem.setItemLocation(item.getItemLocation());
+                    newItem.setClassification(item.getClassification());
+                    if (item.getStatus().equals("maintaining"))
+                        newItem.increaseMaintainNr();
+                    if (item.getStatus().equals("borrowing"))
+                        newItem.increaseBorrwoNr();
+                    manageItems.add(newItem);
+                    manageItemHashMap.put(newItem.getClassification() + newItem.getItemLocation(), newItem);
                 }
             }
-            if(!exist){
-                AvailableItem newItem = new AvailableItem();
-                newItem.setItemLocation(item.getItemLocation());
-                newItem.setClassification(item.getClassification());
-
-                availableItems.add(newItem);
-                availableItemMap.put(newItem.getClassification()+newItem.getItemLocation(), newItem);
-            }
         }
-        Log.i("avail itemlist size", Integer.toString(availableItems.size()));
-        setMaintainingMark();
+        Message message = new Message();
+        message.what = 5;
+        Admin_AvailableItemFragment.handler.sendMessage(message);
+//        for(Item item:itemList){
+//            boolean exist = false;
+//            for(AvailableItem i: availableItems){
+//                if(item.getItemLocation().equals(i.getItemLocation()) &&
+//                        item.getClassification().equals(i.getClassification())){
+//                    i.increaseQuantity();
+//                    exist = true;
+//                    break;
+//                }
+//            }
+//            if(!exist){
+//                AvailableItem newItem = new AvailableItem();
+//                newItem.setItemLocation(item.getItemLocation());
+//                newItem.setClassification(item.getClassification());
+//
+//                availableItems.add(newItem);
+//                availableItemMap.put(newItem.getClassification()+newItem.getItemLocation(), newItem);
+//            }
+//        }
+//        Log.i("avail itemlist size", Integer.toString(availableItems.size()));
+//        setMaintainingMark();
 
     }
 
@@ -98,6 +141,10 @@ public class Worker extends Person{
 
     }
 
+    public void getItemsOfSameKind_Worker() throws IOException {
+        byte[] array = getItemsOfSameKind_createJson();
+        wv.postUrl(CustomedWebview.getItemsOfSameKindWorkerURL, array);
+    }
 
     public void setDashboardExpiredPerson() {
 
@@ -131,13 +178,16 @@ public class Worker extends Person{
         Log.i("Admin_get initialize", htmlSource);
         try {
             expiredItems = new ArrayList<ExpiredItem>();
+            manageItems = new ArrayList<ManageItem>();
+            manageItemHashMap = new HashMap<>();
             availableItems = new ArrayList<AvailableItem>();
             availableItemMap = new HashMap<String, AvailableItem>();
 
             JSONObject jsonObject = new JSONObject(htmlSource);
             JSONArray jsonArrayExpire = jsonObject.getJSONArray("expire");
-            JSONArray jsonArrayOverview = jsonObject.getJSONArray("overview");
-
+            JSONArray maintain = jsonObject.getJSONArray("maintainlist");
+            JSONArray borrow = jsonObject.getJSONArray("borrowlist");
+//
             for (int i = 0; i < jsonArrayExpire.length(); i++) {
                 JSONObject json = jsonArrayExpire.getJSONObject(i);
                 ExpiredItem item = new ExpiredItem(json.getString("itemTag"));
@@ -150,46 +200,177 @@ public class Worker extends Person{
                 expiredItems.add(item);
             }
 
+            for (int i = 0; i < maintain.length(); i++) {
 
-            for (int i = 0; i < jsonArrayOverview.length(); i++) {
-                JSONObject json = jsonArrayOverview.getJSONObject(i);
+                    JSONObject json = maintain.getJSONObject(i);
+                    String itemClassification = json.getString("itemClassification");
+                    String itemLocation = json.getString("itemLocation");
+                    int quantity = json.getInt("quantity");
+
+                    ManageItem newItem = new ManageItem();
+                    newItem.setItemLocation(itemLocation);
+                    newItem.setClassification(itemClassification);
+                    newItem.setMaintainNr(quantity);
+                    manageItems.add(newItem);
+                    manageItemHashMap.put(newItem.getClassification() + newItem.getItemLocation(), newItem);
+
+                }
+
+            for(int i = 0; i<borrow.length(); i++) {
+                JSONObject json = borrow.getJSONObject(i);
                 String itemClassification = json.getString("itemClassification");
                 String itemLocation = json.getString("itemLocation");
-                String itemStatus = json.getString("itemStatus");
                 int quantity = json.getInt("quantity");
 
-                if(availableItemMap.containsKey(itemClassification + itemLocation)) {
-
-                    if (itemStatus.equals("available")) {
-                        AvailableItem item = availableItemMap.get(itemClassification + itemLocation);
-                        item.setQuantity(quantity);
-                        item.setStatus("available");
+                if(manageItemHashMap.containsKey(itemClassification+itemLocation)){
+                    ManageItem item = manageItemHashMap.get(itemClassification+itemLocation);
+                    item.setBorrowNr(quantity);
+                }
+                else {
+                    ManageItem newItem = new ManageItem();
+                    newItem.setItemLocation(itemLocation);
+                    newItem.setClassification(itemClassification);
+                    newItem.setBorrowNr(quantity);
+                    manageItems.add(newItem);
+                        manageItemHashMap.put(newItem.getClassification() + newItem.getItemLocation(), newItem);
                     }
-
-                }
-                else
-                {
-
-                    AvailableItem item = new AvailableItem();
-                    item.setQuantity(quantity);
-                    item.setItemLocation(itemLocation);
-                    item.setClassification(itemClassification);
-                    item.setStatus(itemStatus);
-
-                    availableItems.add(item);
-                    availableItemMap.put(item.getClassification() + item.getItemLocation(), item);
-                }
-
             }
+
+
+//            for (int i = 0; i < jsonArrayOverview.length(); i++) {
+//                JSONObject json = jsonArrayOverview.getJSONObject(i);
+//                String itemClassification = json.getString("itemClassification");
+//                String itemLocation = json.getString("itemLocation");
+//                String itemStatus = json.getString("itemStatus");
+//                int quantity = json.getInt("quantity");
+//
+//                if(availableItemMap.containsKey(itemClassification + itemLocation)) {
+//
+//                    if (itemStatus.equals("available")) {
+//                        AvailableItem item = availableItemMap.get(itemClassification + itemLocation);
+//                        item.setQuantity(quantity);
+//                        item.setStatus("available");
+//                    }
+//
+//                }
+//                else
+//                {
+//
+//                    AvailableItem item = new AvailableItem();
+//                    item.setQuantity(quantity);
+//                    item.setItemLocation(itemLocation);
+//                    item.setClassification(itemClassification);
+//                    item.setStatus(itemStatus);
+//
+//                    availableItems.add(item);
+//                    availableItemMap.put(item.getClassification() + item.getItemLocation(), item);
+//                }
+//
+//            }
 
             setDashboardExpiredPerson();
             Message message = new Message();
             message.what = 2;
             MainActivity.uihander.sendMessage(message);
+
         }catch (JSONException e) {
             e.printStackTrace();
         }
     }
+
+    @JavascriptInterface
+    public void getItemsSameKind_interface_Worker(String htmlSource){
+        Log.i("get same kind info", htmlSource);
+        try {
+
+            JSONObject jsonObject = new JSONObject(htmlSource);
+//            JSONArray sorting = jsonObject.getJSONArray("maintainlist");
+            JSONArray maintain = jsonObject.getJSONArray("maintainlist");
+            JSONArray borrow = jsonObject.getJSONArray("borrowlist");
+
+            availableItems = new ArrayList<AvailableItem>();
+            availableItemMap = new HashMap<String, AvailableItem>();
+            manageItemHashMap = new HashMap<String, ManageItem>();
+            manageItems = new ArrayList<ManageItem>();
+
+            for (int i = 0; i < maintain.length(); i++) {
+
+                JSONObject json = maintain.getJSONObject(i);
+                String itemClassification = json.getString("itemClassification");
+                String itemLocation = json.getString("itemLocation");
+                int quantity = json.getInt("quantity");
+
+                ManageItem newItem = new ManageItem();
+                newItem.setItemLocation(itemLocation);
+                newItem.setClassification(itemClassification);
+                newItem.setMaintainNr(quantity);
+                manageItems.add(newItem);
+                manageItemHashMap.put(newItem.getClassification() + newItem.getItemLocation(), newItem);
+
+            }
+
+            for(int i = 0; i<borrow.length(); i++) {
+                JSONObject json = borrow.getJSONObject(i);
+                String itemClassification = json.getString("itemClassification");
+                String itemLocation = json.getString("itemLocation");
+                int quantity = json.getInt("quantity");
+
+                if(manageItemHashMap.containsKey(itemClassification+itemLocation)){
+                    ManageItem item = manageItemHashMap.get(itemClassification+itemLocation);
+                    item.setBorrowNr(quantity);
+                }
+                else {
+                    ManageItem newItem = new ManageItem();
+                    newItem.setItemLocation(itemLocation);
+                    newItem.setClassification(itemClassification);
+                    newItem.setBorrowNr(quantity);
+                    manageItems.add(newItem);
+                    manageItemHashMap.put(newItem.getClassification() + newItem.getItemLocation(), newItem);
+                }
+            }
+            Message message = new Message();
+            message.what = 5;
+            Admin_AvailableItemFragment.handler.sendMessage(message);
+
+//            for (int i = 0; i < sorting.length(); i++) {
+//                JSONObject json = sorting.getJSONObject(i);
+//                String itemClassification = json.getString("itemClassification");
+//                String itemLocation = json.getString("itemLocation");
+//                String itemStatus = json.getString("itemStatus");
+//                int quantity = json.getInt("quantity");
+//
+//                if(availableItemMap.containsKey(itemClassification + itemLocation)) {
+//
+//                    if (itemStatus.equals("available")) {
+//                        AvailableItem item = availableItemMap.get(itemClassification + itemLocation);
+//                        item.setQuantity(quantity);
+//                        item.setStatus("available");
+//                    }
+//
+//                }
+//                else
+//                {
+//
+//                    AvailableItem item = new AvailableItem();
+//                    item.setQuantity(quantity);
+//                    item.setItemLocation(itemLocation);
+//                    item.setClassification(itemClassification);
+//                    item.setStatus(itemStatus);
+//
+//
+//                    availableItems.add(item);
+//                    availableItemMap.put(item.getClassification() + item.getItemLocation(), item);
+//                }
+//
+//            }
+
+        } catch (Throwable t) {
+            Log.e("My info", "Could not parse malformed JSON: \"" + htmlSource + "\"");
+        }
+    }
+
+
+
 
     @JavascriptInterface
     public void getExpiredItemPersonDatabase_interface(String htmlSource) {
