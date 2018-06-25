@@ -364,13 +364,8 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
 
 
                 JSONObject jsonObject = new JSONObject(htmlSource);
-
-
-
                 JSONObject jsonUser = jsonObject.getJSONObject("user");
                 int error = jsonUser.getInt("error_message");
-
-
 
                 if(error == 0) {
                     headshot = jsonUser.getString("headshotUrl");
@@ -380,13 +375,11 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
 
                     JSONArray permissionTypeArray = jsonObject.getJSONArray("permissionTypeList");
                     JSONArray pictureArray = jsonObject.getJSONArray("pictureList");
-//                    JSONArray locationArray = jsonObject.getJSONArray("locationList");
                     JSONArray classificationArray = jsonObject.getJSONArray("classificationList");
                     JSONArray sorting = jsonObject.getJSONArray("sorting");
 
                     TestJson.permission_days = new HashMap<>();
                     TestJson.classificationArray = new String[classificationArray.length()];
-//                    TestJson.locationArray = new String[locationArray.length()];
                     TestJson.classificationPictureArray = new String[pictureArray.length()];
                     availableItems = new ArrayList<AvailableItem>();
                     availableItemMap = new HashMap<String, AvailableItem>();
@@ -403,12 +396,6 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                         TestJson.pictureMap.put(json.getString("itemPictureClassification"), json.getString("pictureUrl"));
                         Log.i("picture classification " + i, TestJson.classificationPictureArray[i] + "\"" + json.getString("pictureUrl"));
                     }
-
-//                    for (int i = 0; i < locationArray.length(); i++) {
-//                        JSONObject json = locationArray.getJSONObject(i);
-//                        TestJson.locationArray[i] = json.getString("itemLocation");
-//                        Log.i("location " + i, TestJson.locationArray[i] + "\"");
-//                    }
 
                     for (int i = 0; i < classificationArray.length(); i++) {
                         JSONObject json = classificationArray.getJSONObject(i);
@@ -489,12 +476,6 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
 
     }
 
-
-
-    public void getPermissionClassification() throws IOException {
-        byte[] array = getPermissionClassification_createJson();
-        wv.postUrl(CustomedWebview.getPermissionClassificationURL, array);
-    }
 
     protected byte[] getPermissionClassification_createJson() throws IOException {
         JSONObject postdata = new JSONObject();

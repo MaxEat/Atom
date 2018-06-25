@@ -53,6 +53,6 @@ public class Borrowed_Item_Detail extends AppCompatActivity {
         daysLeft.setEnabled(false);
 
         String pictureUrl = TestJson.pictureMap.get(currentItem.getClassification());
-        Picasso.with(getApplicationContext()).load(pictureUrl).resize(120, 120).into(imageView);
+        Picasso.with(getApplicationContext()).load(pictureUrl).fit().into(imageView);
     }
 }

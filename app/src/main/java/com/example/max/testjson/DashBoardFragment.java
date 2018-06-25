@@ -30,7 +30,7 @@ import static com.example.max.testjson.TestJson.wv;
 
 public class DashBoardFragment extends Fragment {
 
-    private final  String returnMessage = "The item you borrowed is expired. Please return it as soon as possible.";
+    private final  String returnMessage = "Dear, \n\n\n This is the administrator from ATOM inventory system from KU Leuven. \n\n The item you borrowed is expired. Please return it as soon as possible. \n\nFor more details, please check your personal dashboard.\n\n\nBest regards,\nAtom ";
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
@@ -141,6 +141,7 @@ public class DashBoardFragment extends Fragment {
             TO[i] = item.getBorrowPersonEmail();
             i++;
         }
+        Log.i("alert email number", Integer.toString(i));
         String[] CC = {""};
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
 

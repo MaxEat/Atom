@@ -6,6 +6,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
@@ -34,7 +36,8 @@ import com.squareup.picasso.Picasso;
 
 public class HomeFragment extends Fragment {
     private String mFrom;
-    private final  String returnMessage = "The item you borrowed is expired. Please return it as soon as possible.";
+    public static Handler handler;
+    private final  String returnMessage = "Dear, \n This is the administrator from ATOM inventory system from KU Leuven. \n The item you borrowed is expired. Please return it as soon as possible. \nFor more details, please check your personal dashboard.\n \nBest regards,\nAtom ";
     static HomeFragment newInstance(String from){
         HomeFragment fragment = new HomeFragment();
         Bundle bundle = new Bundle();
@@ -58,6 +61,7 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home,null);
         final LayoutInflater factory = getLayoutInflater();
         View listView = factory.inflate(R.layout.fragment_home_listview, null);
+
 
         ListView list = (ListView)view.findViewById(R.id.list_view_home);
         ArrayList<HashMap<String, Object>> listItem = new ArrayList<HashMap<String, Object>>();
@@ -159,6 +163,7 @@ public class HomeFragment extends Fragment {
             TO[i] = item.getBorrowPersonEmail();
             i++;
         }
+        Log.i("alert email number", Integer.toString(i));
         String[] CC = {""};
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
 

@@ -137,9 +137,6 @@ public class Worker extends Person{
 
     }
 
-    private void setMaintainingMark() {
-
-    }
 
     public void getItemsOfSameKind_Worker() throws IOException {
         byte[] array = getItemsOfSameKind_createJson();
@@ -194,10 +191,14 @@ public class Worker extends Person{
                 item.setBorrowedTimeStamp(json.getString("borrowTimestamp").substring(0, 10));
                 item.setBorrowedLocation(json.getString("borrowLocation"));
                 item.setClassification(json.getString("itemClassification"));
-                item.setBorrowPersonEmail(json.getString("email"));
+                if(json.getString("preferedEmail").equals("null"))
+                    item.setBorrowPersonEmail(json.getString("email"));
+                else
+                    item.setBorrowPersonEmail(json.getString("preferedEmail"));
                 item.setBorrowPersonID(json.getString("userID"));
                 item.setBorrowPersonName(json.getString("userName"));
                 expiredItems.add(item);
+                Log.i("person email", item.getBorrowPersonEmail());
             }
 
             for (int i = 0; i < maintain.length(); i++) {
