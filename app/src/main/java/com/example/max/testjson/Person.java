@@ -35,6 +35,7 @@ public abstract class Person {
     protected String userType;
     protected String userName;
     protected String alertEmail;
+    protected String headshotUrl;
     protected ArrayList<News> dashboard;
     protected Map<String, News> dashboardMap;
     public List<AvailableItem> availableItems = new ArrayList<AvailableItem>();
@@ -57,6 +58,13 @@ public abstract class Person {
         dashboardMap = new HashMap<>();
     }
 
+    public void setHeadshotUrl(String headshotUrl){
+        this.headshotUrl = headshotUrl;
+    }
+
+    public String getHeadshotUrl(){
+        return headshotUrl;
+    }
 
     public void setAlertEmail(String alertEmail) {
         this.alertEmail = alertEmail;
