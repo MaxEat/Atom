@@ -151,6 +151,7 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                     Student user = new Student(userName, kuleuvenID, email, blacklist);
                     user.setUserType(userType);
                     user.setCardID(id);
+                    user.setHeadshotUrl(headshot);
                     wv.addJavascriptInterface(user, "Person");
                     TestJson.setUser(user);
 
@@ -206,6 +207,7 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                 user.setAvailableItemMap(availableItemMap);
                 user.setCardID(cardid);
                 user.setHeadshotUrl(headshot);
+                Log.i("panjiahao",TestJson.getUser().getHeadshotUrl());
                 user.setUserType("Student");
                 TestJson.setUser(user);
 
@@ -362,12 +364,13 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
 
 
                 JSONObject jsonUser = jsonObject.getJSONObject("user");
-                headshot = jsonUser.getString("headshotUrl");
                 int error = jsonUser.getInt("error_message");
 
 
 
                 if(error == 0) {
+                    headshot = jsonUser.getString("headshotUrl");
+                    Log.i("headshotUrl in jsonuser",headshot);
                     userType = jsonUser.getString("userType");
                     blacklist = jsonUser.getString("state");
 

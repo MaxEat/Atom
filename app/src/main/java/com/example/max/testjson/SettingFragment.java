@@ -50,7 +50,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener{
     private int reminderDaysCache = TestJson.alertDay;
 
     private Button submit;
-    private ImageButton logout;
+    private Button logout;
 
     private ImageView headshot;
 
@@ -62,6 +62,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener{
 
     //Uri to store the image uri
     private Uri filePath;
+    private int uploadHead = 0;
 
     private OnFragmentInteractionListener mListener;
 
@@ -92,7 +93,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener{
         radioGroup = (RadioGroup)view.findViewById(R.id.reminder_days);
 
         submit = (Button)view.findViewById(R.id.submit_setting);
-        logout = (ImageButton)view.findViewById(R.id.logout);
+        logout = (Button)view.findViewById(R.id.logout);
 
         headshot = (ImageView) view.findViewById(R.id.my_image);
         String imageURI = TestJson.getUser().getHeadshotUrl();
@@ -146,7 +147,9 @@ public class SettingFragment extends Fragment implements View.OnClickListener{
                     alertBuilder.setMessage("Please enter a valid email address");
                     alertBuilder.create().show();
                 }
-                uploadMultipart();
+                if(uploadHead == 1){
+                    uploadMultipart();
+                }
 
             }
         });
@@ -233,6 +236,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
+        uploadHead = 1;
         showFileChooser();
     }
 

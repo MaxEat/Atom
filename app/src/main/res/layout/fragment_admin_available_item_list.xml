@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:layout_alignParentStart="true"
-        android:background="#bc4a4a">
+        android:background="@color/colorBlueLight">
 
         <android.support.v7.widget.SearchView
             android:id="@+id/admin_search_view"

@@ -118,6 +118,7 @@ public class RegisterFragment_T extends Fragment {
             Log.i("user", user.getUserName());
             user.setCardID(cardID);
             user.setUserType(userPermission);
+            user.setHeadshotUrl("https://labtools.groept.be/inventory/uploads/default.png");
 
             TestJson.setUser(user);
             wv.addJavascriptInterface(new registerPerson(),"registerPerson");
@@ -130,6 +131,7 @@ public class RegisterFragment_T extends Fragment {
             Log.i("user", user.getUserName());
             user.setCardID(cardID);
             user.setUserType(userPermission);
+            user.setHeadshotUrl("https://labtools.groept.be/inventory/uploads/default.png");
 
             TestJson.setUser(user);
             wv.addJavascriptInterface(new registerPerson(),"registerPerson");

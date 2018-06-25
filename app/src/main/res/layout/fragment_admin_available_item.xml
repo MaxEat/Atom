@@ -25,7 +25,7 @@
 
     <ImageView
         android:id="@+id/maintaining"
-        android:layout_width="0dp"
+        android:layout_width="10dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/ic_nippers" />
