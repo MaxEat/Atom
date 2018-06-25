@@ -60,7 +60,6 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
     Admin_AddItemFragment thisFragment;
 
     //Declaring views
-    private Button buttonUpload;
     private ImageView imageView;
     private EditText editText;
 
@@ -75,8 +74,6 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
     private Button confirmBtn;
 
     private EditText ScannedCode_admin;
-    private ImageButton ConfirmScan_admin;
-
     private EditText locationText;
 
     //private EditText boughtTime;
@@ -143,7 +140,6 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
         //requestStoragePermission();
 
         //Initializing views
-        buttonUpload = (Button) view.findViewById(R.id.buttonUpload);
         imageView = (ImageView)view. findViewById(R.id.addImage);
         editText = (EditText) view.findViewById(R.id.editTextName);
 
@@ -158,17 +154,14 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
         addNewClassLayout.setVisibility(View.GONE);
         permissionDayText = (EditText) view.findViewById(R.id.permission_day_text);
 
-        confirmBtn = (Button)view.findViewById(R.id.confirmButton);
-
         locationText = (EditText)view.findViewById(R.id.itemLocationText);
 
         ScannedCode_admin = (EditText)view.findViewById(R.id.scannedCode_admin) ;
-        ConfirmScan_admin = (ImageButton) view.findViewById(R.id.confirm_admin);
 
+        confirmBtn = (Button)view.findViewById(R.id.confirmButton);
 
         //Setting clicklistener
         imageView.setOnClickListener(this);
-        buttonUpload.setOnClickListener(this);
 
         QR.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -236,50 +229,20 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
             }
         });
 
-
-
-
-        //spinner select item permission
-//        Spinner permissionSpinner = (Spinner) view.findViewById(R.id.spinnerPermission);
-//
-//        ArrayAdapter<String> permissionAdapter = new ArrayAdapter<String>(getContext(),
-//                android.R.layout.simple_list_item_1,TestJson.permissionArray);
-//        permissionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        permissionSpinner.setAdapter(permissionAdapter);
-//
-//        permissionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                permission = TestJson.permissionArray[i];
-//                Toast.makeText(getActivity().getApplicationContext(),permission,Toast.LENGTH_SHORT ).show();
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//            }
-//        });
-
-
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                itemTagAdmin = ScannedCode_admin.getText().toString();
                 try {
                     if(buttonToggle == 1){
                         uploadItemInfo(v);
                     }else if(buttonToggle == 0){
+                        uploadMultipart();
                         uploadItemInfoNew(v);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
-        });
-
-        ConfirmScan_admin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                confirmScan(v);
             }
         });
 
@@ -312,12 +275,6 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
         Intent scan = new Intent(getActivity().getApplicationContext(), CaptureActivity.class);
         startActivityForResult(scan,1);
     }
-
-    public void confirmScan(View v){
-
-        itemTagAdmin = ScannedCode_admin.getText().toString();
-    }
-
 
     /*
    * This is the method responsible for image upload
@@ -467,12 +424,7 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        if (v == imageView) {
             showFileChooser();
-        }
-        if (v == buttonUpload) {
-            uploadMultipart();
-        }
     }
 
     public void selectDate(View view){

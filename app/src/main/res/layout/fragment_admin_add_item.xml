@@ -29,8 +29,8 @@
                     android:layout_weight="1"
                     android:textColor="@color/colorAccent"
                     android:background="@drawable/btn_selector"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:text="QR_Code" />
 
                 <Button
@@ -39,8 +39,8 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorAccent"
                     android:background="@drawable/btn_selector"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_weight="1"
                     android:text="BARCODE" />
 
@@ -50,8 +50,8 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorAccent"
                     android:background="@drawable/btn_selector"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_weight="1"
                     android:text="Text" />
             </LinearLayout>
@@ -76,23 +76,13 @@
 
                 <EditText
                     android:id="@+id/scannedCode_admin"
-                    android:layout_width="180dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginStart="10dp"
                     android:ems="10"
                     android:textColor="@color/colorPrimaryDark"
                     android:textColorLink="@color/colorPrimaryDark"
                     android:theme="@style/MyEditText" />
-
-                <ImageButton
-                    android:id="@+id/confirm_admin"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginStart="20dp"
-                    android:background="@drawable/ic_yes_button" />
-
-
             </LinearLayout>
 
 
@@ -291,19 +281,6 @@
                 android:layout_weight="1"
                 android:gravity="bottom"
                 android:orientation="horizontal">
-
-
-                <Button
-                    android:id="@+id/buttonUpload"
-                    android:layout_width="match_parent"
-                    android:layout_marginStart="100dp"
-                    android:layout_marginEnd="100dp"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/btn_selector"
-                    android:textColor="@color/colorAccent"
-                    android:layout_height="wrap_content"
-                    android:text="Upload Image" />
-
             </LinearLayout>
 
         </LinearLayout>
@@ -312,7 +289,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginEnd="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
                 android:background="@drawable/btn_selector"
                 android:textColor="@color/colorAccent"
                 android:layout_marginStart="20dp"

@@ -20,13 +20,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Your dashboard is empty."
-        android:textColor="@color/colorGrey"/>
+        android:textSize="18sp"
+        android:textColor="@color/colorPrimaryDark"/>
+
     <ListView
         android:id="@+id/list_view_home"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
-
     </ListView>
 
 
