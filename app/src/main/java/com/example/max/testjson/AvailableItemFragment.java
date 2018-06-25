@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.support.v7.widget.SearchView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Spinner;
 
@@ -63,8 +64,13 @@ public class AvailableItemFragment extends Fragment implements SearchView.OnQuer
         }
 
         toolbar= (Toolbar)view.findViewById(R.id.toolbar);
+
         searchView= (SearchView)view.findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(this);
+        EditText searchEditText = (EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        searchEditText.setTextColor(getResources().getColor(R.color.white));
+        searchEditText.setHintTextColor(getResources().getColor(R.color.white));
+
 
         adapter = new AvailableItemRecyclerViewAdapter(TestJson.getUser().availableItems, mListener);
         recyclerView.setAdapter(adapter);

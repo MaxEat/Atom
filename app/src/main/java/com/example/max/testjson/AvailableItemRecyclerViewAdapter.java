@@ -44,14 +44,14 @@ public class AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter<Avail
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        String content = holder.mItem.getClassification() + " at "+holder.mItem.getItemLocation();
-        holder.mContent.setText(content);
+        holder.mLocation.setText(holder.mItem.getItemLocation());
+        holder.mType.setText(holder.mItem.getClassification());
 
 
         if(holder.mItem.getStatus().equals("available"))
-            holder.mQuantity.setText(Integer.toString(holder.mItem.getQuantity())+" items left");
+            holder.mQuantity.setText(Integer.toString(holder.mItem.getQuantity())+" left");
         else
-            holder.mQuantity.setText("Not available");
+            holder.mQuantity.setText("0 left");
 
         if(holder.mItem.getInWishList()){
             holder.mCheckBox.setChecked(true);
@@ -108,7 +108,8 @@ public class AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter<Avail
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mContent;
+        public final TextView mLocation;
+        public final TextView mType;
         public final TextView mQuantity;
         public AvailableItem mItem;
         public CheckBox mCheckBox;
@@ -116,14 +117,15 @@ public class AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter<Avail
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mContent = (TextView) view.findViewById(R.id.content);
+            mLocation = (TextView) view.findViewById(R.id.available_item_location);
+            mType = (TextView) view.findViewById(R.id.available_item_type);
             mCheckBox = (CheckBox)view.findViewById(R.id.add_to_wish);
-            mQuantity = (TextView) view.findViewById(R.id.item_quantity);
+            mQuantity = (TextView) view.findViewById(R.id.available_item_quantity);
         }
 
         @Override
         public String toString() {
-            return super.toString()+mContent.getText();
+            return super.toString() + mType.getText() + mLocation.getText();
         }
     }
 

@@ -45,6 +45,7 @@ public class CustomedWebview extends WebView {
     static final String changeBlackListStateURL = "https://labtools.groept.be/inventory/secure/removeFromBlackList.php";
     static final String updateAlertEmail = "https://labtools.groept.be/inventory/secure/php_updateEmail.php";
     static final String getItemsOfSameKindURL = "https://labtools.groept.be/inventory/secure/php_sameKindItems.php";
+    static final String getItemsOfSameKindStudentURL = "https://labtools.groept.be/inventory/secure/php_sameKindItems_student.php";
     static final String getPersonalItemsURL = "https://labtools.groept.be/inventory/secure/php_getPersonalItems.php";
     static final String initializeWorkerURL = "https://labtools.groept.be/inventory/secure/php_initializeWorker.php";
 
@@ -121,9 +122,11 @@ public class CustomedWebview extends WebView {
                 if(url.equals(initializeWorkerURL))
                     view.loadUrl("javascript:window.Person.initializeWorker_interface(document.body.innerHTML)");
 
-
                 if(url.equals(getItemsOfSameKindURL))
                     view.loadUrl("javascript:window.Person.getItemsSameKind_interface(document.body.innerHTML)");
+
+                if(url.equals(getItemsOfSameKindStudentURL))
+                    view.loadUrl("javascript:window.Person.getItemsSameKind_interface_Student(document.body.innerHTML)");
 
                 if(url.equals(getExpiredItemURL))
                     view.loadUrl("javascript:window.Person.getExpiredItemPersonDatabase_interface(document.body.innerHTML)");

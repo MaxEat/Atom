@@ -28,6 +28,7 @@ import static com.example.max.testjson.TestJson.wv;
 
 public abstract class Person {
     protected int error;
+    public ArrayList<AvailableItem> wishItems;
     protected String kuleuvenID;
     protected String cardID;
     protected String email;
@@ -250,7 +251,6 @@ public abstract class Person {
 
     public abstract void formPage();
 
-
     @JavascriptInterface
     public void login_interface(String htmlSource){
         Log.i("get register info", htmlSource);
@@ -300,9 +300,14 @@ public abstract class Person {
                     item.setClassification(itemClassification);
                     item.setStatus(itemStatus);
 
+
                     availableItems.add(item);
                     availableItemMap.put(item.getClassification() + item.getItemLocation(), item);
                 }
+
+
+                //刚加的
+                //formPage();
 
             }
 

@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.example.max.testjson.DashBoardFragment.OnListFragmentInteractionListener;
 import com.example.max.testjson.dashboard.News;
-import com.example.max.testjson.dummy.DummyContent.DummyItem;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

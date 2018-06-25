@@ -39,7 +39,8 @@ import static com.example.max.testjson.TestJson.wv;
  */
 
 public class Student extends Person {
-    public ArrayList<AvailableItem> wishItems;
+
+    public Map<String, AvailableItem> wishItemMap = new HashMap<>();
     public ArrayList<BorrowedItem> borrowedItems;
     public Map<String, BorrowedItem> borrowedItemMAP = new HashMap<String, BorrowedItem>();
     public ArrayList<BorrowedItem> blacklistItems;
@@ -55,6 +56,7 @@ public class Student extends Person {
     Student(String aUserName, String aKuleuvenID, String Email){
         super(aUserName, aKuleuvenID, Email);
         wishItems = new ArrayList<AvailableItem>();
+        wishItemMap = new HashMap<>();
         borrowedItems = new ArrayList<BorrowedItem>();
         blacklistItems = new ArrayList<BorrowedItem>();
         itemList = new ArrayList<>();
@@ -64,6 +66,7 @@ public class Student extends Person {
     Student(String aUserName, String aKuleuvenID, String Email, String Blacklist){
         super(aUserName, aKuleuvenID, Email);
         wishItems = new ArrayList<AvailableItem>();
+        wishItemMap = new HashMap<>();
         borrowedItems = new ArrayList<BorrowedItem>();
         blacklistItems = new ArrayList<BorrowedItem>();
         blacklist = Blacklist;
@@ -77,7 +80,9 @@ public class Student extends Person {
         return borrowedItems;
     }
 
-
+    public ArrayList<AvailableItem> getWishItems() {
+        return wishItems;
+    }
 
     public void setBlacklist(String Blacklist){
         blacklist = Blacklist;
@@ -115,14 +120,14 @@ public class Student extends Person {
         blacklistItems = new ArrayList<BorrowedItem>();
         setDashboardWishItems();
         setDashboardAlertItems();
-        setDashboardExpiredItems();
+      //  setDashboardExpiredItems();
 
     }
 
     public void setDashboardWishItems() {
-        for (AvailableItem wish : availableItems) {
-            if (wish.getInWishList()) {
-                Wish_Item_Available_News news = new Wish_Item_Available_News(wish);
+        for (AvailableItem availableItem : availableItems) {
+            if (availableItem.getInWishList()) {
+                Wish_Item_Available_News news = new Wish_Item_Available_News(availableItem);
                 dashboard.add(news);
             }
         }
@@ -171,6 +176,12 @@ public class Student extends Person {
                 Item_Expiring_News news = new Item_Expiring_News(borrowedItem);
                 dashboard.add(news);
             }
+            if (leftDays<0) {
+                Item_Expired_News news = new Item_Expired_News(borrowedItem);
+                blacklistItems.add(borrowedItem);
+                dashboard.add(news);
+
+            }
         }
     }
 
@@ -216,6 +227,11 @@ public class Student extends Person {
 
         byte[] array = borrowItem_createJson(itemTag, currentLocation);
         wv.postUrl(CustomedWebview.borrowItemURL, array);
+    }
+
+    public void getItemsOfSameKind_Student() throws IOException {
+        byte[] array = getItemsOfSameKind_createJson();
+        wv.postUrl(CustomedWebview.getItemsOfSameKindStudentURL, array);
     }
 
     public void returnItem( String itemTag, String currentLocation) throws IOException {
@@ -410,8 +426,6 @@ public class Student extends Person {
             JSONObject jsonObject = new JSONObject(htmlSource);
             JSONArray jsonArray = jsonObject.getJSONArray("list");
 
-
-
             for (String keys : TestJson.permission_days.keySet())
             {
                 System.out.println(keys + ":"+ TestJson.permission_days.get(keys));
@@ -438,6 +452,7 @@ public class Student extends Person {
                 item.setItemLocation(json.getString("itemLocation"));
                 item.setClassification(json.getString("itemClassification"));
                 wishItems.add(item);
+                wishItemMap.put(item.getItemTag(), item);
                 Log.i("wish:"+Integer.toString(i),item.toString());
             }
             formPage();
@@ -458,8 +473,8 @@ public class Student extends Person {
         for(AvailableItem item:wishItems){
             String string = item.getClassification()+item.getItemLocation();
             if(availableItemMap.containsKey(string)){
-                AvailableItem wishItem = availableItemMap.get(string);
-                wishItem.setInWishList(true);
+                AvailableItem availableItemInWith = availableItemMap.get(string);
+                availableItemInWith.setInWishList(true);
             }
         }
     }
@@ -480,6 +495,63 @@ public class Student extends Person {
             e.printStackTrace();
         }
     }
+
+
+    @JavascriptInterface
+    public void getItemsSameKind_interface_student(String htmlSource){
+        Log.i("get same kind info", htmlSource);
+        try {
+
+            JSONObject jsonObject = new JSONObject(htmlSource);
+            JSONArray sorting = jsonObject.getJSONArray("list");
+            availableItems = new ArrayList<AvailableItem>();
+            availableItemMap = new HashMap<String, AvailableItem>();
+
+            for (int i = 0; i < sorting.length(); i++) {
+                JSONObject json = sorting.getJSONObject(i);
+                String itemClassification = json.getString("itemClassification");
+                String itemLocation = json.getString("itemLocation");
+                String itemStatus = json.getString("itemStatus");
+                int quantity = json.getInt("quantity");
+
+                if(availableItemMap.containsKey(itemClassification + itemLocation)) {
+
+                    if (itemStatus.equals("available")) {
+                        AvailableItem item = availableItemMap.get(itemClassification + itemLocation);
+                        item.setQuantity(quantity);
+                        item.setStatus("available");
+                    }
+
+                }
+                else
+                {
+
+                    AvailableItem item = new AvailableItem();
+                    item.setQuantity(quantity);
+                    item.setItemLocation(itemLocation);
+                    item.setClassification(itemClassification);
+                    item.setStatus(itemStatus);
+
+
+                    availableItems.add(item);
+                    availableItemMap.put(item.getClassification() + item.getItemLocation(), item);
+                }
+
+            }
+            for(AvailableItem item:wishItems){
+                String string = item.getClassification()+item.getItemLocation();
+                if(availableItemMap.containsKey(string)){
+                    AvailableItem availableItemInWith = availableItemMap.get(string);
+                    availableItemInWith.setInWishList(true);
+                }
+            }
+
+        } catch (Throwable t) {
+            Log.e("My info", "Could not parse malformed JSON: \"" + htmlSource + "\"");
+        }
+    }
+
+
 
     @JavascriptInterface
     public void removeItemFromWish_interface(String htmlSource) {
@@ -547,6 +619,7 @@ public class Student extends Person {
                 String itemTag = json.getString("itemTag");
                 String itemLocation = json.getString("itemLocation");
                 String itemClassification = json.getString("itemClassification");
+
                 int permissionDays = TestJson.permission_days.get(itemClassification);
 
 
@@ -570,7 +643,12 @@ public class Student extends Person {
 
                 BorrowedItem borrowedItem = new BorrowedItem(itemTag, itemLocation);
                 borrowedItem.setClassification(itemClassification);
+                borrowedItem.setLeftDays();
                 borrowedItems.add(borrowedItem);
+
+                Log.i("borrowed item size", Integer.toString(borrowedItems.size()));
+                //刚加的
+                borrowedItemMAP.put(borrowedItem.getItemTag(),borrowedItem);
 
                 Log.i("new borrowing item", itemTag + " " + itemLocation);
 
