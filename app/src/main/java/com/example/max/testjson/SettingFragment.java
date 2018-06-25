@@ -98,7 +98,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener{
         headshot = (ImageView) view.findViewById(R.id.my_image);
         String imageURI = TestJson.getUser().getHeadshotUrl();
         Log.i("imageUri is------------",imageURI);
-        Picasso.with(getActivity().getApplicationContext()).load(imageURI).resize(120, 120).into(headshot);
+        Picasso.with(getActivity().getApplicationContext()).load(imageURI).fit().into(headshot);
 
 
         preferEmail.setText(TestJson.getUser().getAlertEmail());

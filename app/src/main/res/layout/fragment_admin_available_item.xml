@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
     android:orientation="horizontal"
-    android:weightSum="5">
+    android:weightSum="7">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -32,14 +32,14 @@
         android:id="@+id/admin_available_item_borrow_quantity"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:text="TextView" />
 
     <TextView
         android:id="@+id/admin_available_item_maintain_quantity"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:text="TextView" />
     <!--<ImageView-->
         <!--android:id="@+id/maintaining"-->
