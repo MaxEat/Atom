@@ -24,13 +24,13 @@ import java.util.List;
 
 public class Admin_AvailableItemAdapter extends RecyclerView.Adapter<Admin_AvailableItemAdapter.ViewHolder> implements Filterable{
 
-    private List<AvailableItem> mValues;
-    private List<AvailableItem> tempValue;
+    private List<ManageItem> mValues;
+    private List<ManageItem> tempValue;
     private final Admin_AvailableItemFragment.OnListFragmentInteractionListener mListener;
 
     Admin_AvailableItemAdapter.TestFilter myFilter;
 
-    public Admin_AvailableItemAdapter(List<AvailableItem> items, Admin_AvailableItemFragment.OnListFragmentInteractionListener listener) {
+    public Admin_AvailableItemAdapter(List<ManageItem> items, Admin_AvailableItemFragment.OnListFragmentInteractionListener listener) {
         mValues = items;
         tempValue = items;
         mListener = listener;
@@ -50,15 +50,17 @@ public class Admin_AvailableItemAdapter extends RecyclerView.Adapter<Admin_Avail
         holder.mLocation.setText(holder.mItem.getItemLocation());
         holder.mType.setText(holder.mItem.getClassification());
 
-        if(holder.mItem.getStatus().equals("available"))
-            holder.mQuantity.setText(Integer.toString(holder.mItem.getQuantity())+" items left");
-        else
-            holder.mQuantity.setText("0 items left");
+        holder.mQuantityMaintain.setText(Integer.toString(holder.mItem.getMaintainNr()));
+        holder.mQuantityBorrow.setText(Integer.toString(holder.mItem.getBorrowNr()));
+//        if(holder.mItem.getStatus().equals("available"))
+//            holder.mQuantity.setText(Integer.toString(holder.mItem.getQuantity())+" left");
+//        else
+//            holder.mQuantity.setText("0 left");
 
-        if(((Worker)TestJson.getUser()).inMaintainList(holder.mItem))
-            holder.mImage.setVisibility(View.VISIBLE);
-        else
-            holder.mImage.setVisibility(View.INVISIBLE);
+//        if(((Worker)TestJson.getUser()).inMaintainList(holder.mItem))
+//            holder.mImage.setVisibility(View.VISIBLE);
+//        else
+//            holder.mImage.setVisibility(View.INVISIBLE);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +73,7 @@ public class Admin_AvailableItemAdapter extends RecyclerView.Adapter<Admin_Avail
     }
 
 
-    public AvailableItem getItem(int position){
+    public ManageItem getItem(int position){
         return mValues.get(position);
     }
 
@@ -84,17 +86,19 @@ public class Admin_AvailableItemAdapter extends RecyclerView.Adapter<Admin_Avail
         public final View mView;
         public final TextView mLocation;
         public final TextView mType;
-        public final TextView mQuantity;
-        public AvailableItem mItem;
-        public ImageView mImage;
+        public final TextView mQuantityBorrow;
+        public final TextView mQuantityMaintain;
+        public ManageItem mItem;
+//        public ImageView mImage;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             mLocation = (TextView) view.findViewById(R.id.admin_available_item_location);
             mType = (TextView) view.findViewById(R.id.admin_available_item_type);
-            mQuantity = (TextView)view.findViewById(R.id.admin_available_item_quantity);
-            mImage = (ImageView) view.findViewById(R.id.maintaining);
+            mQuantityBorrow = (TextView)view.findViewById(R.id.admin_available_item_borrow_quantity);
+            mQuantityMaintain = (TextView)view.findViewById(R.id.admin_available_item_maintain_quantity);
+//            mImage = (ImageView) view.findViewById(R.id.maintaining);
         }
 
         @Override
@@ -116,7 +120,7 @@ public class Admin_AvailableItemAdapter extends RecyclerView.Adapter<Admin_Avail
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
 
-            List<AvailableItem> newItemList = new ArrayList<AvailableItem>();
+            List<ManageItem> newItemList = new ArrayList<ManageItem>();
             if (constraint != null && constraint.toString().trim().length() > 0) {
                 for (int i = 0; i < tempValue.size(); i++) {
                     String content = tempValue.get(i).getClassification() + " "+tempValue.get(i).getItemLocation();

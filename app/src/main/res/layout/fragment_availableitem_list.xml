@@ -39,7 +39,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="56dp"
         tools:listitem="@layout/fragment_availableitem">
 
     </android.support.v7.widget.RecyclerView>
