@@ -53,6 +53,7 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
     private String userName = "None";
     private String email = "None";
     private String userType = "";
+    private String headshot = "";
     private String blacklist;
     private String role;
     public List<AvailableItem> availableItems = new ArrayList<AvailableItem>();
@@ -180,6 +181,7 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
 
                 Person user = new Worker(userName, kuleuvenID, email);
                 user.setCardID(cardid);
+                user.setHeadshotUrl(headshot);
                 user.setUserType("Administrator");
                 user.setAvailableItems(availableItems);
                 user.setAvailableItemMap(availableItemMap);
@@ -203,6 +205,7 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                 user.setAvailableItems(availableItems);
                 user.setAvailableItemMap(availableItemMap);
                 user.setCardID(cardid);
+                user.setHeadshotUrl(headshot);
                 user.setUserType("Student");
                 TestJson.setUser(user);
 
@@ -356,7 +359,10 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
 
                 JSONObject jsonObject = new JSONObject(htmlSource);
 
+
+
                 JSONObject jsonUser = jsonObject.getJSONObject("user");
+                headshot = jsonUser.getString("headshotUrl");
                 int error = jsonUser.getInt("error_message");
 
 

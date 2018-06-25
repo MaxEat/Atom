@@ -4,9 +4,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -22,17 +25,26 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.squareup.leakcanary.RefWatcher;
+import com.squareup.picasso.Picasso;
 
 import junit.framework.Test;
 
-import java.io.IOException;
+import net.gotev.uploadservice.MultipartUploadRequest;
+import net.gotev.uploadservice.UploadNotificationConfig;
 
+import java.io.IOException;
+import java.util.UUID;
+
+import static com.example.max.testjson.TestJson.getUser;
 import static com.example.max.testjson.TestJson.wv;
 
 
-public class SettingFragment extends Fragment {
+public class SettingFragment extends Fragment implements View.OnClickListener{
     private EditText preferEmail;
     private RadioGroup radioGroup;
     private int reminderDaysCache = TestJson.alertDay;
@@ -40,6 +52,16 @@ public class SettingFragment extends Fragment {
     private Button submit;
     private ImageButton logout;
 
+    private ImageView headshot;
+
+    //Image request code
+    private int PICK_IMAGE_REQUEST = 1;
+
+    //Bitmap to get image from gallery
+    private Bitmap bitmap;
+
+    //Uri to store the image uri
+    private Uri filePath;
 
     private OnFragmentInteractionListener mListener;
 
@@ -71,6 +93,12 @@ public class SettingFragment extends Fragment {
 
         submit = (Button)view.findViewById(R.id.submit_setting);
         logout = (ImageButton)view.findViewById(R.id.logout);
+
+        headshot = (ImageView) view.findViewById(R.id.my_image);
+        String imageURI = TestJson.getUser().getHeadshotUrl();
+        Log.i("imageUri is------------",imageURI);
+        Picasso.with(getActivity().getApplicationContext()).load(imageURI).resize(120, 120).into(headshot);
+
 
         preferEmail.setText(TestJson.getUser().getAlertEmail());
         radioGroup.check(R.id.sevendays);
@@ -118,6 +146,7 @@ public class SettingFragment extends Fragment {
                     alertBuilder.setMessage("Please enter a valid email address");
                     alertBuilder.create().show();
                 }
+                uploadMultipart();
 
             }
         });
@@ -164,6 +193,9 @@ public class SettingFragment extends Fragment {
 
             }
         });
+
+        headshot.setOnClickListener(this);
+
         return view;
     }
 
@@ -199,6 +231,11 @@ public class SettingFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onClick(View v) {
+        showFileChooser();
+    }
+
 
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
@@ -210,4 +247,85 @@ public class SettingFragment extends Fragment {
         RefWatcher refWatcher = TestJson.getRefWatcher(getActivity());
         refWatcher.watch(this);
     }
+
+    //method to show file chooser
+    private void showFileChooser() {
+        Log.i("choose", "choose file");
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+    }
+
+    //handling the image chooser activity result
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //upload image
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == getActivity().RESULT_OK && data != null && data.getData() != null) {
+            filePath = data.getData();
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap( getActivity().getApplicationContext().getContentResolver(), filePath);
+
+                headshot.setImageBitmap(bitmap);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    /*
+  * This is the method responsible for image upload
+  * We need the full image path and the name for the image in this method
+  * */
+    public void uploadMultipart() {
+
+        Log.i("UPLOAD", "UPLOAD MESSAGE");
+
+        //getting name for the image
+        String name = TestJson.getUser().getCardID();
+
+        //getting the actual path of the image
+        String path = getPath(filePath);
+
+        Toast.makeText(getActivity().getApplicationContext(),path,Toast.LENGTH_SHORT).show();
+
+        //Uploading code
+        try {
+            String uploadId = UUID.randomUUID().toString();
+
+            //Creating a multi part request
+            new MultipartUploadRequest(getActivity().getApplicationContext(), uploadId, BackgroundTask.UPLOAD_Headshot_URL)
+                    .addFileToUpload(path, "image") //Adding file
+                    .addParameter("name", name) //Adding text parameter to the request
+                    .setNotificationConfig(new UploadNotificationConfig())
+                    .setMaxRetries(2)
+                    .startUpload(); //Starting the upload
+
+        } catch (Exception exc) {
+            Toast.makeText(getActivity().getApplicationContext(), exc.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    //method to get the file path from uri
+    public String getPath(Uri uri) {
+        Cursor cursor = getActivity().getApplicationContext().getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        String document_id = cursor.getString(0);
+        document_id = document_id.substring(document_id.lastIndexOf(":") + 1);
+        cursor.close();
+
+        cursor =  getActivity().getApplicationContext().getContentResolver().query(
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
+        cursor.moveToFirst();
+        String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+        cursor.close();
+
+        return path;
+    }
+
 }
