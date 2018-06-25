@@ -1,6 +1,7 @@
 package com.example.max.testjson;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -236,10 +237,22 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
                 try {
                     if(buttonToggle == 1){
                         uploadItemInfo(v);
+
+                        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(v.getContext());
+                        alertBuilder.setTitle("Okay");
+                        alertBuilder.setMessage("New item added successfully");
+                        alertBuilder.create().show();
                     }else if(buttonToggle == 0){
                         uploadMultipart();
                         uploadItemInfoNew(v);
+
+                        uploadItemInfo(v);
+                        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(v.getContext());
+                        alertBuilder.setTitle("Okay");
+                        alertBuilder.setMessage("New item & New classification added successfully");
+                        alertBuilder.create().show();
                     }
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

@@ -353,6 +353,18 @@ public abstract class Person {
     }
 
     @JavascriptInterface
+    public void updateEmail_interface(String htmlSource) {
+        Log.i("update prefered email",htmlSource);
+        try {
+            JSONObject json = new JSONObject(htmlSource);
+            error = json.getInt("error_message");
+            Log.i("error", Integer.toString(error));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @JavascriptInterface
     public void administratorAddItem_interface(String htmlSource) {
         Log.i("admin add item", htmlSource);
         try {
