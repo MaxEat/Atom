@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
+import android.graphics.drawable.Animatable;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -15,6 +16,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.Toolbar;
@@ -90,8 +96,28 @@ public class SplashActivity extends AppCompatActivity {
         display.getSize(size);
 
         mIVTapLinxLogo = (ImageView) findViewById(R.id.imgTapLinx);
-        mIVTapLinxLogo.getLayoutParams().width = (size.x) ;
-        mIVTapLinxLogo.getLayoutParams().height =(size.y) ;
+//        mIVTapLinxLogo.getLayoutParams().width = (size.x) ;
+//        mIVTapLinxLogo.getLayoutParams().height =(size.y) ;
+
+
+        RotateAnimation rotateAni = new RotateAnimation(30, 50, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        rotateAni.setDuration(2000);
+        rotateAni.setRepeatMode(Animation.REVERSE);
+        rotateAni.setRepeatCount(Animation.INFINITE);
+        mIVTapLinxLogo.startAnimation(rotateAni);
+
+//        if(linear) rotateAni.setInterpolator(new LinearInterpolator());	// 匀速旋转
+//
+//        view.startAnimation(rotateAni);
+//        Animation anim = new RotateAnimation(0f, 360f,
+//                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+//                0.5f);
+//        anim.setInterpolator(new LinearInterpolator());
+//        anim.setRepeatCount(Animation.INFINITE);
+//        anim.setDuration(4000);
+
+        // Start animating the image
+
 
     }
 
