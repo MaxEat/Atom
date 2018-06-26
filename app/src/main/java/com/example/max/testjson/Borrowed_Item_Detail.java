@@ -18,8 +18,10 @@ public class Borrowed_Item_Detail extends AppCompatActivity {
     private EditText borrowDate;
     private EditText returnDate;
     private EditText daysLeft;
+    private EditText location;
+    private TextView reminderDays;
     private ImageView imageView;
-    private TextView location;
+
     private BorrowedItem currentItem;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,10 +32,11 @@ public class Borrowed_Item_Detail extends AppCompatActivity {
 
         type = findViewById(R.id.editText_Type);
         borrowDate = findViewById(R.id.editText_date);
-
+        location = findViewById(R.id.editText_borrow_location);
         returnDate = findViewById(R.id.editText_return);
         daysLeft = findViewById(R.id.editText_leftdays);
         imageView = findViewById(R.id.item_detail_image);
+        reminderDays = findViewById(R.id.textView3);
 
         initDetails();
     }
@@ -45,12 +48,22 @@ public class Borrowed_Item_Detail extends AppCompatActivity {
         type.setText(currentItem.getClassification());
         borrowDate.setText(currentItem.getBorrowedTimeStamp());
         returnDate.setText(currentItem.getReturnDate());
-        daysLeft.setText(currentItem.getLeftDays()+" days left");
-
+        int days = Integer.parseInt(currentItem.getLeftDays());
+        if(days<0){
+            reminderDays.setText("Expired for: ");
+            int expiredDays = 0-days;
+            daysLeft.setText(expiredDays+" days");
+        }
+        else {
+            reminderDays.setText("There are:");
+            daysLeft.setText(currentItem.getLeftDays() + " days left");
+        }
+        location.setText(currentItem.getBorrowedLocation());
         type.setEnabled(false);
         borrowDate.setEnabled(false);
         returnDate.setEnabled(false);
         daysLeft.setEnabled(false);
+        location.setEnabled(false);
 
         String pictureUrl = TestJson.pictureMap.get(currentItem.getClassification());
         Picasso.with(getApplicationContext()).load(pictureUrl).fit().into(imageView);

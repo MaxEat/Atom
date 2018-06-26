@@ -10,22 +10,24 @@
 
     <ImageView
         android:id="@+id/item_detail_image"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="189dp"
+        android:layout_height="184dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         app:srcCompat="@android:drawable/btn_star" />
 
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
@@ -34,28 +36,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Item Type: "
-                android:textSize="18sp"
+                android:textStyle="bold"
                 android:textColor="@color/colorPrimaryDark"
+                android:textSize="18sp"
                 tools:ignore="MissingConstraints" />
 
             <EditText
                 android:id="@+id/editText_Type"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:inputType="textPersonName"
+                android:text="Name"
                 android:textColor="@color/colorPrimaryDark"
                 android:textColorLink="@color/colorPrimaryDark"
-                android:theme="@style/MyEditText"
-                android:inputType="textPersonName"
-                android:layout_marginStart="30dp"
                 android:textSize="18sp"
-                android:text="Name" />
+                android:theme="@style/MyEditText" />
 
 
         </LinearLayout>
 
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
@@ -63,26 +66,45 @@
                 android:id="@+id/Location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
                 android:text="Borrowed at: "
-                android:textSize="18sp"
                 android:textColor="@color/colorPrimaryDark"
-                />
+                android:textSize="18sp" />
 
-            <EditText
-                android:id="@+id/editText_date"
-                android:layout_width="wrap_content"
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimaryDark"
-                android:textColorLink="@color/colorPrimaryDark"
-                android:theme="@style/MyEditText"
-                android:layout_marginStart="11dp"
-                android:textSize="18sp"
-                android:inputType="none" />
+                android:orientation="vertical">
 
+                <EditText
+                    android:id="@+id/editText_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="11dp"
+                    android:inputType="none"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorLink="@color/colorPrimaryDark"
+                    android:textSize="18sp"
+                    android:theme="@style/MyEditText" />
+
+                <EditText
+                    android:id="@+id/editText_borrow_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="11dp"
+                    android:inputType="none"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textColorLink="@color/colorPrimaryDark"
+                    android:textSize="18sp"
+                    android:theme="@style/MyEditText" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
@@ -90,24 +112,25 @@
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
                 android:text="There are: "
-                android:textSize="18sp"
-                android:textColor="@color/colorPrimaryDark" />
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/editText_leftdays"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="34dp"
+                android:inputType="none"
                 android:textColor="@color/colorPrimaryDark"
                 android:textColorLink="@color/colorPrimaryDark"
-                android:theme="@style/MyEditText"
                 android:textSize="18sp"
-                android:layout_marginStart="34dp"
-                android:inputType="none" />
+                android:theme="@style/MyEditText" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
@@ -115,23 +138,23 @@
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
                 android:text="Return date:"
-                android:textSize="18sp"
-                android:textColor="@color/colorPrimaryDark" />
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/editText_return"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="22dp"
+                android:inputType="none"
                 android:textColor="@color/colorPrimaryDark"
                 android:textColorLink="@color/colorPrimaryDark"
-                android:theme="@style/MyEditText"
                 android:textSize="18sp"
-                android:layout_marginStart="22dp"
-                android:inputType="none" />
-
-
-
+                android:theme="@style/MyEditText" />
         </LinearLayout>
+
+
     </LinearLayout>
 </LinearLayout>
