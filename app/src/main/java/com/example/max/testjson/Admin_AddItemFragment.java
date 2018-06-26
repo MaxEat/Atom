@@ -540,7 +540,6 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
     public void uploadItemInfo(View view) throws IOException {
         String currentLocation = locationText.getText().toString().trim();
         String timestamp =  mDisplayDate.getText().toString().trim();
-
         TestJson.getUser().administratorAddItem(itemTagAdmin, currentLocation, timestamp, set);
     }
 
