@@ -112,9 +112,12 @@ public class SettingFragment extends Fragment implements View.OnClickListener{
                     case 6:
                         Log.i("ui handler", "set prefered email and headshot");
                         String email = inputMessage.getData().getString("email");
+                        if(!email.equals("null"))
+                            preferEmail.setText(email);
+
                         String pictureUrl = inputMessage.getData().getString("headshotUrl");
                         Log.i("ui handler picture", pictureUrl);
-                        preferEmail.setText(email);
+
                         Picasso.with(getContext())
                                 .invalidate(pictureUrl);
                         Picasso.with(getContext()).load(pictureUrl).fit().into(headshot);

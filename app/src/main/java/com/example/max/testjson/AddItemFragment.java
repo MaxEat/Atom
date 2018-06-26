@@ -58,15 +58,14 @@ public class AddItemFragment extends Fragment implements LocationListener{
     private Button Borrow_Maintain;
     private TextView Classification;
     private ImageView ItemImage;
+    private EditText ScannedCode;
+    private ImageButton ConfirmScan;
 
     private String provider;
     private String cityName;
     private String fullAddress;
-
     private String latitude;
     private String longitude;
-    private EditText ScannedCode;
-    private ImageButton ConfirmScan;
     private String itemTag;
     private String codeFormat;
     private String codeContent;
