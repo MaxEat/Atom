@@ -36,24 +36,60 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:orientation="vertical">
+        android:layout_weight="4"
+        android:weightSum="6"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/admin_available_item_maintain_quantity"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="TextView"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:text="1"
             android:textColor="@color/colorPrimaryDark" />
+
+        <ImageView
+            android:id="@+id/maintain_icon"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_003_maintain" />
 
         <TextView
             android:id="@+id/admin_available_item_borrow_quantity"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="TextView"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:text="1"
             android:textColor="@color/colorPrimaryDark" />
+
+        <ImageView
+            android:id="@+id/borrow_icon"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_001_borrowed" />
+
+        <TextView
+            android:id="@+id/admin_available_item_left_quantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:text="1"
+            android:textColor="@color/colorPrimaryDark" />
+
+        <ImageView
+            android:id="@+id/available_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_001_available_color" />
 
     </LinearLayout>
     <!--<ImageView-->
@@ -62,12 +98,6 @@
         <!--android:layout_height="wrap_content"-->
         <!--android:layout_weight="1"-->
         <!--app:srcCompat="@drawable/ic_nippers" />-->
-    <TextView
-        android:id="@+id/admin_available_item_left_quantity"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:textColor="@color/colorPrimaryDark"
-        android:text="TextView" />
+
 
 </LinearLayout>
