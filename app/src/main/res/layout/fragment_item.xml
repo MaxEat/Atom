@@ -22,6 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
+        android:textStyle="bold"
         android:textColor="@color/colorPrimaryDark"
         android:textAppearance="?attr/textAppearanceListItem"/>
 
@@ -30,6 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
+        android:textColor="@color/colorPrimaryDark"
         android:text="Borrow date" />
 
     <TextView
@@ -37,6 +39,7 @@
         android:layout_width="match_parent"
         android:textAlignment="center"
         android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimaryDark"
         android:text="Borrow location" />
 
 

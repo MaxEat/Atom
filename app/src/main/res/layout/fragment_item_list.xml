@@ -11,6 +11,7 @@
     android:layout_marginTop="0dp"
     android:layout_marginBottom="0dp"
     android:textAlignment="center"
+    android:textColor="@color/colorPrimaryDark"
     app:layoutManager="LinearLayoutManager"
     tools:context="com.example.max.testjson.BorrowedFragment"
     tools:listitem="@layout/fragment_item" />

@@ -17,12 +17,15 @@
             android:id="@+id/available_item_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryDark"
             android:textStyle="bold"
             android:text="Detail"></TextView>
 
         <TextView
             android:id="@+id/available_item_location"
             android:layout_width="match_parent"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_gravity="center_vertical"
             android:layout_height="wrap_content"
             android:text="TextView" />
     </LinearLayout>
@@ -31,7 +34,8 @@
         android:id="@+id/available_item_quantity"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_gravity="center_vertical"
+        android:textColor="@color/colorPrimaryDark"
         android:layout_weight="1"/>
 
     <CheckBox
@@ -39,7 +43,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_marginStart="10dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="15dp"
+        android:textColor="@color/colorPrimaryDark"
         android:button="@drawable/custom_checkbox"
         android:text="Wish"/>
 

@@ -61,6 +61,7 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
     private Button BarCode;
     private Button TextRecognize;
 
+    private LinearLayout classificationLayout;
     private Button addNewClassBtn;
     private LinearLayout addNewClassLayout;
     private EditText permissionDayText;
@@ -181,9 +182,12 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
         mDisplayDate = (TextView) view.findViewById(R.id.tvDate);
 
         addNewClassBtn = (Button) view.findViewById(R.id.addNewClass_btn);
+        addNewClassBtn.setBackground(this.getResources().getDrawable(R.drawable.ic_add_selector));
+
         addNewClassLayout = (LinearLayout) view.findViewById(R.id.hiddenLayout);
         addNewClassLayout.setVisibility(View.GONE);
         permissionDayText = (EditText) view.findViewById(R.id.permission_day_text);
+        classificationLayout = (LinearLayout) view.findViewById(R.id.classificationLayout);
 
         locationText = (EditText)view.findViewById(R.id.itemLocationText);
         locationText.setText(fullAddress);
@@ -217,6 +221,7 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
         addNewClassBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 setHidden(v);
             }
         });
@@ -263,6 +268,7 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 itemTagAdmin = ScannedCode_admin.getText().toString();
+                Log.i("toggle button value",Integer.toString(buttonToggle));
 //                Log.i("itemTag", ScannedCode_admin.);
                 try {
                     if(buttonToggle == 1){
@@ -276,7 +282,6 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
                         uploadMultipart();
                         uploadItemInfoNew(v);
 
-                        uploadItemInfo(v);
                         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(v.getContext());
                         alertBuilder.setTitle("Okay");
                         alertBuilder.setMessage("New item & New classification added successfully");
@@ -543,6 +548,7 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
         String currentLocation = locationText.getText().toString().trim();
         String timestamp = mDisplayDate.getText().toString().trim();
         String permissionDay = permissionDayText.getText().toString();
+        Log.i("permissionDay is ",permissionDay);
         int permission = Integer.parseInt(permissionDay);
 
         TestJson.getUser().administratorAddItemNew(itemTagAdmin, currentLocation, timestamp, classification, permission);
@@ -559,18 +565,14 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
         if(buttonToggle == 0){
             buttonToggle = 1;
             addNewClassLayout.setVisibility(View.GONE);
+            classificationLayout.setVisibility(View.VISIBLE);
+            addNewClassBtn.setBackground(this.getResources().getDrawable(R.drawable.ic_add_selector));
         }else{
             buttonToggle = 0;
             addNewClassLayout.setVisibility(View.VISIBLE);
+            classificationLayout.setVisibility(View.INVISIBLE);
+            addNewClassBtn.setBackground(this.getResources().getDrawable(R.drawable.ic_substractor_selector));
         }
     }
-
-
-//    public void administratorAddItem(String itemTag) {
-//
-//        Log.i("state", "borrowing");
-//        TestJson.getUser().administratorAddItem(itemTag, "");
-//
-//    }
 
 }
