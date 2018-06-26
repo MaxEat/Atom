@@ -1,12 +1,8 @@
 package com.example.max.testjson;
 
-import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v7.widget.RecyclerView;
-
 import java.io.IOException;
-
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -50,7 +46,6 @@ public class BackgroundTask {
     private OkHttpClient mOkHttpClient;
 
     private BackgroundTask() {
-      //  this.mOkHttpClient = TestJson.getInstance().getOkHttpClient();
         this.okHttpHandler = new Handler(Looper.getMainLooper());
     }
 

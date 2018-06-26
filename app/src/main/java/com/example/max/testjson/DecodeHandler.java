@@ -17,16 +17,10 @@
 
 package com.example.max.testjson;
 
-
-import com.googlecode.leptonica.android.Pixa;
-import com.googlecode.leptonica.android.ReadFile;
 import com.googlecode.tesseract.android.TessBaseAPI;
-
-import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.util.Log;
 
 /**
  * Class to send bitmap data for OCR.

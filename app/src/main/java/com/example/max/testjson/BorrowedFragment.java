@@ -2,25 +2,17 @@ package com.example.max.testjson;
 
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.app.FragmentManager;
-import android.widget.Toast;
-
 import com.squareup.leakcanary.RefWatcher;
-
-import java.io.InputStream;
 import java.util.ArrayList;
 
 public class BorrowedFragment extends Fragment {
@@ -67,10 +59,6 @@ public class BorrowedFragment extends Fragment {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-//                recyclerView.setPadding(8,8,8,8);
-//
-//                recyclerView.setLayoutManager(new StaggeredGridLayoutManager(mColumnCount, StaggeredGridLayoutManager.VERTICAL));
-
             }
 
             ArrayList<BorrowedItem> items = ((Student)TestJson.getUser()).getBorrowedItems();

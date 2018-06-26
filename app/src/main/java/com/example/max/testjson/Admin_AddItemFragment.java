@@ -21,9 +21,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 
-import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,28 +32,17 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.squareup.leakcanary.RefWatcher;
-
 import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.UploadNotificationConfig;
-
-import org.apache.http.entity.StringEntity;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -264,8 +251,6 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
                         set = TestJson.classificationArray[i];
-
-//                Toast.makeText(getActivity().getApplicationContext(),set,Toast.LENGTH_SHORT ).show();
             }
 
             @Override
@@ -450,7 +435,6 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
 
             if (scanningResult != null) {
                 codeContent = scanningResult.getContents();
-                Toast.makeText(getActivity(), codeContent, Toast.LENGTH_SHORT).show();
                 codeFormat = scanningResult.getFormatName();
                 ScannedCode_admin.setText(codeContent);
                 // send received data

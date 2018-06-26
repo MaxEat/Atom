@@ -10,17 +10,19 @@
 
     <ImageButton
         android:id="@+id/sendAlertEmail"
-        android:layout_width="match_parent"
-        android:layout_height="49dp"
-        android:src="@drawable/ic_002_mail"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:background="@drawable/ic_email"
         android:tint="@color/colorBlue" />
+     />
 
     <TextView
         android:id="@+id/empty"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Your dashboard is empty."
-        android:textColor="@color/colorGrey" />
+        android:textColor="@color/colorPrimaryDark" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/dashlist"

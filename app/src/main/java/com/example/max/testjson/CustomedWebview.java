@@ -5,8 +5,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -24,24 +22,18 @@ public class CustomedWebview extends WebView {
     static final String borrowItemURL = "https://labtools.groept.be/inventory/secure/php_borrowItem.php";
     static final String returnItemURL = "https://labtools.groept.be/inventory/secure/php_returnItem.php";
     static final String duplicatePersonURL = "https://labtools.groept.be/inventory/secure/php_duplicatePerson.php";
-    static final String getInfoByCardURL = "https://labtools.groept.be/inventory/secure/php_getUserInfoByCard.php";
     static final String getAllAvailableItemsURL = "https://labtools.groept.be/inventory/secure/php_selectAvailableItem.php";
     static final String addItemToWishListURL = "https://labtools.groept.be/inventory/secure/php_addItemToWish.php";
     static final String removeItemFromWishListURL = "https://labtools.groept.be/inventory/secure/php_removeItemFromWish.php";
-    static final String checkItemAvailableURL = "https://labtools.groept.be/inventory/secure/php_selectAvailableItem.php";
     static final String getInfoByItemTagURL = "https://labtools.groept.be/inventory/secure/php_getItemInfoByTag.php";
     static final String getAllWishListItemsURL = "https://labtools.groept.be/inventory/secure/php_getWishItems.php";
     static final String updateItemStateUrl = "https://labtools.groept.be/inventory/secure/php_maintainItem.php";
     static final String getPictureNumberUrl = "https://labtools.groept.be/inventory/secure/php_getItemPictureNumber.php";
-    static final String getAllClassificationsURL = "https://labtools.groept.be/inventory/secure/php_getAllClassifications.php";
     static final String getPermissionClassificationURL = "https://labtools.groept.be/inventory/secure/php_getClassificationPermission.php";
     static final String getExpiredItemURL = "https://labtools.groept.be/inventory/secure/php_returnExpirationInfo.php";
     static final String getPreferedEmailAndHeadShotURL = "https://labtools.groept.be/inventory/secure/php_getPersonEmailHead.php";
     static final String addNewItemURL1 = "https://labtools.groept.be/inventory/secure/php_addItem1.php";
     static final String addNewItemURL2 = "https://labtools.groept.be/inventory/secure/php_addItem2.php";
-    static final String getAllPermissionsURL = "https://labtools.groept.be/inventory/secure/php_getAllPermissions.php";
-    static final String UPLOAD_URL = "https://labtools.groept.be/inventory/secure/upload.php";
-    static final String IMAGES_URL = "http://labtools.groept.be/inventory/secure/getImages.php";
     static final String getItemPictureURL = "https://labtools.groept.be/inventory/secure/getImages.php";
     static final String changeBlackListStateURL = "https://labtools.groept.be/inventory/secure/removeFromBlackList.php";
     static final String updateAlertEmail = "https://labtools.groept.be/inventory/secure/php_updateEmail.php";
@@ -50,8 +42,6 @@ public class CustomedWebview extends WebView {
     static final String getItemsOfSameKindWorkerURL = "https://labtools.groept.be/inventory/secure/php_sameKindItems_worker.php";
     static final String getPersonalItemsURL = "https://labtools.groept.be/inventory/secure/php_getPersonalItems.php";
     static final String initializeWorkerURL = "https://labtools.groept.be/inventory/secure/php_initializeWorker.php";
-
-
 
     public void hide() {
         setVisibility(View.GONE);
@@ -160,19 +150,8 @@ public class CustomedWebview extends WebView {
                 if(url.equals(getAllWishListItemsURL))
                     view.loadUrl("javascript:window.Person.getWishListFromDatabase_interface(document.body.innerHTML)");
 
-
                 if(url.equals(getPreferedEmailAndHeadShotURL))
                     view.loadUrl("javascript:window.Person.getPreferedEmailAndHeadShot_interface(document.body.innerHTML)");
-//                if(url.equals(getInfoByCardURL))
-//                    view.loadUrl("javascript:window.local_obj.parseBorrowItem(document.body.innerHTML)");
-//
-
-//
-//                if(url.equals(checkItemAvailableURL))
-//                    view.loadUrl("javascript:window.local_obj.parseBorrowItem(document.body.innerHTML)");
-//
-//
-
 
             }
 

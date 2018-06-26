@@ -8,15 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.example.max.testjson.Admin_AvailableItemFragment.OnListFragmentInteractionListener;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,15 +47,6 @@ public class Admin_AvailableItemAdapter extends RecyclerView.Adapter<Admin_Avail
 
         holder.mQuantityMaintain.setText(Integer.toString(holder.mItem.getMaintainNr())+" maintain");
         holder.mQuantityBorrow.setText(Integer.toString(holder.mItem.getBorrowNr())+" borrow");
-//        if(holder.mItem.getStatus().equals("available"))
-//            holder.mQuantity.setText(Integer.toString(holder.mItem.getQuantity())+" left");
-//        else
-//            holder.mQuantity.setText("0 left");
-
-//        if(((Worker)TestJson.getUser()).inMaintainList(holder.mItem))
-//            holder.mImage.setVisibility(View.VISIBLE);
-//        else
-//            holder.mImage.setVisibility(View.INVISIBLE);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,7 +84,6 @@ public class Admin_AvailableItemAdapter extends RecyclerView.Adapter<Admin_Avail
             mType = (TextView) view.findViewById(R.id.admin_available_item_type);
             mQuantityBorrow = (TextView)view.findViewById(R.id.admin_available_item_borrow_quantity);
             mQuantityMaintain = (TextView)view.findViewById(R.id.admin_available_item_maintain_quantity);
-//            mImage = (ImageView) view.findViewById(R.id.maintaining);
         }
 
         @Override
@@ -150,10 +135,7 @@ public class Admin_AvailableItemAdapter extends RecyclerView.Adapter<Admin_Avail
             }
 
         }
-
     }
-
-
 
 }
 

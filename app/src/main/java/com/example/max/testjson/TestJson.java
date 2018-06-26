@@ -2,20 +2,9 @@ package com.example.max.testjson;
 
 import android.app.Application;
 import android.content.Context;
-import android.os.Build;
-import android.util.Log;
-import android.view.View;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
-import android.webkit.WebView;
-
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
@@ -62,22 +51,11 @@ public class TestJson extends Application {
         return application.refWatcher;
     }
 
-//    public void addPermission_days(String userType, String itemType, int days) {
-//        if(userType.equals("Student"))
-//            permission_days_student.put(itemType,days);
-//        if(userType.equals("worker"))
-//            permission_days_worker.put(itemType,days);
-//    }
-
     public static void resetWebView() {
 
         wv.clearHistory();
         wv.clearCache(true);
 
-    //    wv.loadUrl("about:blank");
-    //    wv.onPause();
-    //    wv.removeAllViews();
-    //    wv.destroyDrawingCache();
     }
 
 

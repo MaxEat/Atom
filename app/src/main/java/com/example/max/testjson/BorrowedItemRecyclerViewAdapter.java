@@ -1,11 +1,6 @@
 package com.example.max.testjson;
 
-import android.app.Activity;
-import android.app.FragmentManager;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,13 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.max.testjson.BorrowedFragment.OnListFragmentInteractionListener;
 import com.squareup.picasso.Picasso;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.w3c.dom.Text;
-
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 
@@ -55,9 +43,7 @@ public class BorrowedItemRecyclerViewAdapter extends RecyclerView.Adapter<Borrow
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-     //   Picasso.with(this.context).load(mValues.get(position).getImageURL());
         holder.mClassification.setText(holder.mItem.getClassification());
-      //  holder.mContentView.setText(holder.mItem.getBorrowedLocation() + " "+ holder.mItem.getBorrowedTimeStamp());
         holder.mLocation.setText(holder.mItem.getBorrowedLocation());
         holder.mDate.setText(holder.mItem.getBorrowedTimeStamp());
         String pictureUrl = TestJson.pictureMap.get(holder.mItem.getClassification());
@@ -95,13 +81,11 @@ public class BorrowedItemRecyclerViewAdapter extends RecyclerView.Adapter<Borrow
             super(view);
             mView = view;
             mImage = (ImageView)view.findViewById(R.id.imageView);
-       //     mContentView = (TextView) view.findViewById(R.id.content);
             mDate = (TextView)view.findViewById(R.id.borrow_date);
             mLocation = (TextView)view.findViewById(R.id.borrow_location);
             mClassification = (TextView)view.findViewById(R.id.classfication);
 
         }
-
 
         @Override
         public String toString() {
