@@ -2,6 +2,8 @@ package com.example.max.testjson;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
@@ -13,17 +15,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v7.widget.SearchView;
 import android.widget.EditText;
-
+import android.widget.ProgressBar;
 
 
 public class AvailableItemFragment extends Fragment implements SearchView.OnQueryTextListener {
 
+    public static Handler handler;
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private SearchView searchView;
     private AvailableItemRecyclerViewAdapter adapter;
     private Toolbar toolbar;
+    private ProgressBar progressBar;
 
 
     public AvailableItemFragment() {
@@ -52,15 +56,16 @@ public class AvailableItemFragment extends Fragment implements SearchView.OnQuer
         View view = inflater.inflate(R.layout.fragment_availableitem_list, container, false);
 
         Context context = view.getContext();
-        RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.available_list);
+        final RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.available_list);
         if (mColumnCount <= 1) {
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
         } else {
             recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
+        recyclerView.setVisibility(View.INVISIBLE);
 
         toolbar= (Toolbar)view.findViewById(R.id.toolbar);
-
+        progressBar = (ProgressBar)view.findViewById(R.id.loading_overview);
         searchView= (SearchView)view.findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(this);
         EditText searchEditText = (EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
@@ -73,7 +78,17 @@ public class AvailableItemFragment extends Fragment implements SearchView.OnQuer
         recyclerView.addItemDecoration(new DividerItemDecoration(
                     getContext(), DividerItemDecoration.VERTICAL));
 
-
+        handler = new Handler() {
+            @Override
+            public void handleMessage(Message inputMessage) {
+                switch (inputMessage.what) {
+                    case 7:
+                        progressBar.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                        break;
+                }
+            }
+        };
 
         return view;
     }

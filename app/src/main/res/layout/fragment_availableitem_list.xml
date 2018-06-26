@@ -10,39 +10,56 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:layout_alignParentStart="true"
+                android:background="@color/colorBlueLight"
+                android:theme="@style/ActionBarTheme">
+
+                <android.support.v7.widget.SearchView
+                    android:id="@+id/search_view"
+                    style="@style/SearchViewStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
+                    android:background="@color/colorAccent">
+
+                </android.support.v7.widget.SearchView>
+
+            </android.support.v7.widget.Toolbar>
+
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/loading_overview"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:indeterminate="true"
+            android:visibility="visible"
+            tools:visibility="visible" />
+
+        <android.support.v7.widget.RecyclerView xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/available_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:theme="@style/ActionBarTheme"
-            android:background="@color/colorBlueLight">
+            android:layout_alignParentTop="true"
+            tools:listitem="@layout/fragment_availableitem">
 
-            <android.support.v7.widget.SearchView
-                android:id="@+id/search_view"
-                style="@style/SearchViewStyle"
-                android:background="@color/colorAccent"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="right">
 
-            </android.support.v7.widget.SearchView>
-
-        </android.support.v7.widget.Toolbar>
-
+        </android.support.v7.widget.RecyclerView>
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/available_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="70dp"
-        tools:listitem="@layout/fragment_availableitem">
 
-    </android.support.v7.widget.RecyclerView>
+
 
 </RelativeLayout>

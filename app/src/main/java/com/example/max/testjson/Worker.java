@@ -89,13 +89,14 @@ public class Worker extends Person{
 
         for(Item item:itemList){
 
-            if(!item.getStatus().equals("available")) {
-                if (manageItemHashMap.containsKey(item.getClassification() + item.getItemLocation())) {
+            if (manageItemHashMap.containsKey(item.getClassification() + item.getItemLocation())) {
                     ManageItem manageItem = manageItemHashMap.get(item.getClassification() + item.getItemLocation());
                     if (item.getStatus().equals("maintaining"))
                         manageItem.increaseMaintainNr();
                     if (item.getStatus().equals("borrowing"))
                         manageItem.increaseBorrwoNr();
+                    if (item.getStatus().equals("available"))
+                        manageItem.increaseLeftNr();
                 }
                 else{
                     ManageItem newItem = new ManageItem();
@@ -105,10 +106,12 @@ public class Worker extends Person{
                         newItem.increaseMaintainNr();
                     if (item.getStatus().equals("borrowing"))
                         newItem.increaseBorrwoNr();
+                    if (item.getStatus().equals("available"))
+                        newItem.increaseLeftNr();
                     manageItems.add(newItem);
                     manageItemHashMap.put(newItem.getClassification() + newItem.getItemLocation(), newItem);
-                }
             }
+
         }
         Message message = new Message();
         message.what = 5;
@@ -184,6 +187,7 @@ public class Worker extends Person{
             JSONArray jsonArrayExpire = jsonObject.getJSONArray("expire");
             JSONArray maintain = jsonObject.getJSONArray("maintainlist");
             JSONArray borrow = jsonObject.getJSONArray("borrowlist");
+            JSONArray left = jsonObject.getJSONArray("leftlist");
 //
             for (int i = 0; i < jsonArrayExpire.length(); i++) {
                 JSONObject json = jsonArrayExpire.getJSONObject(i);
@@ -237,6 +241,25 @@ public class Worker extends Person{
                     }
             }
 
+            for(int i = 0; i<left.length(); i++) {
+                JSONObject json = left.getJSONObject(i);
+                String itemClassification = json.getString("itemClassification");
+                String itemLocation = json.getString("itemLocation");
+                int quantity = json.getInt("quantity");
+
+                if(manageItemHashMap.containsKey(itemClassification+itemLocation)){
+                    ManageItem item = manageItemHashMap.get(itemClassification+itemLocation);
+                    item.setLeftNr(quantity);
+                }
+                else {
+                    ManageItem newItem = new ManageItem();
+                    newItem.setItemLocation(itemLocation);
+                    newItem.setClassification(itemClassification);
+                    newItem.setLeftNr(quantity);
+                    manageItems.add(newItem);
+                    manageItemHashMap.put(newItem.getClassification() + newItem.getItemLocation(), newItem);
+                }
+            }
 
 //            for (int i = 0; i < jsonArrayOverview.length(); i++) {
 //                JSONObject json = jsonArrayOverview.getJSONObject(i);
@@ -288,6 +311,7 @@ public class Worker extends Person{
 //            JSONArray sorting = jsonObject.getJSONArray("maintainlist");
             JSONArray maintain = jsonObject.getJSONArray("maintainlist");
             JSONArray borrow = jsonObject.getJSONArray("borrowlist");
+            JSONArray left = jsonObject.getJSONArray("leftlist");
 
             availableItems = new ArrayList<AvailableItem>();
             availableItemMap = new HashMap<String, AvailableItem>();
@@ -325,6 +349,26 @@ public class Worker extends Person{
                     newItem.setItemLocation(itemLocation);
                     newItem.setClassification(itemClassification);
                     newItem.setBorrowNr(quantity);
+                    manageItems.add(newItem);
+                    manageItemHashMap.put(newItem.getClassification() + newItem.getItemLocation(), newItem);
+                }
+            }
+
+            for(int i = 0; i<left.length(); i++) {
+                JSONObject json = left.getJSONObject(i);
+                String itemClassification = json.getString("itemClassification");
+                String itemLocation = json.getString("itemLocation");
+                int quantity = json.getInt("quantity");
+
+                if(manageItemHashMap.containsKey(itemClassification+itemLocation)){
+                    ManageItem item = manageItemHashMap.get(itemClassification+itemLocation);
+                    item.setLeftNr(quantity);
+                }
+                else {
+                    ManageItem newItem = new ManageItem();
+                    newItem.setItemLocation(itemLocation);
+                    newItem.setClassification(itemClassification);
+                    newItem.setLeftNr(quantity);
                     manageItems.add(newItem);
                     manageItemHashMap.put(newItem.getClassification() + newItem.getItemLocation(), newItem);
                 }

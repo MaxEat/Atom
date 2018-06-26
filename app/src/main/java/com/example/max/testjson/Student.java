@@ -484,7 +484,7 @@ public class Student extends Person {
 
 
     @JavascriptInterface
-    public void getItemsSameKind_interface_student(String htmlSource){
+    public void getItemsSameKind_interface_Student(String htmlSource){
         Log.i("get same kind info", htmlSource);
         try {
 
@@ -531,6 +531,9 @@ public class Student extends Person {
                     availableItemInWith.setInWishList(true);
                 }
             }
+            Message message = new Message();
+            message.what = 7;
+            AvailableItemFragment.handler.sendMessage(message);
 
         } catch (Throwable t) {
             Log.e("My info", "Could not parse malformed JSON: \"" + htmlSource + "\"");

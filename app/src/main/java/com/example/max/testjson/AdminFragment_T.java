@@ -95,12 +95,12 @@ public class AdminFragment_T extends Fragment {
                 fragment = mFragments[3];
                 break;
 
-            case R.id.tab_adminMenu_setting:
-                wv.addJavascriptInterface(TestJson.getUser(), "Person");
-                TestJson.getUser().getPreferedEmailAndHeadShot();
-                Log.i("here dash size", Integer.toString(TestJson.getUser().getDashboard().size()));
-                fragment = mFragments[4];
-                break;
+//            case R.id.tab_adminMenu_setting:
+//                wv.addJavascriptInterface(TestJson.getUser(), "Person");
+//                TestJson.getUser().getPreferedEmailAndHeadShot();
+//                Log.i("here dash size", Integer.toString(TestJson.getUser().getDashboard().size()));
+//                fragment = mFragments[4];
+//                break;
         }
         if(fragment!=null) {
             getChildFragmentManager().beginTransaction().replace(R.id.adminHome_container,fragment).commit();

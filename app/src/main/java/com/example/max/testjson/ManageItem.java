@@ -7,10 +7,20 @@ package com.example.max.testjson;
 public class ManageItem extends Item {
     private int borrowNr;
     private int maintainNr;
+    private int leftNr;
 
     public ManageItem() {
         borrowNr = 0;
         maintainNr = 0;
+        leftNr = 0;
+    }
+
+    public int getLeftNr() {
+        return leftNr;
+    }
+
+    public void setLeftNr(int LeftNr) {
+        this.leftNr = LeftNr;
     }
 
     public int getBorrowNr() {
@@ -31,6 +41,10 @@ public class ManageItem extends Item {
 
     public void increaseMaintainNr() {
         maintainNr++;
+    }
+
+    public void increaseLeftNr() {
+        leftNr++;
     }
 
     public void setMaintainNr(int maintainNr) {
