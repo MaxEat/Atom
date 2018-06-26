@@ -79,6 +79,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:ems="10"
+                    android:textSize="14sp"
                     android:textColor="@color/colorPrimaryDark"
                     android:textColorLink="@color/colorPrimaryDark"
                     android:theme="@style/MyEditText" />
@@ -109,6 +110,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:ems="10"
+                    android:textSize="14sp"
                     android:textColor="@color/colorPrimaryDark"
                     android:textColorLink="@color/colorPrimaryDark"
                     android:theme="@style/MyEditText" />
@@ -213,6 +215,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:ems="10"
+            android:textSize="14sp"
             android:textColor="@color/colorPrimaryDark"
             android:textColorLink="@color/colorPrimaryDark"
             android:theme="@style/MyEditText" />

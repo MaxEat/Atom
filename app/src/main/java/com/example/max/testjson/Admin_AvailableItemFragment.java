@@ -14,21 +14,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.support.v4.app.Fragment;
 
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.Filter;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.squareup.leakcanary.RefWatcher;
-import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class Admin_AvailableItemFragment extends Fragment implements SearchView.OnQueryTextListener{
 

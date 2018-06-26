@@ -1,6 +1,5 @@
 package com.example.max.testjson;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,14 +17,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.max.testjson.dashboard.News;
-
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-
-import static com.example.max.testjson.TestJson.wv;
 
 
 public class DashBoardFragment extends Fragment {
@@ -124,12 +117,6 @@ public class DashBoardFragment extends Fragment {
                     });
                 }
             }
-
-
-
-
-
-
         return view;
     }
 

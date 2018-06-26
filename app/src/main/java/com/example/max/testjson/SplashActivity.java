@@ -60,7 +60,6 @@ public class SplashActivity extends AppCompatActivity {
 
             @Override
             public void run() {
-                Toast.makeText(getApplicationContext(),"Please scan your card to log in", Toast.LENGTH_SHORT).show();
             }
         }, SPLASH_TIME_OUT);
     }

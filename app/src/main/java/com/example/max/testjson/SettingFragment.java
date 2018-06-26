@@ -21,29 +21,17 @@ import android.view.ViewGroup;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
-
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
 import com.squareup.leakcanary.RefWatcher;
 import com.squareup.picasso.Picasso;
-
-import junit.framework.Test;
-
 import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.UploadNotificationConfig;
-
 import java.io.IOException;
 import java.util.UUID;
 
-import static com.example.max.testjson.TestJson.getUser;
-import static com.example.max.testjson.TestJson.wv;
 
 
 public class SettingFragment extends Fragment implements View.OnClickListener{

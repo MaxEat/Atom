@@ -2,7 +2,6 @@ package com.example.max.testjson;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,29 +16,23 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.JavascriptInterface;
 import android.widget.Toast;
-
 import com.example.max.testjson.dashboard.News;
 import com.squareup.leakcanary.RefWatcher;
-
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.example.max.testjson.CustomedWebview.baseURL;
 import static com.example.max.testjson.CustomedWebview.duplicatePersonURL;
 import static com.example.max.testjson.TestJson.wv;
 
@@ -310,8 +303,6 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
 
     @Override
     public void scanResultData(String codeFormat, String codeContent) {
-        Toast.makeText(this, "FORMAT: " + codeFormat, Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, "CONTENT: " + codeContent, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -463,7 +454,7 @@ public class MainActivity extends  AppCompatActivity implements BorrowedFragment
                             wv.addJavascriptInterface(new MainActivity.getFormData(),"local");
                             wv.show();
                             wv.loadUrl(CustomedWebview.baseURL);
-                            Toast.makeText(getApplication(), "Please log in the correct username and password", Toast.LENGTH_SHORT);
+                            Toast.makeText(getApplication(), "Please log in with the correct username and password", Toast.LENGTH_SHORT);
                         }
                     });
 

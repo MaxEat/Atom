@@ -1,7 +1,5 @@
 package com.example.max.testjson;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -11,7 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.app.Fragment;
-import android.widget.TextView;
 
 import com.squareup.leakcanary.RefWatcher;
 
@@ -53,7 +50,6 @@ public class AdminFragment_T extends Fragment {
         mFragments = Admin_DataGenerator.getFragments("BottomNavigationView Tab");
 
         mBottomNavigationView = (BottomNavigationView)view.findViewById(R.id.adminBottom_navigation_view);
-        //mBottomNavigationView.getMaxItemCount()
 
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -72,12 +68,8 @@ public class AdminFragment_T extends Fragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
         return view;
     }
-
-
 
     private void onTabItemSelected(int id) throws IOException {
         android.support.v4.app.Fragment fragment = null;

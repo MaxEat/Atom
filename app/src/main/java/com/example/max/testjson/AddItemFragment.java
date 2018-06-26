@@ -30,7 +30,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.support.v4.app.Fragment;
-import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -164,7 +163,6 @@ public class AddItemFragment extends Fragment implements LocationListener{
                         break;
                     case  4:
                         Log.i("ui handler", "result " + inputMessage.getData().getString("result"));
-                       // Toast.makeText(getContext(), inputMessage.getData().getString("result"), Toast.LENGTH_SHORT).show();
                         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                         builder.setTitle(inputMessage.getData().getString("title"));
                         builder.setMessage(inputMessage.getData().getString("result"));
@@ -405,12 +403,6 @@ public class AddItemFragment extends Fragment implements LocationListener{
                 codeFormat = scanningResult.getFormatName();
                 parentActivity.scanResultData(codeFormat,codeContent);
                 ScannedCode.setText(codeContent);
-//            try {
-//                setItemTag(codeContent);
-//
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
             }else{
                 parentActivity.scanResultData(new NoScanResultException(noResultErrorMsg));
             }

@@ -15,9 +15,6 @@ import java.util.Date;
 
 public class Item_Expired_News extends News {
 
-
-
-
     public Item_Expired_News(BorrowedItem borrowedItem) {
         item = borrowedItem;
         Log.i("info","expired create");

@@ -1,7 +1,5 @@
 package com.example.max.testjson;
 
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,8 +11,6 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 import com.example.max.testjson.AvailableItemFragment.OnListFragmentInteractionListener;
-import com.example.max.testjson.dashboard.Wish_Item_Available_News;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,12 +55,7 @@ public class AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter<Avail
         else{
             holder.mCheckBox.setChecked(false);
         }
-//        if(((Student)TestJson.getUser()).inWishList(holder.mItem))
-//        {
-//            holder.mCheckBox.setChecked(true);
-//            Log.i("location", holder.mItem.getItemLocation());
-//            Log.i("classification", holder.mItem.getClassification());
-//        }
+
         ((Student)TestJson.getUser()).printAvailable();
         holder.mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
@@ -175,8 +166,4 @@ public class AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter<Avail
         }
 
     }
-
-
-
-
 }

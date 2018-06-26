@@ -11,7 +11,6 @@ import com.example.max.testjson.Item;
 
 public class Wish_Item_Available_News extends News {
 
-
     public Wish_Item_Available_News(AvailableItem availableItem) {
         item = availableItem;
         Log.i("info","wish create");

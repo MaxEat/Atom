@@ -1,11 +1,7 @@
 package com.example.max.testjson;
 
 import android.icu.util.Calendar;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Log;
-
-import com.google.zxing.client.result.CalendarParsedResult;
 
 import java.io.Serializable;
 import java.text.ParseException;
