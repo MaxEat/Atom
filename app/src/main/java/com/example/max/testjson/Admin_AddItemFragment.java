@@ -3,12 +3,17 @@ package com.example.max.testjson;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -32,16 +37,15 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.squareup.leakcanary.RefWatcher;
-
 import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.UploadNotificationConfig;
-
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 
@@ -49,10 +53,10 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
 
     Admin_AddItemFragment thisFragment;
 
-    //Declaring views
+    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private ImageView imageView;
     private EditText editText;
-
+    private LocationManager locationManager;
     private Button QR;
     private Button BarCode;
     private Button TextRecognize;
@@ -62,6 +66,10 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
     private EditText permissionDayText;
 
     private Button confirmBtn;
+    private String cityName;
+    private String fullAddress;
+    private String latitude;
+    private String longitude;
 
     private EditText ScannedCode_admin;
     private EditText locationText;
@@ -118,6 +126,39 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        checkLocationPermission();
+
+        locationManager = (LocationManager) getActivity().
+                getSystemService(Context.LOCATION_SERVICE);
+
+        longitude = "Longitude: " + locationManager.getLastKnownLocation(
+                LocationManager.NETWORK_PROVIDER).getLongitude();
+        latitude = "Latitude: " + locationManager.getLastKnownLocation(
+                LocationManager.NETWORK_PROVIDER).getLatitude();
+        Log.i("coordinate", longitude + ", " + latitude);
+
+        Geocoder gcd = new Geocoder(getContext(), Locale.ENGLISH);
+        List<Address> addresses;
+        cityName = null;
+        fullAddress = null;
+        try {
+
+            addresses = gcd.getFromLocation(
+                    locationManager.getLastKnownLocation(
+                            LocationManager.NETWORK_PROVIDER).getLatitude(),
+                    locationManager.getLastKnownLocation(
+                            LocationManager.NETWORK_PROVIDER).getLongitude(),
+                    1);
+            if (addresses.size() > 0) {
+                System.out.println(addresses.get(0).getLocality());
+                cityName = addresses.get(0).getLocality();
+                fullAddress = addresses.get(0).getAddressLine(0);
+                fullAddress = fullAddress.split(",")[0];
+                fullAddress = fullAddress.concat(", Leuven");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -145,6 +186,7 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
         permissionDayText = (EditText) view.findViewById(R.id.permission_day_text);
 
         locationText = (EditText)view.findViewById(R.id.itemLocationText);
+        locationText.setText(fullAddress);
 
         ScannedCode_admin = (EditText)view.findViewById(R.id.scannedCode_admin) ;
 
@@ -250,6 +292,43 @@ public class Admin_AddItemFragment extends Fragment implements View.OnClickListe
         // Inflate the layout for this fragment
         return view;
     }
+
+    public boolean checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(getContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+                new AlertDialog.Builder(getActivity())
+                        .setTitle(R.string.title_location_permission)
+                        .setMessage(R.string.text_location_permission)
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //Prompt the user once explanation has been shown
+                                ActivityCompat.requestPermissions(getActivity(),
+                                        new String[]{
+                                                Manifest.permission.ACCESS_FINE_LOCATION},
+                                        MY_PERMISSIONS_REQUEST_LOCATION);
+                            }
+                        })
+                        .create()
+                        .show();
+
+
+            } else {
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_LOCATION);
+            }
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 
     public void scanQR(View view) {
 

@@ -150,6 +150,9 @@ public class CustomedWebview extends WebView {
                 if(url.equals(getAllWishListItemsURL))
                     view.loadUrl("javascript:window.Person.getWishListFromDatabase_interface(document.body.innerHTML)");
 
+                if(url.equals(getPreferedEmailAndHeadShotURL))
+                    view.loadUrl("javascript:window.Person.getPreferedEmailAndHeadShot_interface(document.body.innerHTML)");
+
             }
 
         });
