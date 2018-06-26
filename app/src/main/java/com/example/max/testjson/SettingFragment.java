@@ -102,6 +102,8 @@ public class SettingFragment extends Fragment implements View.OnClickListener{
         headshot = (ImageView) view.findViewById(R.id.my_image);
         String imageURI = TestJson.getUser().getHeadshotUrl();
         Log.i("imageUri is------------",imageURI);
+        Picasso.with(getActivity().getApplicationContext()).load(imageURI).fit().into(headshot);
+        preferEmail.setText(TestJson.getUser().getAlertEmail());
 
         handler = new Handler() {
             @Override
@@ -109,18 +111,21 @@ public class SettingFragment extends Fragment implements View.OnClickListener{
                 switch (inputMessage.what) {
                     case 6:
                         Log.i("ui handler", "set prefered email and headshot");
-                        String email = inputMessage.getData().getString("preferedEmail");
+                        String email = inputMessage.getData().getString("email");
                         String pictureUrl = inputMessage.getData().getString("headshotUrl");
+                        Log.i("ui handler picture", pictureUrl);
                         preferEmail.setText(email);
-                        Picasso.with(getActivity().getApplicationContext()).load(pictureUrl).fit().into(headshot);
+                        Picasso.with(getContext())
+                                .invalidate(pictureUrl);
+                        Picasso.with(getContext()).load(pictureUrl).fit().into(headshot);
                         break;
                 }
             }
         };
-        Picasso.with(getActivity().getApplicationContext()).load(imageURI).fit().into(headshot);
 
 
-        preferEmail.setText(TestJson.getUser().getAlertEmail());
+
+
         radioGroup.check(R.id.sevendays);
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()

@@ -136,6 +136,7 @@ public abstract class Person {
     }
 
     public void getPreferedEmailAndHeadShot() throws IOException {
+        Log.i("getting email & picture", "entrance");
         byte[] array = getPreferedEmailAndHeadShot_createJson();
         wv.postUrl(CustomedWebview.getPreferedEmailAndHeadShotURL, array);
     }

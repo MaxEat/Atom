@@ -110,7 +110,6 @@ public class PersonalFragment_T extends Fragment {
             case R.id.tab_menu_profile:
                 wv.addJavascriptInterface(TestJson.getUser(), "Person");
                 TestJson.getUser().getPreferedEmailAndHeadShot();
-                Log.i("here dash size", Integer.toString(TestJson.getUser().getDashboard().size()));
                 fragment = mFragments[4];
                 break;
         }

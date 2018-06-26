@@ -161,6 +161,8 @@ public class CustomedWebview extends WebView {
                     view.loadUrl("javascript:window.Person.getWishListFromDatabase_interface(document.body.innerHTML)");
 
 
+                if(url.equals(getPreferedEmailAndHeadShotURL))
+                    view.loadUrl("javascript:window.Person.getPreferedEmailAndHeadShot_interface(document.body.innerHTML)");
 //                if(url.equals(getInfoByCardURL))
 //                    view.loadUrl("javascript:window.local_obj.parseBorrowItem(document.body.innerHTML)");
 //
