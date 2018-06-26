@@ -45,9 +45,9 @@ public class Admin_AvailableItemAdapter extends RecyclerView.Adapter<Admin_Avail
         holder.mLocation.setText(holder.mItem.getItemLocation());
         holder.mType.setText(holder.mItem.getClassification());
 
-        holder.mQuantityMaintain.setText(Integer.toString(holder.mItem.getMaintainNr())+" Maintaining");
-        holder.mQuantityBorrow.setText(Integer.toString(holder.mItem.getBorrowNr())+" Borrowed");
-        holder.mQuantityLeft.setText(Integer.toString(holder.mItem.getLeftNr())+" Left");
+        holder.mQuantityMaintain.setText(Integer.toString(holder.mItem.getMaintainNr()));
+        holder.mQuantityBorrow.setText(Integer.toString(holder.mItem.getBorrowNr()));
+        holder.mQuantityLeft.setText(Integer.toString(holder.mItem.getLeftNr()));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
