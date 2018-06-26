@@ -168,13 +168,17 @@ public class Item implements Serializable {
         Log.i("set item info", htmlSource);
         try {
             JSONObject json = new JSONObject(htmlSource);
-            itemLocation = json.getString("itemLocation");
-            classification = json.getString("itemClassification");
-            status = json.getString("itemStatus");
-
             error = json.getInt("error_message");
+            if(error == 0) {
+                itemLocation = json.getString("itemLocation");
+                classification = json.getString("itemClassification");
+                status = json.getString("itemStatus");
+
+            }
+
             Message m = new Message();
             Bundle b = new Bundle();
+            b.putInt("error",error );
             b.putString("classification", classification);
             m.setData(b);
             m.what = 3;

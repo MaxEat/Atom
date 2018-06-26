@@ -2,7 +2,6 @@ package com.example.max.testjson;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,8 +14,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.HandlerThread;
-import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -31,18 +28,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.support.v4.app.Fragment;
 
+import com.example.max.testjson.ocr.CaptureActivity;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.squareup.leakcanary.RefWatcher;
 import com.squareup.picasso.Picasso;
 
-import junit.framework.Test;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-import static android.app.Activity.RESULT_OK;
 import static com.example.max.testjson.TestJson.wv;
 
 public class AddItemFragment extends Fragment implements LocationListener{
@@ -61,6 +56,7 @@ public class AddItemFragment extends Fragment implements LocationListener{
     private ImageButton ConfirmScan;
 
     private String provider;
+    private Boolean allowOperation;
     private String cityName;
     private String fullAddress;
     private String latitude;
@@ -94,6 +90,7 @@ public class AddItemFragment extends Fragment implements LocationListener{
         latitude = "Latitude: " + locationManager.getLastKnownLocation(
                 LocationManager.NETWORK_PROVIDER).getLatitude();
         Log.i("coordinate", longitude + ", " + latitude);
+
 
         Geocoder gcd = new Geocoder(getContext(), Locale.ENGLISH);
         List<Address> addresses;
@@ -136,7 +133,7 @@ public class AddItemFragment extends Fragment implements LocationListener{
         ScannedCode = (EditText)view.findViewById(R.id.scannedCode) ;
         ScannedCode.setText("");
         ConfirmScan = (ImageButton)view.findViewById(R.id.confirm);
-
+        allowOperation = false;
 
         if(dataGenerator == 1){
             Return_UnMaintain.setText("RETURN");
@@ -155,10 +152,30 @@ public class AddItemFragment extends Fragment implements LocationListener{
                         Log.i("ui handler", "set item info");
 
                         String classification = inputMessage.getData().getString("classification");
-                        String pictureUrl = TestJson.pictureMap.get(classification);
-                        Classification.setText(classification);
-                        Log.i("classification", classification);
-                        Picasso.with(getContext()).load(pictureUrl).fit().into(ItemImage);
+                        int error = inputMessage.getData().getInt("error");
+                        if(error == 4)
+                        {
+                            allowOperation = false;
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            builder.setMessage("This item is not exist, maybe the scan result is wrong");
+                            builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    // FIRE ZE MISSILES!
+                                }
+                            });
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
+                        }
+
+                        else
+                        {
+                            allowOperation = true;
+                            String pictureUrl = TestJson.pictureMap.get(classification);
+                            Classification.setText(classification);
+                            Log.i("classification", classification);
+                            Picasso.with(getContext()).load(pictureUrl).fit().into(ItemImage);
+                        }
+
                         break;
                     case  4:
                         Log.i("ui handler", "result " + inputMessage.getData().getString("result"));
@@ -197,28 +214,56 @@ public class AddItemFragment extends Fragment implements LocationListener{
         Return_UnMaintain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(allowOperation) {
                     try {
-                        if(dataGenerator == 1) {
+                        if (dataGenerator == 1) {
                             returnItem();
-                        }
-                        else
+                        } else
                             updateItemState();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                }
+                else
+                {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("No item selected");
+                    builder.setMessage("Please scan or manually input an item tag first!");
+                    builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // FIRE ZE MISSILES!
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
             }
         });
         Borrow_Maintain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    if(dataGenerator == 1) {
-                        borrowItem();
+                if(allowOperation) {
+                    try {
+                        if (dataGenerator == 1) {
+                            borrowItem();
+                        } else
+                            updateItemState();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                    else
-                        updateItemState();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                }
+                else
+                {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setTitle("No item selected");
+                    builder.setMessage("Please input a valid item tag first!");
+                    builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // FIRE ZE MISSILES!
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                 }
 
             }
@@ -371,6 +416,7 @@ public class AddItemFragment extends Fragment implements LocationListener{
 
         try {
             setItemTag(ScannedCode.getText().toString());
+
             Item item = new Item(itemTag);
 
             Log.i("itemtag is",itemTag);
@@ -387,8 +433,9 @@ public class AddItemFragment extends Fragment implements LocationListener{
         if(resultCode == getActivity().RESULT_FIRST_USER)
         {
             String answer = intent.getStringExtra("result");
+            answer = answer.replace("\n\n","\n");
+            answer = answer.replace("\n", ",");
             ScannedCode.setText(answer);
-
             Log.i("scan text", answer);
         }
         else{
@@ -401,6 +448,8 @@ public class AddItemFragment extends Fragment implements LocationListener{
                 codeContent = scanningResult.getContents();
                 codeFormat = scanningResult.getFormatName();
                 parentActivity.scanResultData(codeFormat,codeContent);
+                codeContent = codeContent.replace("\n\n","\n");
+                codeContent = codeContent.replace("\n", ",");
                 ScannedCode.setText(codeContent);
             }else{
                 parentActivity.scanResultData(new NoScanResultException(noResultErrorMsg));

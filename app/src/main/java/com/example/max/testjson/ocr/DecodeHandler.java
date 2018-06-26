@@ -15,8 +15,9 @@
  * limitations under the License.
  */
 
-package com.example.max.testjson;
+package com.example.max.testjson.ocr;
 
+import com.example.max.testjson.R;
 import com.googlecode.tesseract.android.TessBaseAPI;
 import android.os.Handler;
 import android.os.Looper;

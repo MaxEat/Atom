@@ -1,4 +1,4 @@
-package com.example.max.testjson;
+package com.example.max.testjson.ocr;
 
 import java.util.ArrayList;
 
@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.example.max.testjson.R;
 import com.googlecode.leptonica.android.ReadFile;
 import com.googlecode.tesseract.android.ResultIterator;
 import com.googlecode.tesseract.android.TessBaseAPI;

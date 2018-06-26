@@ -1,4 +1,4 @@
-package com.example.max.testjson;
+package com.example.max.testjson.ocr;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,6 +36,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.max.testjson.R;
 import com.googlecode.tesseract.android.TessBaseAPI;
 
 import com.example.max.testjson.camera.CameraManager;

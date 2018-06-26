@@ -24,9 +24,8 @@ import android.graphics.Rect;
 import android.hardware.Camera;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.SurfaceHolder;
-import com.example.max.testjson.PlanarYUVLuminanceSource;
+import com.example.max.testjson.ocr.PlanarYUVLuminanceSource;
 //import edu.sfsu.cs.orange.ocr.PreferencesActivity;
 
 import java.io.IOException;

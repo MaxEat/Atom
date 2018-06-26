@@ -1,4 +1,4 @@
-package com.example.max.testjson;
+package com.example.max.testjson.ocr;
 
 /**
  * The purpose of this class hierarchy is to abstract different bitmap implementations across

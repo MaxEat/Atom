@@ -1,5 +1,6 @@
-package com.example.max.testjson;
+package com.example.max.testjson.ocr;
 
+import com.example.max.testjson.R;
 import com.example.max.testjson.camera.CameraManager;
 
 import android.os.Handler;

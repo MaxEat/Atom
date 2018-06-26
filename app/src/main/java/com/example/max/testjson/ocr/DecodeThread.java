@@ -15,9 +15,8 @@
  * limitations under the License.
  */
 
-package com.example.max.testjson;
+package com.example.max.testjson.ocr;
 
-import com.example.max.testjson.CaptureActivity;
 import android.os.Handler;
 import android.os.Looper;
 import java.util.concurrent.CountDownLatch;

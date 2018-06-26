@@ -17,47 +17,6 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/QR_scan_admin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="@color/colorAccent"
-                    android:background="@drawable/btn_selector"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:text="QR_Code" />
-
-                <Button
-                    android:id="@+id/Barcode_scan_admin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorAccent"
-                    android:background="@drawable/btn_selector"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_weight="1"
-                    android:text="BARCODE" />
-
-                <Button
-                    android:id="@+id/Text_scan_admin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorAccent"
-                    android:background="@drawable/btn_selector"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_weight="1"
-                    android:text="Text" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:orientation="vertical">
@@ -66,17 +25,58 @@
                     android:id="@+id/scanResult_admin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:text="Scan Result"
+                    android:layout_marginStart="10dp"
+                    android:text="Item Tag (choose one scan method):"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="14sp" />
 
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/QR_scan_admin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_selector"
+                        android:text="QR_Code"
+                        android:textColor="@color/colorAccent" />
+
+                    <Button
+                        android:id="@+id/Barcode_scan_admin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_selector"
+                        android:text="BARCODE"
+                        android:textColor="@color/colorAccent" />
+
+                    <Button
+                        android:id="@+id/Text_scan_admin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_selector"
+                        android:text="Text"
+                        android:textColor="@color/colorAccent" />
+                </LinearLayout>
 
                 <EditText
                     android:id="@+id/scannedCode_admin"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="40dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:ems="10"
                     android:textSize="14sp"
@@ -107,7 +107,7 @@
                     android:id="@+id/itemLocationText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="40dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:ems="10"
                     android:textSize="14sp"
