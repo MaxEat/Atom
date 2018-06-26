@@ -28,15 +28,30 @@
             android:layout_gravity="center_vertical"
             android:layout_height="wrap_content"
             android:text="TextView" />
+
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/available_item_quantity"
+    <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:textColor="@color/colorPrimaryDark"
-        android:layout_weight="1"/>
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/available_item_quantity"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="1"
+            android:textColor="@color/colorPrimaryDark" />
+
+        <ImageView
+            android:id="@+id/available_icon"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/ic_ic_003_available" />
+    </LinearLayout>
 
     <CheckBox
         android:id="@+id/add_to_wish"

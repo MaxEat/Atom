@@ -45,7 +45,7 @@ public class AvailableItemRecyclerViewAdapter extends RecyclerView.Adapter<Avail
 
 
         if(holder.mItem.getStatus().equals("available"))
-            holder.mQuantity.setText(Integer.toString(holder.mItem.getQuantity())+" Left");
+            holder.mQuantity.setText(Integer.toString(holder.mItem.getQuantity()));
         else
             holder.mQuantity.setText("0 Left");
 

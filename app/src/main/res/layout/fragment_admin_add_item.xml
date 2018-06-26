@@ -25,7 +25,7 @@
                     android:id="@+id/scanResult_admin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="20dp"
                     android:text="Item Tag (choose one scan method):"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="14sp" />

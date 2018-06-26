@@ -36,34 +36,88 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="180dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:weightSum="3">
 
-        <TextView
-            android:id="@+id/title_maintain"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Maintain" />
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/title_borrowed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Borrowed" />
+            <TextView
+                android:id="@+id/title_maintain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Maintain"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/title_available"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            <ImageView
+                android:id="@+id/maintain_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                app:srcCompat="@drawable/ic_ic_003_maintain" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Available" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/title_borrowed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Borrowed"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/borrow_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                app:srcCompat="@drawable/ic_ic_003_borrowed" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/title_available"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Available"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/available_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                app:srcCompat="@drawable/ic_ic_003_available" />
+        </LinearLayout>
+
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/admin_available_list"
         android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_height="match_parent"

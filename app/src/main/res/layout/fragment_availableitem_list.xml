@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_action"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -47,12 +48,38 @@
             android:visibility="visible"
             tools:visibility="visible" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/title_available"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Number of Available Items"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/available_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                app:srcCompat="@drawable/ic_ic_003_available" />
+        </LinearLayout>
+
         <android.support.v7.widget.RecyclerView xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/available_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
+            android:layout_marginTop="10dp"
             tools:listitem="@layout/fragment_availableitem">
 
 
